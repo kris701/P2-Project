@@ -1,6 +1,0 @@
-C:\Users\kris7\OneDrive\Programming\_ GitHub _\School Projects\P2Project\GitHub\P2-Project\P2Projekt\P2Projekt\bin\TypeScriptHTMLApp1.dll.config
-C:\Users\kris7\OneDrive\Programming\_ GitHub _\School Projects\P2Project\GitHub\P2-Project\P2Projekt\P2Projekt\bin\TypeScriptHTMLApp1.dll
-C:\Users\kris7\OneDrive\Programming\_ GitHub _\School Projects\P2Project\GitHub\P2-Project\P2Projekt\P2Projekt\bin\TypeScriptHTMLApp1.pdb
-C:\Users\kris7\OneDrive\Programming\_ GitHub _\School Projects\P2Project\GitHub\P2-Project\P2Projekt\P2Projekt\obj\Debug\P2Projekt.csprojAssemblyReference.cache
-C:\Users\kris7\OneDrive\Programming\_ GitHub _\School Projects\P2Project\GitHub\P2-Project\P2Projekt\P2Projekt\obj\Debug\TypeScriptHTMLApp1.dll
-C:\Users\kris7\OneDrive\Programming\_ GitHub _\School Projects\P2Project\GitHub\P2-Project\P2Projekt\P2Projekt\obj\Debug\TypeScriptHTMLApp1.pdb
