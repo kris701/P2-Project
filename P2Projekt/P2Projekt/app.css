@@ -1,8 +1,37 @@
 ﻿* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-body {
-    background-color: lightblue;
+html {
+    font-size: 10px;
+    font-family: "montserrat", sans-serif;
+}
+
+header {
+    background: #437FC9;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    text-align: center;
+}
+
+.headerContainer {
+    background: red;
+    width: 80%;
+    height: 80px;
+    display: inline-block;
+}
+
+.logoContainer {
+    float: left;
+}
+
+.admin {
+    float: right;
+}
+
+.selectContainer {
+    float: right;
 }
