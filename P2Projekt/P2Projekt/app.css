@@ -9,29 +9,36 @@ html {
     font-family: "montserrat", sans-serif;
 }
 
+body {
+    background: #E5E5E5;
+}
+
 header {
-    background: #437FC9;
+    background: #14213D;
     position: fixed;
     width: 100%;
     top: 0;
+    height: 60px;
     text-align: center;
 }
 
 .headerContainer {
-    background: red;
+    height: 60px;
     width: 80%;
-    height: 80px;
     display: inline-block;
+    line-height: 60px;
+    white-space: nowrap;
 }
 
 .logoContainer {
     float: left;
 }
 
-.admin {
+.selectContainer {
     float: right;
 }
 
-.selectContainer {
-    float: right;
+.logoContainer {
+    text-transform: uppercase;
+    color: white;
 }
