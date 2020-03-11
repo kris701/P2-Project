@@ -14,106 +14,121 @@ let server = http.createServer(async function (req, res) {
 
     try {
         if (req.url == "/datatypes") {
-            let responseTable = [];
-
-            sql.connect(config, function (err) {
-                if (err) console.log(err);
-
-                var request = new sql.Request();
-                request.query('SELECT * FROM INFORMATION_SCHEMA.TABLES', function (err, response) {
-                    if (err) console.log(err);
-                    console.dir(response);
-
-                    response.recordset.forEach(v => responseTable.push(v.TABLE_NAME));
-                    res.write(JSON.stringify(responseTable));
-                    res.end();
-                });
-            });
+            let response = await datatypeQuery();
+            res.write(JSON.stringify(response));
+            res.end();
         }
         else if (req.url.includes("/sensorids")) {
             var queryUrl = querystring.parse(req.url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-            let responseTable = [];
-
-            sql.connect(config, function (err) {
-                if (err) console.log(err);
-
-                var request = new sql.Request();
-                request.input("startTimeInput", sql.DateTime, queryUrl.starttime);
-                request.input("endTimeInput", sql.DateTime, queryUrl.endtime);
-
-                request.query("SELECT DISTINCT(SensorID) FROM [" + queryUrl.datatype + "] WHERE [Timestamp] BETWEEN @startTimeInput AND @endTimeInput", function (err, response) {
-                    if (err) console.log(err);
-                    console.dir(response);
-
-                    response.recordset.forEach(v => responseTable.push(v.SensorID));
-                    res.write(JSON.stringify(responseTable));
-                    res.end();
-                });
-            });
+            let response = await sensorIDQuery(queryUrl.datatype, queryUrl.starttime, queryUrl.endtime);
+            res.write(JSON.stringify(response));
+            res.end();
         }
         else if (req.url.includes("/results")) {
             var queryUrl = querystring.parse(req.url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-            let responseTable = [];
-
-            sql.connect(config, function (err) {
-                if (err) console.log(err);
-
-                var request = new sql.Request();
-                request.input("startTimeInput", sql.DateTime, queryUrl.starttime);
-                request.input("endTimeInput", sql.DateTime, queryUrl.endtime);
-                request.input("sensorIDInput", sql.Int, queryUrl.sensorid);
-
-                request.query("SELECT * FROM [" + queryUrl.datatype + "] WHERE [Timestamp] BETWEEN @startTimeInput AND @endTimeInput AND [SensorID]=@sensorIDInput", function (err, response) {
-                    if (err) console.log(err);
-                    console.dir(response);
-
-                    response.recordset.forEach(v => responseTable.push(v));
-                    res.write(JSON.stringify(responseTable));
-                    res.end();
-                });
-            });
+            let response = await resultsQuery(queryUrl.datatype, queryUrl.starttime, queryUrl.endtime, queryUrl.sensorid);
+            res.write(JSON.stringify(response));
+            res.end();
         }
         else if (req.url.includes("/newresult")) {
             var queryUrl = querystring.parse(req.url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-            sql.input("sensorIDInput", sql.Int, queryUrl.sensorid);
-            sql.input("sensorValueInput", sql.Float, queryUrl.sensorvalue);
 
-            sql.connect(config, function (err) {
-                if (err) console.log(err);
-
-                var request = new sql.Request();
-                request.query("INSERT INTO [" + queryUrl.datatype + "] (SensorID,SensorValue) values (@sensorIDInput, @sensorValueInput)", function (err, response) {
-                    if (err) console.log(err);
-                    console.dir(response);
-
-                    res.write(JSON.stringify(response));
-                    res.end();
-                });
-            });
+            let response = await newResultQuery(queryUrl.datatype, queryUrl.sensorid, queryUrl.sensorvalue);
+            res.write(JSON.stringify(response));
+            res.end();
         }
-        else if (req.url.includes("/getsensorsinallrooms")) {
-            let responseTable = [];
-
-            sql.connect(config, function (err) {
-                if (err) console.log(err);
-
-                var request = new sql.Request();
-                request.query("SELECT * FROM [SensorData]", function (err, response) {
-                    if (err) console.log(err);
-                    console.dir(response);
-
-                    response.recordset.forEach(v => responseTable.push(v));
-                    res.write(JSON.stringify(responseTable));
-                    res.end();
-                });
-            });
+        else if (req.url.includes("/getallsensors")) {
+            let response = await getAllSensorsQuery();
+            res.write(JSON.stringify(response));
+            res.end();
         }
     } catch {
         console.log("Connection failed.");
     }
 });
+
+async function datatypeQuery() {
+    let result = [];
+    try {
+        await sql.connect(config);
+        let queryTable = await sql.query('SELECT * FROM INFORMATION_SCHEMA.TABLES');
+        queryTable.recordset.forEach(v => result.push(v.TABLE_NAME));
+    } catch (err) {
+        console.log(err);
+    }
+
+    return result;
+}
+
+async function sensorIDQuery(datatype, starttime, endtime) {
+    let result = [];
+    try {
+        await sql.connect(config);
+        var request = new sql.Request();
+        request.input("startTimeInput", sql.DateTime, starttime);
+        request.input("endTimeInput", sql.DateTime, endtime);
+
+        let queryTable = await request.query("SELECT DISTINCT(SensorID) FROM [" + datatype + "] WHERE [Timestamp] BETWEEN @startTimeInput AND @endTimeInput");
+        console.dir(queryTable);
+        queryTable.recordset.forEach(v => result.push(v.SensorID));
+    } catch (err) {
+        console.log(err);
+    }
+
+    return result;
+}
+
+async function resultsQuery(datatype, starttime, endtime, sensorID) {
+    let result = [];
+    try {
+        await sql.connect(config);
+        var request = new sql.Request();
+        request.input("startTimeInput", sql.DateTime, starttime);
+        request.input("endTimeInput", sql.DateTime, endtime);
+        request.input("sensorIDInput", sql.Int, sensorID);
+
+        let queryTable = await request.query("SELECT * FROM [" + datatype + "] WHERE [Timestamp] BETWEEN @startTimeInput AND @endTimeInput AND [SensorID]=@sensorIDInput");
+        console.dir(queryTable);
+        queryTable.recordset.forEach(v => result.push(v));
+    } catch (err) {
+        console.log(err);
+    }
+
+    return result;
+}
+
+async function newResultQuery(datatype, sensorID, sensorValue) {
+    let result;
+    try {
+        await sql.connect(config);
+        var request = new sql.Request();
+        request.input("sensorIDInput", sql.Int, sensorID);
+        request.input("sensorValueInput", sql.Int, sensorValue);
+
+        result = await request.query("INSERT INTO [" + datatype + "] (SensorID,SensorValue) values (@sensorIDInput, @sensorValueInput)");
+        console.dir(result);
+    } catch (err) {
+        console.log(err);
+        if (err.number == 547) return "No sensor with ID " + sensorID + " exists.";
+    }
+
+    return result;
+}
+
+async function getAllSensorsQuery() {
+    let result = [];
+    try {
+        await sql.connect(config);
+        let queryTable = await sql.query("SELECT * FROM [SensorData]");
+        queryTable.recordset.forEach(v => result.push(v));
+    } catch (err) {
+        console.log(err);
+    }
+
+    return result;
+}
 
 server.listen(5000);
 console.log("Node.js server is running and listening at port 5000.");
