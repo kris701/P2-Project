@@ -3,7 +3,6 @@
     padding: 0;
 }
 
-
 body {
     background: #2D2E2E;
     color: white;
@@ -23,7 +22,7 @@ header {
 }
 
 .headerContainer {
-    height: 60px;
+    height: 100%;
     width: 80%;
     display: inline-block;
     line-height: 60px;
@@ -43,6 +42,7 @@ header {
     font-size: 16px;
     font-family: sans-serif;
     font-weight: 700;
+    width: 200px;
     color: #444;
     line-height: 1.3;
     padding: .6em 1.4em .5em .8em;
