@@ -19,21 +19,21 @@ let server = http.createServer(async function (req, res) {
             res.end();
         }
         else if (req.url.includes("/sensorids")) {
-            var queryUrl = querystring.parse(req.url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+            var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
             let response = await sensorIDQuery(queryUrl.datatype, queryUrl.starttime, queryUrl.endtime);
             res.write(JSON.stringify(response));
             res.end();
         }
         else if (req.url.includes("/results")) {
-            var queryUrl = querystring.parse(req.url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+            var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
             let response = await resultsQuery(queryUrl.datatype, queryUrl.starttime, queryUrl.endtime, queryUrl.sensorid);
             res.write(JSON.stringify(response));
             res.end();
         }
         else if (req.url.includes("/newresult")) {
-            var queryUrl = querystring.parse(req.url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+            var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
             let response = await newResultQuery(queryUrl.datatype, queryUrl.sensorid, queryUrl.sensorvalue);
             res.write(JSON.stringify(response));
@@ -46,6 +46,8 @@ let server = http.createServer(async function (req, res) {
         }
     } catch {
         console.log("Connection failed.");
+        res.write(JSON.stringify("Connection failed."));
+        res.end();
     }
 });
 
@@ -128,6 +130,10 @@ async function getAllSensorsQuery() {
     }
 
     return result;
+}
+
+function queryStringParse(url) {
+    return querystring.parse(url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 }
 
 server.listen(5000);
