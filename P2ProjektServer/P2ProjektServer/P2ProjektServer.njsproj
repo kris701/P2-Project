@@ -11,7 +11,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>5795eda1-01c8-485b-ad07-8b4da48ffefb</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app.js</StartupFile>
+    <StartupFile>Interface.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -28,7 +28,16 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="app.js" />
+    <Content Include="Interface.js" />
+    <Content Include="WarningAndSolutionSelectionAlgorithm.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="PredictionAlgorithms.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="SimpleSensorInfo.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
