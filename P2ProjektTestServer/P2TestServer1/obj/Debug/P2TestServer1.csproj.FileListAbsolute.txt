@@ -1,0 +1,6 @@
+C:\Users\m-s-t\Documents\GitHub\P2-Project\P2ProjektServer\P2TestServer1\bin\TypeScriptHTMLApp1.dll.config
+C:\Users\m-s-t\Documents\GitHub\P2-Project\P2ProjektServer\P2TestServer1\bin\TypeScriptHTMLApp1.dll
+C:\Users\m-s-t\Documents\GitHub\P2-Project\P2ProjektServer\P2TestServer1\bin\TypeScriptHTMLApp1.pdb
+C:\Users\m-s-t\Documents\GitHub\P2-Project\P2ProjektServer\P2TestServer1\obj\Debug\P2TestServer1.csprojAssemblyReference.cache
+C:\Users\m-s-t\Documents\GitHub\P2-Project\P2ProjektServer\P2TestServer1\obj\Debug\TypeScriptHTMLApp1.dll
+C:\Users\m-s-t\Documents\GitHub\P2-Project\P2ProjektServer\P2TestServer1\obj\Debug\TypeScriptHTMLApp1.pdb

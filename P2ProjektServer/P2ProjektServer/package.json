@@ -1,0 +1,9 @@
+{
+  "name": "p2-projekt-server",
+  "version": "0.0.0",
+  "description": "P2ProjektServer",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
