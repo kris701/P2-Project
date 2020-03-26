@@ -1,0 +1,39 @@
+﻿<Window x:Class="P2ProjectVirtualSensors.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P2ProjectVirtualSensors"
+        mc:Ignorable="d"
+        Title="Virtual Sensor" Width="230" Height="215" ResizeMode="NoResize">
+    <Grid Background="Gray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Sensors ID:" Style="{StaticResource StandardLabelStyle}"/>
+        <TextBox x:Name="SensorIDTextbox" Grid.Column="1" Style="{StaticResource StandardTextboxStyle}"/>
+
+        <Label Content="Target table:" Grid.Row="1" Style="{StaticResource StandardLabelStyle}"/>
+        <TextBox x:Name="TargetTableTextbox" Grid.Row="1" Grid.Column="1" Style="{StaticResource StandardTextboxStyle}"/>
+
+        <Button x:Name="StartButton" Grid.Row="2" Content="Start" Style="{StaticResource StandardButtonStyle}" Click="StartButton_Click"/>
+        <Button x:Name="StopButton" Grid.Row="2" Grid.Column="1" Content="Stop" IsEnabled="False" Style="{StaticResource StandardButtonStyle}" Click="StopButton_Click"/>
+
+        <Label Content="Transfer delay (sec):" Grid.Row="3" Style="{StaticResource StandardLabelStyle}"/>
+        <TextBox x:Name="TransferDelay" Grid.Row="3" Grid.Column="1" Text="10" Style="{StaticResource StandardTextboxStyle}"/>
+
+        <Label Content="Value:" Grid.Row="4" Style="{StaticResource StandardLabelStyle}"/>
+        <Label x:Name="ValueLabel" Content="0" Grid.Row="4" Grid.Column="1" Style="{StaticResource StandardLabelStyle}"/>
+        <Slider x:Name="SendValueSlider" Grid.Row="6" Grid.ColumnSpan="2" ValueChanged="SendValueSlider_ValueChanged" Maximum="3000" LargeChange="100" SmallChange="1"/>
+    </Grid>
+</Window>
