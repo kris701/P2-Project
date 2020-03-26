@@ -80,8 +80,8 @@ async function getPredictionTemperatureSensorValues(date, sensorID) {
     try {
         await sql.connect(JSON.parse(fs.readFile("Config.json")));
         var request = new sql.Request();
-        request.input("timestampMinInput", sql.DateTime, date.setDatetimeToMinMax(date, "Min"));
-        request.input("timestampMaxInput", sql.DateTime, date.setDatetimeToMinMax(date, "Max"));
+        request.input("timestampMinInput", sql.DateTime, setDatetimeToMinMax(date, "min"));
+        request.input("timestampMaxInput", sql.DateTime, setDatetimeToMinMax(date, "max"));
         request.input("sensorIDInput", sql.Int, sensorID);
 
         let queryTable = await request.query("SELECT * FROM [SensorValue_Temperature] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
@@ -94,12 +94,12 @@ async function getPredictionTemperatureSensorValues(date, sensorID) {
 }
 
 function setDatetimeToMinMax(date, mode) {
-    if (mode == "Min") {
+    if (mode == "min") {
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
         date.setMilliseconds(0);
-    } else if (mode == "Max") {
+    } else if (mode == "max") {
         date.setHours(23);
         date.setMinutes(59);
         date.setSeconds(59);
