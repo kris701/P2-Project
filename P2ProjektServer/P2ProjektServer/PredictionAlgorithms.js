@@ -3,7 +3,7 @@ const fs = require("fs");
 
 async function getPredictionDatetime(room) {
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
-    let sensorValues = await getPredictionSensorValues(sensorIDs);
+    let sensorValues = await getPredictionSensorValues(sensorID);
 }
 
 async function getPredictionSensorsInRoom(room) {
@@ -15,7 +15,7 @@ async function getPredictionSensorsInRoom(room) {
         request.input("roomInput", sql.NVarChar(50), room);
 
         let queryTable = await request.query("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput");
-        queryTable.recordset.forEach(v => push(result));
+        queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
     }
@@ -23,19 +23,19 @@ async function getPredictionSensorsInRoom(room) {
     return result;
 }
 
-async function getPredictionSensorValues(sensorIDs) {
+async function getPredictionSensorValues(sensorID) {
     let result = [];
     let date = new Date(); // This creates a new date containing the current date and time
     date.setDate(date.getDate() - 7); // Offset the dates day of the month with 7 days so we get last weeks values
 
-    result.CO2 = await getPredictionCO2SensorValues(date, sensorIDs);
-    result.RH = await getPredictionRHSensorValues(date, sensorIDs);
-    result.Temperature = await getPredictionTemperatureSensorValues(date, sensorIDs);
+    result.CO2 = await getPredictionCO2SensorValues(date, sensorID);
+    result.RH = await getPredictionRHSensorValues(date, sensorID);
+    result.Temperature = await getPredictionTemperatureSensorValues(date, sensorID);
 
     return result;
 }
 
-async function getPredictionCO2SensorValues(date, sensorIDs) {
+async function getPredictionCO2SensorValues(date, sensorID) {
     let result = [];
 
     try {
@@ -43,9 +43,10 @@ async function getPredictionCO2SensorValues(date, sensorIDs) {
         var request = new sql.Request();
         request.input("timestampMinInput", sql.DateTime, date.setDatetimeToMinMax(date, "Min"));
         request.input("timestampMaxInput", sql.DateTime, date.setDatetimeToMinMax(date, "Max"));
+        request.input("sensorIDInput", sql.Int, sensorID);
 
-        let queryTable = await request.query("SELECT * FROM [SensorValue_CO2] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput");
-        queryTable.recordset.forEach(v => push(result));
+        let queryTable = await request.query("SELECT * FROM [SensorValue_CO2] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
+        queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
     }
@@ -53,7 +54,7 @@ async function getPredictionCO2SensorValues(date, sensorIDs) {
     return result;
 }
 
-async function getPredictionRHSensorValues(date, sensorIDs) {
+async function getPredictionRHSensorValues(date, sensorID) {
     let result = [];
 
     try {
@@ -61,9 +62,10 @@ async function getPredictionRHSensorValues(date, sensorIDs) {
         var request = new sql.Request();
         request.input("timestampMinInput", sql.DateTime, date.setDatetimeToMinMax(date, "Min"));
         request.input("timestampMaxInput", sql.DateTime, date.setDatetimeToMinMax(date, "Max"));
+        request.input("sensorIDInput", sql.Int, sensorID);
 
-        let queryTable = await request.query("SELECT * FROM [SensorValue_RH] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput");
-        queryTable.recordset.forEach(v => push(result));
+        let queryTable = await request.query("SELECT * FROM [SensorValue_RH] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
+        queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
     }
@@ -71,7 +73,7 @@ async function getPredictionRHSensorValues(date, sensorIDs) {
     return result;
 }
 
-async function getPredictionTemperatureSensorValues(date, sensorIDs) {
+async function getPredictionTemperatureSensorValues(date, sensorID) {
     let result = [];
 
     try {
@@ -79,9 +81,10 @@ async function getPredictionTemperatureSensorValues(date, sensorIDs) {
         var request = new sql.Request();
         request.input("timestampMinInput", sql.DateTime, date.setDatetimeToMinMax(date, "Min"));
         request.input("timestampMaxInput", sql.DateTime, date.setDatetimeToMinMax(date, "Max"));
+        request.input("sensorIDInput", sql.Int, sensorID);
 
-        let queryTable = await request.query("SELECT * FROM [SensorValue_Temperature] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput");
-        queryTable.recordset.forEach(v => push(result));
+        let queryTable = await request.query("SELECT * FROM [SensorValue_Temperature] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
+        queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
     }
