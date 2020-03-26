@@ -141,4 +141,6 @@ function checkSensorValueThresholds(sensorValues) {
             valuesPastThreshold.Temperature.push(v);
         }
     })
+
+    return valuesPastThreshold;
 }
