@@ -4,7 +4,17 @@ const fs = require("fs");
 async function getPredictionDatetime(room) {
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
     let sensorValues = [];
-    sensorsInRoom.forEach(v => sensorValues[v] = await getPredictionSensorValues(v));
+    let sensorValuesPastThreshold = [];
+
+    sensorsInRoom.forEach(v => {
+        sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID);
+        sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID]);
+    });
+
+    let pastThresholdTimestamps = [];
+    sensorValuesPastThreshold.forEach(v => pastThresholdTimestamps.push(v.Timestamp));
+
+    return pastThresholdTimestamps;
 }
 
 async function getPredictionSensorsInRoom(room) {
@@ -107,4 +117,28 @@ function setDatetimeToMinMax(date, mode) {
     }
 
     return date;
+}
+
+function checkSensorValueThresholds(sensorValues) {
+    let valuesPastThreshold = [];
+    valuesPastThreshold.CO2 = [];
+    valuesPastThreshold.RH = [];
+    valuesPastThreshold.Temperature = [];
+    let thresholds = JSON.parse(fs.readFile("Thresholds.json"));
+
+    sensorValues.CO2.forEach(v => {
+        if (v.sensorValue >= thresholds.CO2) {
+            valuesPastThreshold.CO2.push(v);
+        }
+    })
+    sensorValues.RH.forEach(v => {
+        if (v.sensorValue >= thresholds.RH) {
+            valuesPastThreshold.RH.push(v);
+        }
+    })
+    sensorValues.Temperature.forEach(v => {
+        if (v.sensorValue >= thresholds.Temperature) {
+            valuesPastThreshold.Temperature.push(v);
+        }
+    })
 }
