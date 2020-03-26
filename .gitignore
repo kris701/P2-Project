@@ -8,3 +8,7 @@ P2ProjektServer/P2ProjektServer/bin
 P2ProjektTestServer/.vs
 P2ProjektTestServer/P2TestServer1/obj
 P2ProjektTestServer/P2TestServer1/bin
+
+P2ProjectVirtualSensors/P2ProjectVirtualSensors/.vs
+P2ProjectVirtualSensors/P2ProjectVirtualSensors/P2ProjectVirtualSensors/obj
+P2ProjectVirtualSensors/P2ProjectVirtualSensors/P2ProjectVirtualSensors/bin
