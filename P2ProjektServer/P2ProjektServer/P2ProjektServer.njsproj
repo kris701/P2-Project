@@ -29,6 +29,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Interface.js" />
+    <Content Include="Config.json">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Thresholds.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="WarningAndSolutionSelectionAlgorithm.js">
       <SubType>Code</SubType>
     </Content>
