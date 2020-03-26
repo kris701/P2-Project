@@ -1,7 +1,7 @@
 const sql = require("mssql");
 const fs = require("fs");
 
-async function getPredictionDatetimeQuery(room) {
+module.exports.getPredictionDatetimeQuery = async function (room) {
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
     let sensorValues = [];
     let sensorValuesPastThreshold = [];

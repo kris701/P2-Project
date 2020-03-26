@@ -1,7 +1,7 @@
 const sql = require("mssql");
 const fs = require("fs");
 
-async function getSensorInfoQuery() {
+module.exports.getSensorInfoQuery = async function () {
     let sensorInfo = [];
 
     try {
