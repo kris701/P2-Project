@@ -3,7 +3,8 @@ const fs = require("fs");
 
 async function getPredictionDatetime(room) {
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
-    let sensorValues = await getPredictionSensorValues(sensorID);
+    let sensorValues = [];
+    sensorsInRoom.forEach(v => sensorValues[v] = await getPredictionSensorValues(v));
 }
 
 async function getPredictionSensorsInRoom(room) {
