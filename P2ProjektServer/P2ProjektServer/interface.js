@@ -18,15 +18,19 @@ let server = http.createServer(async function (req, res) {
         else if (req.url.includes("/getpredictiondata")) {
             var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-            let response = await prediction.getPredictionDatetimeQuery(queryUrl.room);
-            res.write(JSON.stringify(response));
+            if (req.room != null) {
+                let response = await prediction.getPredictionDatetimeQuery(queryUrl.room);
+                res.write(JSON.stringify(response));
+            }
             res.end();
         }
         else if (req.url.includes("/getwarningsandsolutions")) {
             var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-            let response = await getWarningsAndSolutionsQuery;
-            res.write(JSON.stringify(response));
+            if (req.room != null && req.date != null) {
+                let response = await getWarningsAndSolutionsQuery;
+                res.write(JSON.stringify(response));
+            }
             res.end();
         }
 
@@ -35,7 +39,6 @@ let server = http.createServer(async function (req, res) {
         res.write(JSON.stringify("Connection failed."));
         res.end();
     }
-
 });
 
 function queryStringParse(url) {
