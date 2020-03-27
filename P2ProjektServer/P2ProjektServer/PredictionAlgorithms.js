@@ -6,7 +6,7 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
     let sensorValues = [];
     let sensorValuesPastThreshold = [];
 
-    sensorsInRoom.forEach(v => {
+    sensorsInRoom.forEach(v => async function () {
         sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID);
         sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID]);
     });
