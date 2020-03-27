@@ -1,7 +1,11 @@
 try {
-    let prediction = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/PredictionAlgorithms.js");
-    let sensorInfo = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/SimpleSensorInfo.js");
-    let warningAndSolution = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/WarningAndSolutionSelectionAlgorithm");
+    //let prediction = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/PredictionAlgorithms.js");
+    //let sensorInfo = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/SimpleSensorInfo.js");
+    //let warningAndSolution = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/WarningAndSolutionSelectionAlgorithm");
+
+    let prediction = require("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/PredictionAlgorithms.js");
+    let sensorInfo = require("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/SimpleSensorInfo.js");
+    let warningAndSolution = require("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/WarningAndSolutionSelectionAlgorithm");
 
     let http = require("http");
     const querystring = require("querystring");
