@@ -40,8 +40,8 @@ async function getAllRooms() {
     let rooms = [];
     
     try {
-        //let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
-        let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
         let queryTable = await sql.query("SELECT * FROM [SensorRooms]");
         sql.close();
@@ -57,8 +57,8 @@ async function getSensorsInRoom(room) {
     let sensors = [];
 
     try {
-        //let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
-        let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
 
         var request = new sql.Request();
@@ -78,8 +78,8 @@ async function getSensorTypes(sensorID) {
     let sensorTypeNames = [];
 
     try {
-        //let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
-        let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
 
         var request = new sql.Request();
@@ -89,7 +89,7 @@ async function getSensorTypes(sensorID) {
         queryTable.recordset.forEach(v => sensorTypes.push(v.SensorType));
 
         await asyncForEach(sensorTypes, async function (v) {
-            sensorTypeNames.push(await getSensorTypeName(v));
+            sensorTypeNames.push((await getSensorTypeName(v))[0]);
         });
     } catch (err) {
         console.log(err);
@@ -102,15 +102,15 @@ async function getSensorTypeName(sensorType) {
     let sensorTypeName = [];
 
     try {
-        //let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
-        let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
 
         var request = new sql.Request();
         request.input("sensorTypeInput", sql.Int, sensorType);
 
         let queryTable = await request.query("SELECT [TypeName] FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput");
-        queryTable.recordset.forEach(v => sensorTypeName.push(v));
+        queryTable.recordset.forEach(v => sensorTypeName.push(v.TypeName));
     } catch (err) {
         console.log(err);
     }
