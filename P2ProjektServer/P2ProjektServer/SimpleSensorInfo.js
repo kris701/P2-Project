@@ -40,8 +40,10 @@ async function getAllRooms() {
     let rooms = [];
     
     try {
-        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:\Users\RSech\OneDrive\Projects\P2 projekt\P2-Project\P2ProjektServer\P2ProjektServer/Config.json");
+        //let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        
         await sql.connect(JSON.parse(file));
         let queryTable = await sql.query("SELECT * FROM [SensorRooms]");
         sql.close();
