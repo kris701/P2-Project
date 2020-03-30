@@ -40,7 +40,7 @@ async function getAllRooms() {
     let rooms = [];
     
     try {
-        let file = fs.readFileSync("C:\Users\RSech\OneDrive\Projects\P2 projekt\P2-Project\P2ProjektServer\P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         //let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         
@@ -59,7 +59,7 @@ async function getSensorsInRoom(room) {
     let sensors = [];
 
     try {
-        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
 
@@ -80,7 +80,7 @@ async function getSensorTypes(sensorID) {
     let sensorTypeNames = [];
 
     try {
-        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
 
@@ -104,7 +104,7 @@ async function getSensorTypeName(sensorType) {
     let sensorTypeName = [];
 
     try {
-        let file = fs.readFileSync("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
+        let file = fs.readFileSync("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         //let file = fs.readFileSync("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/Config.json");
         await sql.connect(JSON.parse(file));
 
