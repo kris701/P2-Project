@@ -27,12 +27,18 @@
         let roomSelect = document.getElementById("selectedRoom");
         let roomData = fetchedData[roomSelect.selectedIndex];
 
+        //Resets the data display section
+        document.getElementById("data").innerHTML = "";
+
         displayRoomData(roomData);
     }
 
     function displayRoomData(roomData) {
-        let dataDisplay = document.getElementById("dataDisplaySingle");
-        dataDisplay.style.color = red;
+        let dataDisplay = document.getElementById("data");
+
+        for (let i = 0; i < roomData[0].length; i++) {
+            dataDisplay.innerHTML += "Sensor ID: " + roomData[0][i].SensorID + "<br>";
+        }
     }
 
 } catch (err) {console.log(err)}
