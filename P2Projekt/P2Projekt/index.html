@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="app.css" type="text/css" />
     <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-    <script src="app.js"></script>
+    
 </head>
 <body>
     <header>
@@ -26,17 +26,21 @@
         </div>
 
         <div class="roomSelect">
-            <select name="room" id="selectedRoom">
-                <option value="0">room</option>
+            <select name="room" id="selectedRoom" onchange="roomChangeFunction()">
 
             </select>
         </div>
     </div>
 
-    <h3>space</h3>
+    <div class="dataDisplay">
+        <div id="dataDisplaySingle">
+            Hej
+        </div>
+    </div>
 
     <footer>
         <p>Copyright Project C1-3</p>
     </footer>
+    <script src="app.js"></script>
 </body>
 </html>
