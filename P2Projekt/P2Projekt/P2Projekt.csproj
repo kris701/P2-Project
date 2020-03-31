@@ -66,6 +66,9 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="index.html" />
+    <Content Include="login.css" />
+    <Content Include="login.html" />
+    <Content Include="login.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

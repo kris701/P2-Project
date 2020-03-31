@@ -1,0 +1,67 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Montserrat";
+}
+
+.mainContainer {
+    background-image: url("background/4.jpg");
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.innerContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    height: 400px;
+    width: 300px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    display: table;
+    text-align: center;
+}
+
+.loginContainer{
+    height: 100%;
+    display: table;
+    text-align: center;
+}
+
+.innerContainer h3 {
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 0px;
+}
+
+input[type=text], input[type=password]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0px; 
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button{
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    text-transform: uppercase;
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+button:hover{
+    opacity: 0.8;
+}
+
+
