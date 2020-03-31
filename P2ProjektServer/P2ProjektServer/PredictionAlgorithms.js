@@ -1,27 +1,35 @@
 const sql = require("mssql");
 const fs = require("fs");
+let basicCalls = require(__dirname + "/BasicCalls.js");
+
+const DateMode = {
+    MIN: 0,
+    MAX: 1
+};
 
 module.exports.getPredictionDatetimeQuery = async function (room) {
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
     let sensorValues = [];
     let sensorValuesPastThreshold = [];
 
-    sensorsInRoom.forEach(v => async function () {
+    await basicCalls.asyncForEach(sensorsInRoom, async function (v) {
         sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID);
         sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID]);
     });
 
-    let pastThresholdTimestamps = [];
-    sensorValuesPastThreshold.forEach(v => pastThresholdTimestamps.push(v.Timestamp));
+    let pastThresholdTimestamps = formatPastThresholdTimestamps(sensorValuesPastThreshold);
 
-    return pastThresholdTimestamps;
+    let timeUntilPastThreshold = formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps);
+
+    return timeUntilPastThreshold;
 }
 
 async function getPredictionSensorsInRoom(room) {
     let result = [];
 
     try {
-        await sql.connect(JSON.parse(fs.readFile("Config.json")));
+        let file = fs.readFileSync(__dirname + "/Config.json");
+        await sql.connect(JSON.parse(file));
         var request = new sql.Request();
         request.input("roomInput", sql.NVarChar(50), room);
 
@@ -36,87 +44,39 @@ async function getPredictionSensorsInRoom(room) {
 
 async function getPredictionSensorValues(sensorID) {
     let result = [];
-    let date = new Date(); // This creates a new date containing the current date and time
-    date.setDate(date.getDate() - 7); // Offset the dates day of the month with 7 days so we get last weeks values
+    let dateMin = new Date();
+    let dateMax = new Date();
 
-    result.CO2 = await getPredictionCO2SensorValues(date, sensorID);
-    result.RH = await getPredictionRHSensorValues(date, sensorID);
-    result.Temperature = await getPredictionTemperatureSensorValues(date, sensorID);
+    dateMin.setDate(dateMin.getDate() - 7);
+    dateMax.setDate(dateMax.getDate() - 7);
+    dateMax.setHours(dateMax.getHours() + 2);
+
+    result.CO2 = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_CO2");
+    result.RH = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_RH");
+    result.Temperature = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_Temperature");
 
     return result;
 }
 
-async function getPredictionCO2SensorValues(date, sensorID) {
+async function getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, sensorType) {
     let result = [];
 
     try {
-        await sql.connect(JSON.parse(fs.readFile("Config.json")));
+        let file = fs.readFileSync(__dirname + "/Config.json");
+        await sql.connect(JSON.parse(file));
+
         var request = new sql.Request();
-        request.input("timestampMinInput", sql.DateTime, date.setDatetimeToMinMax(date, "Min"));
-        request.input("timestampMaxInput", sql.DateTime, date.setDatetimeToMinMax(date, "Max"));
+        request.input("timestampMinInput", sql.DateTime, dateMin);
+        request.input("timestampMaxInput", sql.DateTime, dateMax);
         request.input("sensorIDInput", sql.Int, sensorID);
 
-        let queryTable = await request.query("SELECT * FROM [SensorValue_CO2] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
+        let queryTable = await request.query("SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput");
         queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
     }
 
     return result;
-}
-
-async function getPredictionRHSensorValues(date, sensorID) {
-    let result = [];
-
-    try {
-        await sql.connect(JSON.parse(fs.readFile("Config.json")));
-        var request = new sql.Request();
-        request.input("timestampMinInput", sql.DateTime, date.setDatetimeToMinMax(date, "Min"));
-        request.input("timestampMaxInput", sql.DateTime, date.setDatetimeToMinMax(date, "Max"));
-        request.input("sensorIDInput", sql.Int, sensorID);
-
-        let queryTable = await request.query("SELECT * FROM [SensorValue_RH] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
-        queryTable.recordset.forEach(v => result.push(v));
-    } catch (err) {
-        console.log(err);
-    }
-
-    return result;
-}
-
-async function getPredictionTemperatureSensorValues(date, sensorID) {
-    let result = [];
-
-    try {
-        await sql.connect(JSON.parse(fs.readFile("Config.json")));
-        var request = new sql.Request();
-        request.input("timestampMinInput", sql.DateTime, setDatetimeToMinMax(date, "min"));
-        request.input("timestampMaxInput", sql.DateTime, setDatetimeToMinMax(date, "max"));
-        request.input("sensorIDInput", sql.Int, sensorID);
-
-        let queryTable = await request.query("SELECT * FROM [SensorValue_Temperature] WHERE [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorID]=@sensorIDInput");
-        queryTable.recordset.forEach(v => result.push(v));
-    } catch (err) {
-        console.log(err);
-    }
-
-    return result;
-}
-
-function setDatetimeToMinMax(date, mode) {
-    if (mode == "min") {
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-    } else if (mode == "max") {
-        date.setHours(23);
-        date.setMinutes(59);
-        date.setSeconds(59);
-        date.setMilliseconds(999);
-    }
-
-    return date;
 }
 
 function checkSensorValueThresholds(sensorValues) {
@@ -124,23 +84,91 @@ function checkSensorValueThresholds(sensorValues) {
     valuesPastThreshold.CO2 = [];
     valuesPastThreshold.RH = [];
     valuesPastThreshold.Temperature = [];
-    let thresholds = JSON.parse(fs.readFile("Thresholds.json"));
+    let file = fs.readFileSync(__dirname + "/Thresholds.json");
+    let thresholds = JSON.parse(file);
 
     sensorValues.CO2.forEach(v => {
-        if (v.sensorValue >= thresholds.CO2) {
+        if (v.SensorValue >= thresholds.CO2) {
             valuesPastThreshold.CO2.push(v);
         }
     })
     sensorValues.RH.forEach(v => {
-        if (v.sensorValue >= thresholds.RH) {
+        if (v.SensorValue >= thresholds.RH) {
             valuesPastThreshold.RH.push(v);
         }
     })
     sensorValues.Temperature.forEach(v => {
-        if (v.sensorValue >= thresholds.Temperature) {
+        if (v.SensorValue >= thresholds.Temperature) {
             valuesPastThreshold.Temperature.push(v);
         }
     })
 
     return valuesPastThreshold;
+}
+
+function formatPastThresholdTimestamps(sensorValuesPastThreshold) {
+    let result = [];
+    let CO2 = {};
+    let RH = {};
+    let Temperature = {};
+    let CO2Values = [];
+    let RHValues = [];
+    let TemperatureValues = [];
+
+    CO2.Type = "CO2";
+    RH.Type = "RH";
+    Temperature.Type = "Temperature";
+
+    sensorValuesPastThreshold.forEach(function (v) {
+        v.CO2.forEach(v2 => CO2Values.push(v2.Timestamp));
+        v.RH.forEach(v2 => RHValues.push(v2.Timestamp));
+        v.Temperature.forEach(v2 => TemperatureValues.push(v2.Timestamp));
+    });
+
+    CO2.Values = CO2Values;
+    RH.Values = RHValues;
+    Temperature.Values = TemperatureValues;
+
+    result.push(CO2);
+    result.push(RH);
+    result.push(Temperature);
+
+    return result;
+}
+
+function formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps) {
+    let result = {};
+    result.CO2 = [];
+    result.RH = [];
+    result.Temperature = [];
+
+    pastThresholdTimestamps.forEach(function (v) {
+        v.Values.forEach(function (v2) {
+            switch (v.Type) {
+                case "CO2":
+                    result.CO2.push(getTimeLeftInFiveMinuteIntervals(v2));
+                    break;
+                case "RH":
+                    result.RH.push(getTimeLeftInFiveMinuteIntervals(v2));
+                    break;
+                case "Temperature":
+                    result.Temperature.push(getTimeLeftInFiveMinuteIntervals(v2));
+                    break;
+            }
+        });
+    });
+
+    return result;
+}
+
+function getTimeLeftInFiveMinuteIntervals(timestamp) {
+    let date = new Date(timestamp);
+    date.setDate(date.getDate() + 7);
+
+    let millisecondsLeft = (date.getTime() - Date.now());
+    let secondsLeft = Math.floor(millisecondsLeft / 1000);
+    let minutesLeft = Math.floor(secondsLeft / 60);
+    let fiveMinutesLeft = Math.floor(minutesLeft / 5);
+
+    return fiveMinutesLeft;
 }

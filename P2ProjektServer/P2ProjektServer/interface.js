@@ -1,15 +1,7 @@
 try {
-    //let prediction = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/PredictionAlgorithms.js");
-    //let sensorInfo = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/SimpleSensorInfo.js");
-    //let warningAndSolution = require("C:/Users/m-s-t/Documents/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/WarningAndSolutionSelectionAlgorithm");
-
-    let prediction = require("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/PredictionAlgorithms.js");
-    let sensorInfo = require("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/SimpleSensorInfo.js");
-    let warningAndSolution = require("C:/Users/RSech/OneDrive - Aalborg Universitet/2. Semester/Project/P2-Project/P2ProjektServer/P2ProjektServer/WarningAndSolutionSelectionAlgorithm");
-
-    //let prediction = require("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/PredictionAlgorithms.js");
-    //let sensorInfo = require("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/SimpleSensorInfo.js");
-    //let warningAndSolution = require("C:/Users/kris7/OneDrive/Programming/_ GitHub _/School Projects/P2Project/GitHub/P2-Project/P2ProjektServer/P2ProjektServer/WarningAndSolutionSelectionAlgorithm");
+    let prediction = require(__dirname + "/PredictionAlgorithms.js");
+    let sensorInfo = require(__dirname + "/SimpleSensorInfo.js");
+    let warningAndSolution = require(__dirname + "/WarningAndSolutionSelectionAlgorithm");
 
     let http = require("http");
     const querystring = require("querystring");
@@ -27,7 +19,7 @@ try {
             else if (req.url.includes("/getpredictiondata")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-                if (req.room != null) {
+                if (queryUrl.room != null) {
                     let response = await prediction.getPredictionDatetimeQuery(queryUrl.room);
                     res.write(JSON.stringify(response));
                 }
@@ -36,14 +28,15 @@ try {
             else if (req.url.includes("/getwarningsandsolutions")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-                if (req.room != null && req.date != null) {
+                if (queryUrl.room != null && queryUrl.date != null) {
                     let response = await getWarningsAndSolutionsQuery;
                     res.write(JSON.stringify(response));
                 }
                 res.end();
             }
 
-        } catch {
+        } catch (err) {
+            console.log(err);
             console.log("Connection failed.");
             res.write(JSON.stringify("Connection failed."));
             res.end();
