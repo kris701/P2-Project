@@ -51,7 +51,13 @@ try {
     console.log("Node.js server is running and listening at port 5000.");
 
 } catch (err) {
-    console.log(err)
+    // Simplified error for missing modules
+    if (err.code == "MODULE_NOT_FOUND")
+        console.log("Use 'NPM INSTALL " + err.message.substring(err.message.indexOf("'"), err.message.lastIndexOf("'")) + "' to get the module");
+    else
+        console.log(err)
+
+    console.log("\n Press any key to exit")
     process.stdin.setRawMode(true);
     process.stdin.resume();
     process.stdin.on('data', process.exit.bind(process, 0))
