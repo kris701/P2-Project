@@ -36,9 +36,10 @@
     function displayRoomData(roomData) {
         let dataDisplay = document.getElementById("data");
 
-        for (let i = 0; i < roomData[0].length; i++) {
-            dataDisplay.innerHTML += "<br>Sensor ID: " + roomData[0][i].SensorID + "<br>";
+        for (let i = 0; i < roomData.Sensors.length; i++) {
+            dataDisplay.innerHTML += "<br>Sensor ID: " + roomData.Sensors[i].SensorID + "<br>";
             dataDisplay.innerHTML += "<br>Sensor measurements: <br>";
+            console.log("1   " + roomData.Sensors);
 
             DRD_SearchMeasurements(dataDisplay, roomData, i);
 
@@ -49,15 +50,8 @@
     //Searches the array roomData for which kind of sensors the unit has. For example
     //one unit may have both a CO2 and oxygen sensor.
     function DRD_SearchMeasurements(dataDisplay, roomData, i) {
-        for (let y = 0; y < roomData[0][i].length; y++) {
-            DRD_DisplayFoundMeasurements(dataDisplay, roomData, i, y)
-        }
-    }
-
-    //Displays the measurements which have been found in DRD_SearchMeasurements
-    function DRD_DisplayFoundMeasurements(dataDisplay, roomData, i, y) {
-        for (let j = 0; j < roomData[0][i][y].length; j++) {
-            dataDisplay.innerHTML += "&emsp;" + roomData[0][i][y][j] + "<br>";
+        for (let y = 0; y < roomData.Sensors[i].Types.length; y++) {
+            dataDisplay.innerHTML += "&emsp;" + roomData.Sensors[i].Types[y] + "<br>";
         }
     }
 
