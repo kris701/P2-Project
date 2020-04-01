@@ -28,12 +28,7 @@ async function getPredictionSensorsInRoom(room) {
     let result = [];
 
     try {
-        let file = fs.readFileSync(__dirname + "/Config.json");
-        await sql.connect(JSON.parse(file));
-        var request = new sql.Request();
-        request.input("roomInput", sql.NVarChar(50), room);
-
-        let queryTable = await request.query("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput");
+        let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
         queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
@@ -62,15 +57,12 @@ async function getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, sensor
     let result = [];
 
     try {
-        let file = fs.readFileSync(__dirname + "/Config.json");
-        await sql.connect(JSON.parse(file));
-
-        var request = new sql.Request();
-        request.input("timestampMinInput", sql.DateTime, dateMin);
-        request.input("timestampMaxInput", sql.DateTime, dateMax);
-        request.input("sensorIDInput", sql.Int, sensorID);
-
-        let queryTable = await request.query("SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput");
+        let queryTable = await basicCalls.MakeQuery(
+            "SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput", [
+            new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
+            new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
+            new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax)
+        ]);
         queryTable.recordset.forEach(v => result.push(v));
     } catch (err) {
         console.log(err);
