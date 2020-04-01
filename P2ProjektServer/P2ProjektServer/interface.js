@@ -10,41 +10,50 @@ try {
         res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
 
         try {
-            if (req.url == "/getsensorinfo") {
-                console.log("Client connected to /getsensorinfo.");
+            if (CheckForResource(req, "/getsensorinfo")) {
                 let response = await sensorInfo.getSensorInfoQuery();
                 res.write(JSON.stringify(response));
-                res.end();
             }
-            else if (req.url.includes("/getpredictiondata")) {
+            else if (CheckForResource(req, "/getpredictiondata")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
                 if (queryUrl.room != null) {
                     let response = await prediction.getPredictionDatetimeQuery(queryUrl.room);
                     res.write(JSON.stringify(response));
                 }
-                res.end();
             }
-            else if (req.url.includes("/getwarningsandsolutions")) {
+            else if (CheckForResource(req, "/getwarningsandsolutions")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
                 if (queryUrl.room != null && queryUrl.date != null) {
                     let response = await getWarningsAndSolutionsQuery;
                     res.write(JSON.stringify(response));
                 }
-                res.end();
+            }
+            else {
+                console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However the resource was not found.");
+                res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+                res.write(JSON.stringify("Resource not found!"));
             }
 
         } catch (err) {
             console.log(err);
-            console.log("Connection failed.");
-            res.write(JSON.stringify("Connection failed."));
-            res.end();
+            res.write(JSON.stringify("An error occured on the server!"));
         }
+
+        res.end();
     });
 
     function queryStringParse(url) {
         return querystring.parse(url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+    }
+
+    function CheckForResource(Request, TargetResource) {
+        if (Request.url.includes(TargetResource)) {
+            console.log("Client (" + Request.headers.host + ") requested resource: " + TargetResource);
+            return true;
+        }
+        else return false;
     }
 
     server.listen(5000);
