@@ -183,12 +183,7 @@ try {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
             }
-
-
-
         }
-
-
     }
 
     function queryStringParse(url) {
