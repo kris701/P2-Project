@@ -1,4 +1,13 @@
 try {
+    class Credentials {
+        constructor(Username, Password) {
+            this.Username = Username;
+            this.Password = Password;
+        }
+    }
+
+    let AdminCredentials = [new Credentials("Admin", "Password"), new Credentials("Admin2", "Password2")]
+
     let prediction = require(__dirname + "/PredictionAlgorithms.js");
     let sensorInfo = require(__dirname + "/SimpleSensorInfo.js");
     let warningAndSolution = require(__dirname + "/WarningAndSolutionSelectionAlgorithm");
@@ -29,27 +38,13 @@ try {
                     let response = await getWarningsAndSolutionsQuery;
                     res.write(JSON.stringify(response));
                 }
-            }
-            else {
-                console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However the resource was not found.");
-                res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-                res.write(JSON.stringify("Resource not found!"));
-            }
-
-        } catch (err) {
-            console.log(err);
-            res.write(JSON.stringify("An error occured on the server!"));
-        }
-
-        res.end();
-    });
-
-    let server = http.createServer(async function (req, res) {
-        res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-
-        try {
-            if (CheckForResource(req, "/mainadminpage")) {
+            } if (CheckForResource(req, "/mainadminpage")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+                if (CheckCredentials(new Credentials(queryUrl.Username, queryUrl.Password))) {
+                    // Call the actual function
+                }
+                else
+                    CredentialsWrong();
             }
             else if (checkForResource(req, "/sensoreditpage")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
@@ -183,13 +178,19 @@ try {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
             }
+            else {
+                console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However the resource was not found.");
+                res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+                res.write(JSON.stringify("Resource not found!"));
+            }
 
-
-
+        } catch (err) {
+            console.log(err);
+            res.write(JSON.stringify("An error occured on the server!"));
         }
 
-
-    }
+        res.end();
+    });
 
     function queryStringParse(url) {
         return querystring.parse(url.split("?")[1], "&", "="); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
@@ -201,6 +202,18 @@ try {
             return true;
         }
         else return false;
+    }
+
+    function CheckCredentials(CredentialsInfo) {
+        // run through all admin credentials, and check for username and password
+        // return true if credentials are ok, false if not
+        // See the class in the top of the file
+    }
+
+    function CredentialsWrong() {
+        console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However with wrong credentials");
+        res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+        res.write(JSON.stringify("Wrong username or password"));
     }
 
     server.listen(5000);
