@@ -2,43 +2,92 @@ const sql = require("mssql");
 const fs = require("fs");
 let basicCalls = require(__dirname + "/BasicCalls.js");
 
-const DateMode = {
-    MIN: 0,
-    MAX: 1
-};
+const Interval = 15;
+
+class SensorType {
+    constructor(SensorType, Name, ThresholdPasses) {
+        this.SensorType = SensorType;
+        this.Name = Name;
+        this.ThresholdPasses = ThresholdPasses;
+    }
+}
+class ThresholdPass {
+    constructor(TimeUntil, TimesExcedded) {
+        this.TimeUntil = TimeUntil;
+        this.TimesExcedded = TimesExcedded;
+    }
+}
 
 module.exports.getPredictionDatetimeQuery = async function (room) {
-    let sensorsInRoom = await getPredictionSensorsInRoom(room);
-    let sensorValues = [];
-    let sensorValuesPastThreshold = [];
-    let sensorTypes = await getSensorTypeNames();
+    let ReturnArray = [];
 
+    let sensorsInRoom = await getPredictionSensorsInRoom(room);
     await basicCalls.asyncForEach(sensorsInRoom, async function (v) {
-        sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID, sensorTypes);
-        sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID], sensorTypes);
+        let SensorSensorTypes = await getSensorTypesForSensor(v.SensorID);
+
+        await basicCalls.asyncForEach(SensorSensorTypes, async function (v2) {
+
+            let Exists = false;
+            await basicCalls.asyncForEach(ReturnArray, async function (v3) {
+                if (v3.SensorType == v2.SensorType) {
+                    Exists = true;
+
+                    await CheckForThresholdPass(v.SensorID, v3.Name, v2.ThresholdValue, v3.ThresholdPasses);
+                }
+            });
+            if (!Exists) {
+                let NewName = await getSensorTypeName(v2.SensorType);
+                let NewReturnValue = new SensorType(v2.SensorType, NewName, []);
+                await CheckForThresholdPass(v.SensorID, NewName, v2.ThresholdValue, NewReturnValue.ThresholdPasses)
+                ReturnArray.push(NewReturnValue);
+            }
+        });
     });
 
-    let pastThresholdTimestamps = formatPastThresholdTimestamps(sensorValuesPastThreshold, sensorTypes);
+    ReturnArray.Interval = Interval;
 
-    let timeUntilPastThreshold = formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps, sensorTypes);
+    return ReturnArray;
+}
 
-    return timeUntilPastThreshold;
+async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray) {
+    let SensorValues = await getPredictionSensorValues(SensorID, SensorType);
+
+    await basicCalls.asyncForEach(SensorValues, async function (v) {
+        if (v.SensorValue > ThresholdValue) {
+
+            let NewInterval = getTimeLeftInIntervals(v.Timestamp);
+            let Exist = false;
+
+            await basicCalls.asyncForEach(ReturnArray, async function (v2) {
+                if (NewInterval == v2.TimeUntil) {
+
+                    Exist = true;
+
+                    v2.TimesExcedded += 1;
+                }
+            });
+
+            if (!Exist) {
+                ReturnArray.push(new ThresholdPass(
+                    NewInterval,
+                    1
+                ));
+            }
+
+        }
+    });
 }
 
 async function getPredictionSensorsInRoom(room) {
     let result = [];
 
-    try {
-        let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
-        queryTable.recordset.forEach(v => result.push(v));
-    } catch (err) {
-        console.log(err);
-    }
+    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
+    queryTable.recordset.forEach(v => result.push(v));
 
     return result;
 }
 
-async function getPredictionSensorValues(sensorID, sensorTypes) {
+async function getPredictionSensorValues(sensorID, sensorType) {
     let result = [];
     let dateMin = new Date();
     let dateMax = new Date();
@@ -47,9 +96,7 @@ async function getPredictionSensorValues(sensorID, sensorTypes) {
     dateMax.setDate(dateMax.getDate() - 7);
     dateMax.setHours(dateMax.getHours() + 10);
 
-    await basicCalls.asyncForEach(sensorTypes, async function (v) {
-        result[v.TypeName] = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_" + v.TypeName);
-    });
+    result = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_" + sensorType);
 
     return result;
 }
@@ -57,89 +104,49 @@ async function getPredictionSensorValues(sensorID, sensorTypes) {
 async function getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, sensorType) {
     let result = [];
 
-    try {
-        let queryTable = await basicCalls.MakeQuery(
-            "SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput", [
-            new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
-            new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
-            new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax)
-        ]);
-        queryTable.recordset.forEach(v => result.push(v));
-    } catch (err) {
-        console.log(err);
-    }
+    let queryTable = await basicCalls.MakeQuery(
+        "SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput", [
+        new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
+        new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
+        new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax)
+    ]);
+    queryTable.recordset.forEach(v => result.push(v));
 
     return result;
 }
 
-function checkSensorValueThresholds(sensorValues, sensorTypes) {
-    let valuesPastThreshold = [];
-    let file = fs.readFileSync(__dirname + "/Thresholds.json");
-    let thresholds = JSON.parse(file);
-
-    sensorTypes.forEach(async function (v) {
-        valuesPastThreshold[v.TypeName] = [];
-        sensorValues[v.TypeName].forEach(v2 => {
-            if (v2.SensorValue >= thresholds[v.TypeName]) {
-                valuesPastThreshold[v.TypeName].push(v2);
-            }
-        });
-    });
-
-    return valuesPastThreshold;
-}
-
-function formatPastThresholdTimestamps(sensorValuesPastThreshold, sensorTypes) {
-    let result = [];
-
-    sensorTypes.forEach(function (v) {
-        result[v.TypeName] = [];
-        sensorValuesPastThreshold.forEach(function (v2) {
-            v2[v.TypeName].forEach(function (v3) {
-                result[v.TypeName].push(v3.Timestamp);
-            });
-        });
-    });
-
-    return result;
-}
-
-function formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps, sensorTypes) {
-    let result = {};
-
-    sensorTypes.forEach(function (v) {
-        result[v.TypeName] = []
-        pastThresholdTimestamps[v.TypeName].forEach(function (v2) {
-            result[v.TypeName].push(getTimeLeftInFiveMinuteIntervals(v2));
-        });
-    });
-
-    return result;
-}
-
-function getTimeLeftInFiveMinuteIntervals(timestamp) {
+function getTimeLeftInIntervals(timestamp) {
     let date = new Date(timestamp);
     date.setDate(date.getDate() + 7);
 
     let millisecondsLeft = (date.getTime() - Date.now());
     let secondsLeft = Math.floor(millisecondsLeft / 1000);
     let minutesLeft = Math.floor(secondsLeft / 60);
-    let fiveMinutesLeft = Math.floor(minutesLeft / 5);
+    let IntervalMinutesLeft = Math.floor(minutesLeft / Interval);
 
-    return fiveMinutesLeft;
+    return IntervalMinutesLeft;
 }
 
-async function getSensorTypeNames() {
+async function getSensorTypeName(SensorTypeID) {
+    let result;
+
+    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new basicCalls.QueryValue("typeID", sql.Int, SensorTypeID)]);
+
+    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+        result = v.TypeName;
+    });
+
+    return result;
+}
+
+async function getSensorTypesForSensor(sensorID) {
     let result = [];
 
-    try {
-        let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]", []);
-        await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
-            result.push(v);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new basicCalls.QueryValue("sensorID", sql.Int, sensorID)]);
+
+    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+        result.push(v);
+    });
 
     return result;
 }
