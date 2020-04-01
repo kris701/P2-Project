@@ -11,15 +11,16 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
     let sensorValues = [];
     let sensorValuesPastThreshold = [];
+    let sensorTypes = await getSensorTypeNames();
 
     await basicCalls.asyncForEach(sensorsInRoom, async function (v) {
-        sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID);
-        sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID]);
+        sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID, sensorTypes);
+        sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID], sensorTypes);
     });
 
-    let pastThresholdTimestamps = formatPastThresholdTimestamps(sensorValuesPastThreshold);
+    let pastThresholdTimestamps = formatPastThresholdTimestamps(sensorValuesPastThreshold, sensorTypes);
 
-    let timeUntilPastThreshold = formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps);
+    let timeUntilPastThreshold = formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps, sensorTypes);
 
     return timeUntilPastThreshold;
 }
@@ -37,18 +38,18 @@ async function getPredictionSensorsInRoom(room) {
     return result;
 }
 
-async function getPredictionSensorValues(sensorID) {
+async function getPredictionSensorValues(sensorID, sensorTypes) {
     let result = [];
     let dateMin = new Date();
     let dateMax = new Date();
 
     dateMin.setDate(dateMin.getDate() - 7);
     dateMax.setDate(dateMax.getDate() - 7);
-    dateMax.setHours(dateMax.getHours() + 2);
+    dateMax.setHours(dateMax.getHours() + 10);
 
-    result.CO2 = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_CO2");
-    result.RH = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_RH");
-    result.Temperature = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_Temperature");
+    await basicCalls.asyncForEach(sensorTypes, async function (v) {
+        result[v.TypeName] = await getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, "SensorValue_" + v.TypeName);
+    });
 
     return result;
 }
@@ -71,82 +72,45 @@ async function getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, sensor
     return result;
 }
 
-function checkSensorValueThresholds(sensorValues) {
+function checkSensorValueThresholds(sensorValues, sensorTypes) {
     let valuesPastThreshold = [];
-    valuesPastThreshold.CO2 = [];
-    valuesPastThreshold.RH = [];
-    valuesPastThreshold.Temperature = [];
     let file = fs.readFileSync(__dirname + "/Thresholds.json");
     let thresholds = JSON.parse(file);
 
-    sensorValues.CO2.forEach(v => {
-        if (v.SensorValue >= thresholds.CO2) {
-            valuesPastThreshold.CO2.push(v);
-        }
-    })
-    sensorValues.RH.forEach(v => {
-        if (v.SensorValue >= thresholds.RH) {
-            valuesPastThreshold.RH.push(v);
-        }
-    })
-    sensorValues.Temperature.forEach(v => {
-        if (v.SensorValue >= thresholds.Temperature) {
-            valuesPastThreshold.Temperature.push(v);
-        }
-    })
+    sensorTypes.forEach(async function (v) {
+        valuesPastThreshold[v.TypeName] = [];
+        sensorValues[v.TypeName].forEach(v2 => {
+            if (v2.SensorValue >= thresholds[v.TypeName]) {
+                valuesPastThreshold[v.TypeName].push(v2);
+            }
+        });
+    });
 
     return valuesPastThreshold;
 }
 
-function formatPastThresholdTimestamps(sensorValuesPastThreshold) {
+function formatPastThresholdTimestamps(sensorValuesPastThreshold, sensorTypes) {
     let result = [];
-    let CO2 = {};
-    let RH = {};
-    let Temperature = {};
-    let CO2Values = [];
-    let RHValues = [];
-    let TemperatureValues = [];
 
-    CO2.Type = "CO2";
-    RH.Type = "RH";
-    Temperature.Type = "Temperature";
-
-    sensorValuesPastThreshold.forEach(function (v) {
-        v.CO2.forEach(v2 => CO2Values.push(v2.Timestamp));
-        v.RH.forEach(v2 => RHValues.push(v2.Timestamp));
-        v.Temperature.forEach(v2 => TemperatureValues.push(v2.Timestamp));
+    sensorTypes.forEach(function (v) {
+        result[v.TypeName] = [];
+        sensorValuesPastThreshold.forEach(function (v2) {
+            v2[v.TypeName].forEach(function (v3) {
+                result[v.TypeName].push(v3.Timestamp);
+            });
+        });
     });
-
-    CO2.Values = CO2Values;
-    RH.Values = RHValues;
-    Temperature.Values = TemperatureValues;
-
-    result.push(CO2);
-    result.push(RH);
-    result.push(Temperature);
 
     return result;
 }
 
-function formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps) {
+function formatTimestampsToTimeLeftInFiveMinuteIntervals(pastThresholdTimestamps, sensorTypes) {
     let result = {};
-    result.CO2 = [];
-    result.RH = [];
-    result.Temperature = [];
 
-    pastThresholdTimestamps.forEach(function (v) {
-        v.Values.forEach(function (v2) {
-            switch (v.Type) {
-                case "CO2":
-                    result.CO2.push(getTimeLeftInFiveMinuteIntervals(v2));
-                    break;
-                case "RH":
-                    result.RH.push(getTimeLeftInFiveMinuteIntervals(v2));
-                    break;
-                case "Temperature":
-                    result.Temperature.push(getTimeLeftInFiveMinuteIntervals(v2));
-                    break;
-            }
+    sensorTypes.forEach(function (v) {
+        result[v.TypeName] = []
+        pastThresholdTimestamps[v.TypeName].forEach(function (v2) {
+            result[v.TypeName].push(getTimeLeftInFiveMinuteIntervals(v2));
         });
     });
 
@@ -163,4 +127,19 @@ function getTimeLeftInFiveMinuteIntervals(timestamp) {
     let fiveMinutesLeft = Math.floor(minutesLeft / 5);
 
     return fiveMinutesLeft;
+}
+
+async function getSensorTypeNames() {
+    let result = [];
+
+    try {
+        let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]", []);
+        await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+            result.push(v);
+        });
+    } catch (err) {
+        console.log(err);
+    }
+
+    return result;
 }

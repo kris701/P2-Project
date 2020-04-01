@@ -68,7 +68,6 @@ async function getSensorTypes(sensorID) {
 
     try {
         let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
-
         queryTable.recordset.forEach(v => sensorTypes.push(v.SensorType));
 
         await basicCalls.asyncForEach(sensorTypes, async function (v) {
