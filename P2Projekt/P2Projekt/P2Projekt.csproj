@@ -64,15 +64,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.css" />
-    <Content Include="index.html" />
-    <Content Include="login.css" />
-    <Content Include="login.html" />
-    <Content Include="login.js" />
+    <Content Include="pages\adminpage\admin.css" />
+    <Content Include="pages\adminpage\admin.html" />
+    <Content Include="pages\adminpage\admin.js" />
+    <Content Include="pages\clientpage\app.css" />
+    <Content Include="pages\clientpage\index.html" />
+    <Content Include="pages\adminloginpage\login.css" />
+    <Content Include="pages\adminloginpage\login.html" />
+    <Content Include="pages\adminloginpage\login.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.js" />
+    <Content Include="pages\clientpage\app.js" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

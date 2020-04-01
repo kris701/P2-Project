@@ -4,6 +4,12 @@ let basicCalls = require(__dirname + "/BasicCalls.js");
 
 const Interval = 15;
 
+class ReturnClass {
+    constructor(Interval, Data) {
+        this.Interval = Interval;
+        this.Data = Data;
+    }
+}
 class SensorType {
     constructor(SensorType, Name, ThresholdPasses) {
         this.SensorType = SensorType;
@@ -19,7 +25,7 @@ class ThresholdPass {
 }
 
 module.exports.getPredictionDatetimeQuery = async function (room) {
-    let ReturnArray = [];
+    let ReturnItem = new ReturnClass(Interval, []);
 
     let sensorsInRoom = await getPredictionSensorsInRoom(room);
     await basicCalls.asyncForEach(sensorsInRoom, async function (v) {
@@ -28,7 +34,7 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
         await basicCalls.asyncForEach(SensorSensorTypes, async function (v2) {
 
             let Exists = false;
-            await basicCalls.asyncForEach(ReturnArray, async function (v3) {
+            await basicCalls.asyncForEach(ReturnItem.Data, async function (v3) {
                 if (v3.SensorType == v2.SensorType) {
                     Exists = true;
 
@@ -39,14 +45,12 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
                 let NewName = await getSensorTypeName(v2.SensorType);
                 let NewReturnValue = new SensorType(v2.SensorType, NewName, []);
                 await CheckForThresholdPass(v.SensorID, NewName, v2.ThresholdValue, NewReturnValue.ThresholdPasses)
-                ReturnArray.push(NewReturnValue);
+                ReturnItem.Data.push(NewReturnValue);
             }
         });
     });
 
-    ReturnArray.Interval = Interval;
-
-    return ReturnArray;
+    return ReturnItem;
 }
 
 async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray) {
@@ -115,6 +119,7 @@ async function getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, sensor
     return result;
 }
 
+
 function getTimeLeftInIntervals(timestamp) {
     let date = new Date(timestamp);
     date.setDate(date.getDate() + 7);
@@ -147,6 +152,19 @@ async function getSensorTypesForSensor(sensorID) {
     await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
         result.push(v);
     });
+
+    return result;
+}
+
+async function getSensorThreshold(sensorID, sensorType) {
+    let result;
+    
+    let queryTable = await basicCalls.MakeQuery(
+        "SELECT [ThresholdValue] FROM [SensorThresholds] WHERE [SensorID]=@sensorIDInput AND [SensorType]=@sensorTypeInput",
+        [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
+        new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]
+    );
+    result = queryTable.recordset[0].ThresholdValue
 
     return result;
 }
