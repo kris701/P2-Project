@@ -38,7 +38,7 @@ try {
                     let response = await getWarningsAndSolutionsQuery;
                     res.write(JSON.stringify(response));
                 }
-            } if (CheckForResource(req, "/mainadminpage")) {
+            } else if (CheckForResource(req, "/mainadminpage")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
                 if (CheckCredentials(new Credentials(queryUrl.Username, queryUrl.Password))) {
                     // Call the actual function

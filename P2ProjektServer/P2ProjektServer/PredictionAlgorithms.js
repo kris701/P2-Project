@@ -15,7 +15,7 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
 
     await basicCalls.asyncForEach(sensorsInRoom, async function (v) {
         sensorValues[v.SensorID] = await getPredictionSensorValues(v.SensorID, sensorTypes);
-        sensorValuesPastThreshold[v.SensorID] = checkSensorValueThresholds(sensorValues[v.SensorID], sensorTypes);
+        sensorValuesPastThreshold[v.SensorID] = await checkSensorValueThresholds(sensorValues[v.SensorID], sensorTypes);
     });
 
     let pastThresholdTimestamps = formatPastThresholdTimestamps(sensorValuesPastThreshold, sensorTypes);
@@ -28,12 +28,8 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
 async function getPredictionSensorsInRoom(room) {
     let result = [];
 
-    try {
-        let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
-        queryTable.recordset.forEach(v => result.push(v));
-    } catch (err) {
-        console.log(err);
-    }
+    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
+    queryTable.recordset.forEach(v => result.push(v));
 
     return result;
 }
@@ -57,30 +53,25 @@ async function getPredictionSensorValues(sensorID, sensorTypes) {
 async function getPredictionSensorValuesQuery(sensorID, dateMin, dateMax, sensorType) {
     let result = [];
 
-    try {
-        let queryTable = await basicCalls.MakeQuery(
-            "SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput", [
-            new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
-            new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
-            new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax)
-        ]);
-        queryTable.recordset.forEach(v => result.push(v));
-    } catch (err) {
-        console.log(err);
-    }
+    let queryTable = await basicCalls.MakeQuery(
+        "SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput",
+        [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
+        new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
+        new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax)]
+    );
+    queryTable.recordset.forEach(v => result.push(v));
 
     return result;
 }
 
-function checkSensorValueThresholds(sensorValues, sensorTypes) {
+async function checkSensorValueThresholds(sensorValues, sensorTypes) {
     let valuesPastThreshold = [];
-    let file = fs.readFileSync(__dirname + "/Thresholds.json");
-    let thresholds = JSON.parse(file);
 
-    sensorTypes.forEach(async function (v) {
+    await basicCalls.asyncForEach(sensorTypes, async function (v) {
         valuesPastThreshold[v.TypeName] = [];
-        sensorValues[v.TypeName].forEach(v2 => {
-            if (v2.SensorValue >= thresholds[v.TypeName]) {
+        await basicCalls.asyncForEach(sensorValues[v.TypeName], async function (v2) {
+            let threshold = await getSensorThreshold(v2.SensorID, v.SensorType);
+            if (v2.SensorValue >= threshold) {
                 valuesPastThreshold[v.TypeName].push(v2);
             }
         });
@@ -132,14 +123,23 @@ function getTimeLeftInFiveMinuteIntervals(timestamp) {
 async function getSensorTypeNames() {
     let result = [];
 
-    try {
-        let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]", []);
-        await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
-            result.push(v);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]", []);
+    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+        result.push(v);
+    });
+
+    return result;
+}
+
+async function getSensorThreshold(sensorID, sensorType) {
+    let result;
+    
+    let queryTable = await basicCalls.MakeQuery(
+        "SELECT [ThresholdValue] FROM [SensorThresholds] WHERE [SensorID]=@sensorIDInput AND [SensorType]=@sensorTypeInput",
+        [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
+        new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]
+    );
+    result = queryTable.recordset[0].ThresholdValue
 
     return result;
 }
