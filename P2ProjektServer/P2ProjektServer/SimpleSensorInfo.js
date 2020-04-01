@@ -1,5 +1,4 @@
 const sql = require("mssql");
-const fs = require("fs");
 let basicCalls = require(__dirname + "/BasicCalls.js")
 
 class Sensor {
