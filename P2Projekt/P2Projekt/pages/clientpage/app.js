@@ -3,9 +3,11 @@
     // Use this to get resource data:
     //      let fetchedData = await jsonFetch("http://localhost:5000/resource").catch(e => console.log(e));
 
+    let RoomData;
+
     async function GetInformation() {
-        let fetchedData = await jsonFetch("http://localhost:5000/getsensorinfo").catch(e => console.log(e));
-        await importDataToSelect(fetchedData);
+        RoomData = await jsonFetch("http://localhost:5000/getsensorinfo").catch(e => console.log(e));
+        await importDataToSelect();
     }
     window.onload = GetInformation;
 
@@ -18,12 +20,12 @@
     }
 
     //Adds more elements to the select in the html for room selection
-    async function importDataToSelect(fetchedData) {
+    async function importDataToSelect() {
         let roomSelect = document.getElementById("selectedRoom");
 
-        for (let i = 0; i < fetchedData.length; i++) {
+        for (let i = 0; i < RoomData.length; i++) {
             let option = document.createElement("option");
-            option.text = fetchedData[i].RoomName;
+            option.text = RoomData[i].RoomName;
             roomSelect.add(option);
         }
     }
@@ -31,7 +33,7 @@
     //Activates once a new room has been selected
     function roomChangeFunction() {
         let roomSelect = document.getElementById("selectedRoom");
-        let roomData = fetchedData[roomSelect.selectedIndex];
+        let roomData = RoomData[roomSelect.selectedIndex];
 
         //Resets the data display section
         document.getElementById("data").innerHTML = "";
