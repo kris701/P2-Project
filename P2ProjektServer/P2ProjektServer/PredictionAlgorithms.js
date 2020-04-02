@@ -2,7 +2,7 @@ const sql = require("mssql");
 let basicCalls = require(__dirname + "/BasicCalls.js");
 
 const Interval = 15;
-const DateOffset = 14;
+const WeekOffset = 5;
 const HourReach = 24;
 
 class ReturnClass {
@@ -19,9 +19,9 @@ class SensorType {
     }
 }
 class ThresholdPass {
-    constructor(TimeUntil, TimesExcedded) {
+    constructor(TimeUntil, TimesExceeded) {
         this.TimeUntil = TimeUntil;
-        this.TimesExcedded = TimesExcedded;
+        this.TimesExceeded = TimesExceeded;
     }
 }
 
@@ -84,7 +84,7 @@ async function DoesValueExistAndInsert(ReturnArray, NewInterval) {
 
             Exist = true;
 
-            v.TimesExcedded += 1;
+            v.TimesExceeded += 1;
         }
     });
     return Exist;
@@ -102,7 +102,7 @@ async function getPredictionSensorsInRoom(room) {
 async function getPredictionSensorValues(sensorID, sensorType) {
     let result = [];
 
-    for (let i = 1; i < DateOffset; i++) {
+    for (let i = 7; i <= (WeekOffset * 7); i+=7) {
         let dateMin = new Date();
         let dateMax = new Date();
 
