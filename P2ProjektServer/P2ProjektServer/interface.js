@@ -216,7 +216,7 @@ try {
     }
 
     function CredentialsWrong() {
-        console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However with wrong credentials");
+        console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + " with wrong credentials");
         res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
         res.write(JSON.stringify("Wrong username or password"));
     }
