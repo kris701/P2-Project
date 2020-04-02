@@ -34,8 +34,9 @@ try {
             else if (CheckForResource(req, "/getwarningsandsolutions")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-                if (queryUrl.room != null && queryUrl.date != null) {
-                    let response = await getWarningsAndSolutionsQuery;
+                if (queryUrl.room != null) {
+                    let predictionData = await prediction.getPredictionDatetimeQuery(queryUrl.room);
+                    let response = await warningAndSolution.getWarningsAndSolutions(predictionData);
                     res.write(JSON.stringify(response));
                 }
             } 

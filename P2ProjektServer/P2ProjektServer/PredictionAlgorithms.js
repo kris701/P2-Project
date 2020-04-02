@@ -3,7 +3,7 @@ let basicCalls = require(__dirname + "/BasicCalls.js");
 
 const Interval = 15;
 const WeekOffset = 5;
-const HourReach = 10;
+const HourReach = 24;
 
 class ReturnClass {
     constructor(Interval, Data) {
