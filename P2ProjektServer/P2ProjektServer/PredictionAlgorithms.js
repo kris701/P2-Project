@@ -3,7 +3,7 @@ let basicCalls = require(__dirname + "/BasicCalls.js");
 
 const Interval = 15;
 const WeekOffset = 5;
-const HourReach = 24;
+const HourReach = 10;
 
 class ReturnClass {
     constructor(Interval, Data) {
@@ -41,7 +41,7 @@ module.exports.getPredictionDatetimeQuery = async function (room) {
 async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
     await basicCalls.asyncForEach(SensorSensorTypes, async function (v) {
 
-        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType);
+        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID);
         if (!Exists) {
             let NewName = await getSensorTypeName(v.SensorType);
             let NewReturnValue = new SensorType(v.SensorType, NewName, []);
@@ -51,11 +51,11 @@ async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
     });
 }
 
-async function CheckForEqualValue(SearchArray, SensorType) {
+async function CheckForEqualValue(SearchArray, SensorType, SensorID) {
     let ReturnValue = false;
     await basicCalls.asyncForEach(SearchArray, async function (v) {
         if (v.SensorType == SensorType) {
-            await CheckForThresholdPass(v.SensorID, v.Name, v.ThresholdValue, v.ThresholdPasses);
+            await CheckForThresholdPass(SensorID, v.Name, v.ThresholdValue, v.ThresholdPasses);
             ReturnValue = true;
         }
     });
