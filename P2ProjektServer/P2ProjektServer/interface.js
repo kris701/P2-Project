@@ -39,113 +39,113 @@ try {
                     res.write(JSON.stringify(response));
                 }
             } 
-            else if (CheckForResource(req, "/checkcredentials")) {
+            else if (CheckForResource(req, "/admin")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
                 if (CheckCredentials(new Credentials(queryUrl.Username, queryUrl.Password))) {
-                    // Call the actual function
+                    if (CheckForResource(req, "/getallwarningsandsolutions")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addnewwarning")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removewarning")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/updatewarning")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addnewsolution")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removesolutionreference")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/updatesolution")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addexistingsolution")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removesolution")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/getallsolutions")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/getsensorinfo")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+                    }
+                    else if (CheckForResource(req, "/addnewroom")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removeroom")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/updateroom")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/getallsensors")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addexistingsensor")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addnewsensor")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removesensorreference")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removesensor")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/getallsensortypes")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addexistingsensortype")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/addnewsensortypereference")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removesensortype")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/removesensortypereference")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }
+                    else if (CheckForResource(req, "/updatesensortypethreshold")) {
+                        var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
+
+                    }      
                 }
                 else
-                    CredentialsWrong();
+                    CredentialsWrong(req, res);
             }
-            else if (CheckForResource(req, "/getallwarningsandsolutions")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addnewwarning")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removewarning")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/updatewarning")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addnewsolution")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removesolutionreference")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/updatesolution")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addexistingsolution")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removesolution")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/getallsolutions")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/getsensorinfo")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-            }
-            else if (CheckForResource(req, "/addnewroom")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removeroom")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/updateroom")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/getallsensors")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addexistingsensor")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addnewsensor")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removesensorreference")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removesensor")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/getallsensortypes")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addexistingsensortype")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/addnewsensortypereference")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removesensortype")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/removesensortypereference")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }
-            else if (CheckForResource(req, "/updatesensortypethreshold")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-            }      
             else {
                 console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However the resource was not found.");
                 res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
@@ -183,7 +183,7 @@ try {
         return credentialsCheck;
     }
 
-    function CredentialsWrong() {
+    function CredentialsWrong(req, res) {
         console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + " with wrong credentials");
         res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
         res.write(JSON.stringify("Wrong username or password"));
