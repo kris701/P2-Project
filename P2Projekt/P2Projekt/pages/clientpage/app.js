@@ -1,18 +1,24 @@
 ﻿try {
-    let fetchedData;
+
+    // Use this to get resource data:
+    //      let fetchedData = await jsonFetch("http://localhost:5000/resource").catch(e => console.log(e));
+
+    async function GetInformation() {
+        let fetchedData = await jsonFetch("http://localhost:5000/getsensorinfo").catch(e => console.log(e));
+        await importDataToSelect(fetchedData);
+    }
+    window.onload = GetInformation;
 
     async function jsonFetch(url) {
         let response = await fetch(url);
-        fetchedData = await response.json();
+        let returnData = await response.json();
 
-        console.log(fetchedData);
-        await importDataToSelect();
+        console.log(returnData);
+        return returnData;
     }
 
-    jsonFetch("http://localhost:5000/getsensorinfo").catch(e => console.log(e));
-
     //Adds more elements to the select in the html for room selection
-    async function importDataToSelect() {
+    async function importDataToSelect(fetchedData) {
         let roomSelect = document.getElementById("selectedRoom");
 
         for (let i = 0; i < fetchedData.length; i++) {
