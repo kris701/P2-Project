@@ -205,9 +205,14 @@ try {
     }
 
     function CheckCredentials(CredentialsInfo) {
-        // run through all admin credentials, and check for username and password
-        // return true if credentials are ok, false if not
-        // See the class in the top of the file
+        let credentialsCheck = false;
+
+        AdminCredentials.forEach(function (v) {
+            if (v.Username == CredentialsInfo.Username && v.Password == CredentialsInfo.Password)
+                credentialsCheck = true;
+        });
+
+        return credentialsCheck;
     }
 
     function CredentialsWrong() {
