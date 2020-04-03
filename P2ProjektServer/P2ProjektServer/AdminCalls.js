@@ -157,7 +157,7 @@ module.exports.adminUpdateSolution = async function (solutionID, message) {
         await basicCalls.MakeQuery(
             "UPDATE [Solutions] SET [Message]=@messageInput WHERE [SolutionID]=@solutionIDInput",
             [new basicCalls.QueryValue("messageInput", sql.NVarChar(50), message),
-            new basicCalls.QueryValue("solutionIDInput", sql.Int, solutionID]
+            new basicCalls.QueryValue("solutionIDInput", sql.Int, solutionID)]
         );
     } catch (err) {
         console.log(err);
@@ -241,7 +241,7 @@ module.exports.adminUpdateRoom = async function (roomID, roomName) {
         await basicCalls.MakeQuery(
             "UPDATE [SensorRooms] SET [RoomName]=@roomNameInput WHERE [RoomID]=@roomIDInput",
             [new basicCalls.QueryValue("roomNameInput", sql.NVarChar(50), roomName),
-            new basicCalls.QueryValue("roomIDInput", sql.Int, roomID]
+            new basicCalls.QueryValue("roomIDInput", sql.Int, roomID)]
         );
     } catch (err) {
         console.log(err);
