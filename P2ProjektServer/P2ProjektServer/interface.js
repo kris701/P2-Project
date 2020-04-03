@@ -50,49 +50,49 @@ try {
                         res.write(JSON.stringify(response));
                     }
                     else if (CheckForResource(req, "/addnewwarning")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorType != null && queryUrl.message != null) {
                             let response = await adminCalls.adminAddNewWarning(queryUrl.sensorType, queryUrl.message);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removewarning")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.warningID != null) {
                             let response = await adminCalls.adminAddNewWarning(queryUrl.warningID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/updatewarning")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.warningID != null && queryUrl.message != null) {
                             let response = await adminCalls.adminUpdateWarning(queryUrl.warningID, queryUrl.message);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/addnewsolution")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.warningID != null && queryUrl.priority != null && queryUrl.message != null) {
                             let response = await adminCalls.adminAddSolution(queryUrl.warningID, queryUrl.priority, queryUrl.message);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removesolutionreference")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.solutionID != null) {
                             let response = await adminCalls.adminRemoveSolutionReference(queryUrl.solutionID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/updatesolution")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.solutionID != null && queryUrl.message != null) {
                             let response = await adminCalls.adminUpdateSolution(queryUrl.solutionID, queryUrl.message);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/addexistingsolution")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.solutionID != null && queryUrl.warningID != null) {
                             let response = await adminCalls.adminAddExistingSolution(queryUrl.solutionID, queryUrl.warningID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removesolution")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.solutionID != null) {
                             let response = await adminCalls.adminRemoveSolution(queryUrl.solutionID);
                             res.write(JSON.stringify(response));
                         }
@@ -102,19 +102,19 @@ try {
                         res.write(JSON.stringify(response));
                     }
                     else if (CheckForResource(req, "/addnewroom")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.roomName != null) {
                             let response = await adminCalls.adminAddNewRoom(queryUrl.roomName);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removeroom")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.roomID != null) {
                             let response = await adminCalls.adminRemoveRoom(queryUrl.roomID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/updateroom")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.roomID != null && queryUrl.roomName != null) {
                             let response = await adminCalls.adminUpdateRoom(queryUrl.roomID, queryUrl.roomName);
                             res.write(JSON.stringify(response));
                         }
@@ -124,25 +124,25 @@ try {
                         res.write(JSON.stringify(response));
                     }
                     else if (CheckForResource(req, "/updatesensor")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorID != null && queryUrl.roomID) {
                             let response = await adminCalls.adminUpdateSensor(queryUrl.sensorID, queryUrl.roomID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/addnewsensor")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorID != null & queryUrl.roomID != null) {
                             let response = await adminCalls.adminAddNewSensor(queryUrl.sensorID, queryUrl.roomID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removesensorreference")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorID != null) {
                             let response = await adminCalls.adminRemoveSensorReference(queryUrl.sensorID);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removesensor")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorID != null) {
                             let response = await adminCalls.adminRemoveSensor(queryUrl.sensorID);
                             res.write(JSON.stringify(response));
                         }
@@ -152,40 +152,40 @@ try {
                         res.write(JSON.stringify(response));
                     }
                     else if (CheckForResource(req, "/addnewsensortype")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.typeName != null) {
                             let response = await adminCalls.adminAddNewSensorType(queryUrl.typeName);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/addexistingsensortype")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorType != null && queryUrl.sensorID != null && queryUrl.threshold != null) {
                             let response = await adminCalls.adminAddExistingSensorType(queryUrl.sensorType, queryUrl.sensorID, queryUrl.threshold);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removesensortype")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorType != null) {
                             let response = await adminCalls.adminRemoveSensorType(queryUrl.sensorType);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/removesensortypereference")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorType != null) {
                             let response = await adminCalls.adminRemoveSensorTypeReference(queryUrl.sensorType);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/updatesensortypethreshold")) {
-                        if (queryUrl.room != null) {
+                        if (queryUrl.sensorID != null && queryUrl.sensorType && queryUrl.threshold != null) {
                             let response = await adminCalls.adminUpdateSensorTypeThreshold(queryUrl.sensorID, queryUrl.sensorType, queryUrl.threshold);
                             res.write(JSON.stringify(response));
                         }
                     }
                     else if (CheckForResource(req, "/insertsensorvalue")) {
-                        var queryUrl = queryStringParse(req.url);
-
-                        // /insertsensorvalue?SensorID=<sensorid>&SensorType=<sensortype>&SensorValue=<sensorvalue>
-                        // Make function
+                        if (queryUrl.sensorID != null && queryUrl.sensorType && queryUrl.sensorValue != null) {
+                            let response = await adminCalls.adminInsertSensorValue(queryUrl.sensorID, queryUrl.sensorType, queryUrl.sensorValue);
+                            res.write(JSON.stringify(response));
+                        }
                     }
                 }
                 else
