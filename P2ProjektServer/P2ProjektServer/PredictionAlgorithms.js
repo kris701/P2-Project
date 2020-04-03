@@ -63,20 +63,18 @@ async function CheckForEqualValue(SearchArray, SensorType, SensorID) {
 }
 
 async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray) {
-    let SensorValues = await getPredictionSensorValues(SensorID, SensorType);
+    let SensorValues = await getPredictionSensorValues(SensorID, SensorType, ThresholdValue);
 
     await basicCalls.asyncForEach(SensorValues, async function (v) {
-        if (v.SensorValue > ThresholdValue) {
+        let NewInterval = getTimeLeftInIntervals(v.Timestamp);
+        let Exist = await DoesValueExistAndInsert(ReturnArray, NewInterval);
 
-            let NewInterval = getTimeLeftInIntervals(v.Timestamp);
-            let Exist = await DoesValueExistAndInsert(ReturnArray, NewInterval);
-
-            if (!Exist)
-                ReturnArray = await InsertIntoCorrectPositionInArray(NewInterval, ReturnArray);
-        }
+        if (!Exist)
+            ReturnArray = await InsertIntoCorrectPositionInArray(NewInterval, ReturnArray);
     });
 }
 
+// O(n)
 async function InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
     let Index = 0;
     for (let i = 0; i < ReturnArray.length; i++) {
@@ -89,6 +87,7 @@ async function InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
     return ReturnArray;
 }
 
+// O(n)
 async function DoesValueExistAndInsert(ReturnArray, NewInterval) {
     let Exist = false;
     for (let i = 0; i < ReturnArray.length; i++) {
@@ -111,10 +110,13 @@ async function getPredictionSensorsInRoom(room) {
     return result;
 }
 
-async function getPredictionSensorValues(sensorID, sensorType) {
+async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue) {
     let result = [];
 
-    for (let i = 7; i <= (WeekOffset * 7); i+=7) {
+    let OldestEntry = await GetOldestEntry(sensorType, sensorID);
+    OldestEntry.setDate(OldestEntry.getDate() - 1 - Math.ceil(HourReach / 24));
+
+    for (let i = 1; i <= (WeekOffset * 7); i+=1) {
         let dateMin = new Date();
         let dateMax = new Date();
 
@@ -122,18 +124,35 @@ async function getPredictionSensorValues(sensorID, sensorType) {
         dateMax.setDate(dateMax.getDate() - i);
         dateMax.setHours(dateMax.getHours() + HourReach);
 
-        result = await getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, "SensorValue_" + sensorType);
+        if (dateMin < OldestEntry)
+            break;
+
+        result = await getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue);
     }
 
     return result;
 }
 
-async function getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, sensorType) {
+async function GetOldestEntry(SensorType, SensorID) {
     let queryTable = await basicCalls.MakeQuery(
-        "SELECT * FROM [" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput", [
+        "SELECT TOP 1 Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
+            new basicCalls.QueryValue("sensorIDInput", sql.Int, SensorID),
+    ]);
+
+    if (queryTable.recordset.length >= 1) {
+        return new Date(queryTable.recordset[0].Timestamp);
+    }
+    else
+        return new Date();
+}
+
+async function getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue) {
+    let queryTable = await basicCalls.MakeQuery(
+        "SELECT * FROM [SensorValue_" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorValue]>=@thresholdValueInput", [
         new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
         new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
-        new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax)
+        new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
+            new basicCalls.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
     ]);
     queryTable.recordset.forEach(v => result.push(v));
 
