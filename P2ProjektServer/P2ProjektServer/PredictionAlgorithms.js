@@ -72,21 +72,33 @@ async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, Retur
             let Exist = await DoesValueExistAndInsert(ReturnArray, NewInterval);
 
             if (!Exist)
-                ReturnArray.push(new ThresholdPass(NewInterval, 1));
+                ReturnArray = await InsertIntoCorrectPositionInArray(NewInterval, ReturnArray);
         }
     });
 }
 
+async function InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
+    let Index = 0;
+    for (let i = 0; i < ReturnArray.length; i++) {
+        if (ReturnArray[i].TimeUntil > NewInterval) {
+            break;
+        }
+        Index++;
+    }
+    ReturnArray.splice(Index, 0, new ThresholdPass(NewInterval, 1));
+    return ReturnArray;
+}
+
 async function DoesValueExistAndInsert(ReturnArray, NewInterval) {
     let Exist = false;
-    await basicCalls.asyncForEach(ReturnArray, async function (v) {
-        if (NewInterval == v.TimeUntil) {
-
+    for (let i = 0; i < ReturnArray.length; i++) {
+        if (ReturnArray[i].TimeUntil == NewInterval) {
             Exist = true;
-
-            v.TimesExceeded += 1;
+            ReturnArray[i].TimesExceeded += 1;
         }
-    });
+        if (ReturnArray[i].TimeUntil > NewInterval)
+            break;
+    }
     return Exist;
 }
 
