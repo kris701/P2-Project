@@ -305,10 +305,8 @@ module.exports.adminRemoveSensorReference = async function (sensorID) {
 
 module.exports.adminRemoveSensor = async function (sensorID) {
     try {
-        await basicCalls.MakeQuery("UPDATE [SensorValue_CO2] SET [SensorID]=-1 WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
-        await basicCalls.MakeQuery("UPDATE [SensorValue_RH] SET [SensorID]=-1 WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
-        await basicCalls.MakeQuery("UPDATE [SensorValue_Temperature] SET [SensorID]=-1 WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
-        await basicCalls.MakeQuery("UPDATE [SensorThresholds] SET [SensorID]=-1 WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
+        await removeSensorsFromValueTables(sensorID);
+        await basicCalls.MakeQuery("DELETE [SensorThresholds] WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
         await basicCalls.MakeQuery("DELETE FROM [SensorInfo] WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
     } catch (err) {
         console.log(err);
@@ -316,6 +314,15 @@ module.exports.adminRemoveSensor = async function (sensorID) {
     }
 
     return 200;
+}
+
+async function removeSensorsFromValueTables(sensorID) {
+    let sensorTypes = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]", []);
+    await basicCalls.asyncForEach(sensorTypes, async function (v) {
+        if (v.SensorType != -1) {
+            await basicCalls.MakeQuery("DELETE FROM [SensorValue_" + v.TypeName + "] WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
+        }
+    });
 }
 
 module.exports.adminGetAllSensorTypes = async function () {
@@ -385,6 +392,23 @@ module.exports.adminUpdateSensorTypeThreshold = async function (sensorID, sensor
             [new basicCalls.QueryValue("thresholdInput", sql.Int, threshold),
             new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
             new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]
+        );
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+
+    return 200;
+}
+
+module.exports.adminInsertSensorValue = async function (sensorID, sensorType, sensorValue) {
+    try {
+        let queryTable = await basicCalls.MakeQuery("SELECT [TypeName] FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+        let typeName = queryTable.recordset[0];
+        await basicCalls.MakeQuery(
+            "INSERT INTO [SensorValue_" + typeName + "] (SensorID, SensorValue) values (@sensorIDInput, @sensorValueInput)",
+            [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
+            new basicCalls.QueryValue("sensorValueInput", sql.Int, sensorValue)]
         );
     } catch (err) {
         console.log(err);
