@@ -1,4 +1,15 @@
 #include <ESP8266WiFi.h>
+#include <EEPROM.h>
+#include "MQ135.h"
+
+struct { 
+  float val = 0;
+} data;
+uint addr = 0;
+int CurrentIndex = 0;
+int Rzero = 0;
+
+MQ135 gasSensor = MQ135(A0);
 
 const char* ssid     = "Prideparade Mesh";
 const char* password = "c58a45s07v42";
@@ -6,14 +17,19 @@ const char* password = "c58a45s07v42";
 const char* host = "192.168.87.136";
 
 # define sensorPin A0
-# define SensorID 0
+# define SensorID 2
 # define SensorType 0
 
 void setup() {
-  pinMode(sensorPin, INPUT);
-  
+
+  EEPROM.begin(512);
+  EEPROM.get(addr,data);
+
+  Rzero = data.val;
+
   Serial.begin(115200);
-  delay(10);
+  delay(1000);
+  
   // We start by connecting to a WiFi network
   Serial.println();
   Serial.println();
@@ -35,8 +51,20 @@ void setup() {
 
 
 void loop() {
- delay(5000);
- int val = analogRead(sensorPin);
+ delay(300000);
+
+ CurrentIndex++;
+
+ if (CurrentIndex == 5)
+ {
+  data.val = gasSensor.getRZero();
+  EEPROM.put(addr,data);
+  EEPROM.commit(); 
+  CurrentIndex = 0;
+ }
+ 
+ int val = gasSensor.getPPM(data.val);
+
  Serial.print("connecting to ");
  Serial.println(host);
 

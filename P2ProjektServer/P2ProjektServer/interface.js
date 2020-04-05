@@ -182,8 +182,8 @@ try {
                         }
                     }
                     else if (CheckForResource(req, "/insertsensorvalue")) {
-                        if (queryUrl.sensorID != null && queryUrl.sensorType && queryUrl.sensorValue != null) {
-                            let response = await adminCalls.adminInsertSensorValue(queryUrl.sensorID, queryUrl.sensorType, queryUrl.sensorValue);
+                        if (queryUrl.SensorID != null && queryUrl.SensorType && queryUrl.SensorValue != null) {
+                            let response = await adminCalls.adminInsertSensorValue(queryUrl.SensorID, queryUrl.SensorType, queryUrl.SensorValue);
                             res.write(JSON.stringify(response));
                         }
                     }

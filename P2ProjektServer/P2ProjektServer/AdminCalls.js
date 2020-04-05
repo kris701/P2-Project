@@ -404,7 +404,7 @@ module.exports.adminUpdateSensorTypeThreshold = async function (sensorID, sensor
 module.exports.adminInsertSensorValue = async function (sensorID, sensorType, sensorValue) {
     try {
         let queryTable = await basicCalls.MakeQuery("SELECT [TypeName] FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
-        let typeName = queryTable.recordset[0];
+        let typeName = queryTable.recordset[0].TypeName;
         await basicCalls.MakeQuery(
             "INSERT INTO [SensorValue_" + typeName + "] (SensorID, SensorValue) values (@sensorIDInput, @sensorValueInput)",
             [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
