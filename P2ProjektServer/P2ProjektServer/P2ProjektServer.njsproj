@@ -5,6 +5,12 @@
     <Name>P2ProjektServer</Name>
     <RootNamespace>P2ProjektServer</RootNamespace>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <ScriptArguments>
+    </ScriptArguments>
+    <LaunchUrl>
+    </LaunchUrl>
+    <NodeExeArguments>
+    </NodeExeArguments>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>

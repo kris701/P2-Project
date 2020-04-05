@@ -74,7 +74,7 @@ async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, Retur
     });
 }
 
-// O(n)
+// O(n), Omega(1), Theta(n)
 async function InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
     let Index = 0;
     for (let i = 0; i < ReturnArray.length; i++) {
@@ -87,7 +87,7 @@ async function InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
     return ReturnArray;
 }
 
-// O(n)
+// O(n), Omega(1), Theta(1)
 async function DoesValueExistAndInsert(ReturnArray, NewInterval) {
     let Exist = false;
     for (let i = 0; i < ReturnArray.length; i++) {
