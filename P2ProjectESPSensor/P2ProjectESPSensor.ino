@@ -2,12 +2,7 @@
 #include <EEPROM.h>
 #include "MQ135.h"
 
-struct { 
-  float val = 0;
-} data;
-uint addr = 0;
-int CurrentIndex = 0;
-int Rzero = 0;
+float Rzero = 0;
 
 MQ135 gasSensor = MQ135(A0);
 
@@ -17,67 +12,40 @@ const char* password = "c58a45s07v42";
 const char* host = "192.168.87.136";
 
 # define sensorPin A0
-# define SensorID 2
-# define SensorType 0
+# define SensorID 0
 
 void setup() {
-
-  EEPROM.begin(512);
-  EEPROM.get(addr,data);
-
-  Rzero = data.val;
-
   Serial.begin(115200);
   delay(1000);
+
+  Rzero = GetRZeroValue();
+
+  Serial.println("RZero: " + String(Rzero));
   
-  // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-
-  WiFi.begin(ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) {
-   delay(500);
-   Serial.print(".");
-  }
-
-  Serial.println("");
-  Serial.println("WiFi connected");  
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  InitializeWifi(ssid, password);
 }
 
 
 void loop() {
- delay(300000);
+  TransferData(gasSensor.getPPM(Rzero), SensorID, 0, host, 5000);
 
- CurrentIndex++;
+  delay(300000);
+}
 
- if (CurrentIndex == 5)
- {
-  data.val = gasSensor.getRZero();
-  EEPROM.put(addr,data);
-  EEPROM.commit(); 
-  CurrentIndex = 0;
- }
- 
- int val = gasSensor.getPPM(data.val);
-
+void TransferData(int Value, int ID, int Type, const String Host, const int Port)
+{
  Serial.print("connecting to ");
- Serial.println(host);
+ Serial.println(Host);
 
  // Use WiFiClient class to create TCP connections
  WiFiClient client;
- const int httpPort = 5000;
- if (!client.connect(host, httpPort)) {
+ if (!client.connect(Host, Port)) {
   Serial.println("connection failed");
   return;
  }
 
  // We now create a URI for the request
- String url = "/admin/insertsensorvalue?Username=Sensor&Password=SensorPassword&SensorID=" + String(SensorID) + "&SensorType=" + String(SensorType) + "&SensorValue=" + String(val);
+ String url = "/admin/insertsensorvalue?Username=Sensor&Password=SensorPassword&SensorID=" + String(ID) + "&SensorType=" + String(Type) + "&SensorValue=" + String(Value);
 
  Serial.print("Requesting URL: ");
  Serial.println(url);
@@ -111,3 +79,38 @@ void loop() {
  Serial.println();
  Serial.println("closing connection");
 }
+
+float SetRZeroValue(float Value)
+{
+  EEPROM.put(0,Value);
+  EEPROM.commit();
+}
+
+float GetRZeroValue()
+{
+  float OutValue = 0.0;
+  EEPROM.begin(512);
+  EEPROM.get(0,OutValue);
+  return OutValue;
+}
+
+void InitializeWifi(const char* _SSID, const char* _Password)
+{
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(_SSID);
+
+  WiFi.begin(_SSID, _Password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+   delay(500);
+   Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
