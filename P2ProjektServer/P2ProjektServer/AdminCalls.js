@@ -225,7 +225,7 @@ module.exports.ACC = class {
     }
 
     static async adminRemoveRoom(roomID) {
-        if (roomID = -1) {
+        if (roomID == -1) {
             console.log("Client attempted to remove default room");
             return 400;
         }
