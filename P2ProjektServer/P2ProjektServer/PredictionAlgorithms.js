@@ -1,5 +1,11 @@
+/*
+    =========================
+            Header
+    =========================
+*/
+
 const sql = require("mssql");
-let basicCalls = require(__dirname + "/BasicCalls.js");
+let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
 const Interval = 15;
 const WeekOffset = 5;
@@ -25,21 +31,33 @@ class ThresholdPass {
     }
 }
 
-module.exports.getPredictionDatetimeQuery = async function (room) {
-    let ReturnItem = new ReturnClass(Interval, []);
+/*
+    =========================
+            Code Part
+    =========================
+*/
+// Public Area
+// Prediction Algorithm Class
 
-    let sensorsInRoom = await getPredictionSensorsInRoom(room);
-    await basicCalls.asyncForEach(sensorsInRoom, async function (v) {
-        let SensorSensorTypes = await getSensorTypesForSensor(v.SensorID);
+module.exports.PAC = class {
+    static async getPredictionDatetimeQuery(room) {
+        let ReturnItem = new ReturnClass(Interval, []);
 
-        await LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem);
-    });
+        let sensorsInRoom = await getPredictionSensorsInRoom(room);
+        await BCC.asyncForEach(sensorsInRoom, async function (v) {
+            let SensorSensorTypes = await getSensorTypesForSensor(v.SensorID);
 
-    return ReturnItem;
+            await LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem);
+        });
+
+        return ReturnItem;
+    }
 }
 
+// Private Area
+
 async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
-    await basicCalls.asyncForEach(SensorSensorTypes, async function (v) {
+    await BCC.asyncForEach(SensorSensorTypes, async function (v) {
 
         let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID);
         if (!Exists) {
@@ -53,7 +71,7 @@ async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
 
 async function CheckForEqualValue(SearchArray, SensorType, SensorID) {
     let ReturnValue = false;
-    await basicCalls.asyncForEach(SearchArray, async function (v) {
+    await BCC.asyncForEach(SearchArray, async function (v) {
         if (v.SensorType == SensorType) {
             await CheckForThresholdPass(SensorID, v.Name, v.ThresholdValue, v.ThresholdPasses);
             ReturnValue = true;
@@ -65,7 +83,7 @@ async function CheckForEqualValue(SearchArray, SensorType, SensorID) {
 async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray) {
     let SensorValues = await getPredictionSensorValues(SensorID, SensorType, ThresholdValue);
 
-    await basicCalls.asyncForEach(SensorValues, async function (v) {
+    await BCC.asyncForEach(SensorValues, async function (v) {
         let NewInterval = getTimeLeftInIntervals(v.Timestamp);
         let Exist = await DoesValueExistAndInsert(ReturnArray, NewInterval);
 
@@ -104,7 +122,7 @@ async function DoesValueExistAndInsert(ReturnArray, NewInterval) {
 async function getPredictionSensorsInRoom(room) {
     let result = [];
 
-    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
     queryTable.recordset.forEach(v => result.push(v));
 
     return result;
@@ -134,9 +152,9 @@ async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue) {
 }
 
 async function GetOldestEntry(SensorType, SensorID) {
-    let queryTable = await basicCalls.MakeQuery(
+    let queryTable = await BCC.MakeQuery(
         "SELECT TOP 1 Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
-            new basicCalls.QueryValue("sensorIDInput", sql.Int, SensorID),
+            new BCC.QueryValue("sensorIDInput", sql.Int, SensorID),
     ]);
 
     if (queryTable.recordset.length >= 1) {
@@ -147,12 +165,12 @@ async function GetOldestEntry(SensorType, SensorID) {
 }
 
 async function getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue) {
-    let queryTable = await basicCalls.MakeQuery(
+    let queryTable = await BCC.MakeQuery(
         "SELECT * FROM [SensorValue_" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorValue]>=@thresholdValueInput", [
-        new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID),
-        new basicCalls.QueryValue("timestampMinInput", sql.DateTime, dateMin),
-        new basicCalls.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
-            new basicCalls.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
+        new BCC.QueryValue("sensorIDInput", sql.Int, sensorID),
+        new BCC.QueryValue("timestampMinInput", sql.DateTime, dateMin),
+        new BCC.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
+            new BCC.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
     ]);
     queryTable.recordset.forEach(v => result.push(v));
 
@@ -181,9 +199,9 @@ function getTimeLeftInIntervals(timestamp) {
 async function getSensorTypeName(SensorTypeID) {
     let result;
 
-    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new basicCalls.QueryValue("typeID", sql.Int, SensorTypeID)]);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new BCC.QueryValue("typeID", sql.Int, SensorTypeID)]);
 
-    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+    await BCC.asyncForEach(queryTable.recordset, async function (v) {
         result = v.TypeName;
     });
 
@@ -193,9 +211,9 @@ async function getSensorTypeName(SensorTypeID) {
 async function getSensorTypesForSensor(sensorID) {
     let result = [];
 
-    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new basicCalls.QueryValue("sensorID", sql.Int, sensorID)]);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new BCC.QueryValue("sensorID", sql.Int, sensorID)]);
 
-    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+    await BCC.asyncForEach(queryTable.recordset, async function (v) {
         result.push(v);
     });
 
