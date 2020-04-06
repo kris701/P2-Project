@@ -149,8 +149,8 @@ try {
                         }
                     }
                     else if (CheckForResource(req, "/addnewsensor")) {
-                        if (queryUrl.sensorID != null & queryUrl.roomID != null) {
-                            let response = await adminCalls.adminAddNewSensor(queryUrl.sensorID, queryUrl.roomID);
+                        if (queryUrl.roomID != null) {
+                            let response = await adminCalls.adminAddNewSensor(queryUrl.roomID);
                             res.write(JSON.stringify(response));
                         }
                     }

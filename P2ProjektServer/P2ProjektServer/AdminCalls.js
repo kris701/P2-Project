@@ -225,6 +225,11 @@ module.exports.ACC = class {
     }
 
     static async adminRemoveRoom(roomID) {
+        if (roomID = -1) {
+            console.log("Client attempted to remove default room");
+            return 400;
+        }
+
         try {
             await BCC.MakeQuery("DELETE FROM [SensorRooms] WHERE [RoomID]=@roomIDInput", [new BCC.QueryValue("roomIDInput", sql.Int, roomID)]);
         } catch (err) {
@@ -253,7 +258,7 @@ module.exports.ACC = class {
     static async adminGetAllSensors() {
         let returnItem = new ReturnItem([]);
 
-        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo]");
+        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo]", []);
         await BCC.asyncForEach(queryTable.recordset, async function (v) {
             returnItem.Data.push(v);
         })
@@ -279,7 +284,7 @@ module.exports.ACC = class {
     static async adminAddNewSensor(roomID) {
         try {
             await BCC.MakeQuery(
-                "INSERT INTO [SensorInfo]  (RoomID) values (@roomIDInput)",
+                "INSERT INTO [SensorInfo] (RoomID) values (@roomIDInput)",
                 [new BCC.QueryValue("roomIDInput", sql.Int, roomID)]
             );
         } catch (err) {
