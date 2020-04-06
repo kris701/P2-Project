@@ -147,6 +147,12 @@ header{
     grid-row: span 2;
 }
 
+.container .box:nth-child(6){
+    grid-column: span 3;
+    grid-row: span 1;
+}
+
+
 /* --- Footer Section begins here --- */
 
 footer{
