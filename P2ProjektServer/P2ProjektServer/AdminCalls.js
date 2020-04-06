@@ -44,17 +44,9 @@ class ReturnItem {
 
 
 // Public Area
-// Admin Class
+// Admin Call Class
 
-module.exports.AC = class {
-
-    static async adminGetAllWarningsAndSolutions() {
-        let returnItem = new ReturnItem([]);
-
-        returnItem.Data = await getAllWarningsQuery();
-
-        return returnItem;
-    }
+module.exports.ACC = class {
 
     static async adminGetAllWarningsAndSolutions() {
         let returnItem = new ReturnItem([]);
@@ -73,7 +65,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -90,7 +82,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("DELETE FROM [Warnings] WHERE [WarningID]=@warningIDInput", [new BCC.QueryValue("warningIDInput", sql.Int, warningID)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -110,7 +102,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -131,7 +123,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -147,7 +139,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("UPDATE [Solutions] SET [WarningID]=-1 WHERE [SolutionID]=@solutionIDInput", [new BCC.QueryValue("solutionIDInput", sql.Int, solutionID)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -167,7 +159,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -187,7 +179,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -203,7 +195,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("DELETE FROM [Warnings] WHERE [SolutionID]=@solutionIDInput", [new BCC.QueryValue("solutionIDInput", sql.Int, solutionID)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -225,7 +217,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("INSERT INTO [SensorRooms] (RoomName) values (@roomNameInput)", [new BCC.QueryValue("roomNameInput", sql.NVarChar(50), roomName)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -236,7 +228,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("DELETE FROM [SensorRooms] WHERE [RoomID]=@roomIDInput", [new BCC.QueryValue("roomIDInput", sql.Int, roomID)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -277,22 +269,21 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
     }
 
-    static async adminAddNewSensor(sensorID, roomID) {
+    static async adminAddNewSensor(roomID) {
         try {
             await BCC.MakeQuery(
-                "INSERT INTO [SensorInfo]  (RoomID, SensorID) values (@roomIDInput, @sensorIDInput)",
-                [new BCC.QueryValue("roomIDInput", sql.Int, roomID),
-                new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]
+                "INSERT INTO [SensorInfo]  (RoomID) values (@roomIDInput)",
+                [new BCC.QueryValue("roomIDInput", sql.Int, roomID)]
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -303,7 +294,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("UPDATE [SensorInfo] SET [RoomID]=-1 WHERE [SensorID]=@sensorIDInput", [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -316,7 +307,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("DELETE FROM [SensorInfo] WHERE [SensorID]=@sensorIDInput", [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -338,7 +329,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("INSERT INTO [SensorTypes] (TypeName) values (@typeNameInput)", [new BCC.QueryValue("typeNameInput", sql.NVarChar(50), typeName)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -354,7 +345,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -365,7 +356,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("DELETE FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -376,7 +367,7 @@ module.exports.AC = class {
             await BCC.MakeQuery("DELETE FROM [SensorThresholds] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -392,7 +383,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;
@@ -409,7 +400,7 @@ module.exports.AC = class {
             );
         } catch (err) {
             console.log(err);
-            return err;
+            return 400;
         }
 
         return 200;

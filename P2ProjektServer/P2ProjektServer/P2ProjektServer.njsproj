@@ -11,6 +11,8 @@
     </LaunchUrl>
     <NodeExeArguments>
     </NodeExeArguments>
+    <JavaScriptTestFramework>mocha</JavaScriptTestFramework>
+    <JavaScriptTestRoot>tests\</JavaScriptTestRoot>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -44,6 +46,10 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="ReturnCodes.js" />
+    <Compile Include="tests\AdminCallsTest.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
     <Content Include="Thresholds.json">
       <SubType>Code</SubType>
     </Content>
@@ -58,6 +64,9 @@
     </Content>
     <Content Include="package.json" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="tests\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
