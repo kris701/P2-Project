@@ -57,7 +57,7 @@ try {
                     }
                     else if (CheckForResource(req, "/removewarning")) {
                         if (queryUrl.warningID != null) {
-                            let response = await adminCalls.adminClass.adminAddNewWarning(queryUrl.warningID);
+                            let response = await adminCalls.adminClass.adminRemoveWarning(queryUrl.warningID);
                             res.write(JSON.stringify(response));
                         }
                     }
@@ -80,8 +80,8 @@ try {
                         }
                     }
                     else if (CheckForResource(req, "/updatesolution")) {
-                        if (queryUrl.solutionID != null && queryUrl.message != null) {
-                            let response = await adminCalls.adminClass.adminUpdateSolution(queryUrl.solutionID, queryUrl.message);
+                        if (queryUrl.solutionID != null && queryUrl.message != null && queryUrl.priority) {
+                            let response = await adminCalls.adminClass.adminUpdateSolution(queryUrl.solutionID, queryUrl.message, queryUrl.priority);
                             res.write(JSON.stringify(response));
                         }
                     }

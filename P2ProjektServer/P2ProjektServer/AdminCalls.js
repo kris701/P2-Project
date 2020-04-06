@@ -96,7 +96,7 @@ module.exports.adminClass = class {
     }
 
     static async adminAddSolution(warningID, warningPriority, message) {
-        if (warningPriority < 0 || warningPriorty > 3) {
+        if (warningPriority < 0 || warningPriority > 3) {
             console.log("Client tried to add solution with priority outside bounds");
             return 400;
         }
@@ -132,7 +132,7 @@ module.exports.adminClass = class {
         return 200;
     }
 
-    static async adminUpdateSolution(solutionID, message) {
+    static async adminUpdateSolution(solutionID, message, warningPriority) {
         if (solutionID == -1) {
             console.log("Client attempted to update default solution");
             return 400;
@@ -140,9 +140,10 @@ module.exports.adminClass = class {
 
         try {
             await basicCalls.MakeQuery(
-                "UPDATE [Solutions] SET [Message]=@messageInput WHERE [SolutionID]=@solutionIDInput",
+                "UPDATE [Solutions] SET [Message]=@messageInput, [WarningPriority]=@priorityInput WHERE [SolutionID]=@solutionIDInput",
                 [new basicCalls.QueryValue("messageInput", sql.NVarChar(50), message),
-                new basicCalls.QueryValue("solutionIDInput", sql.Int, solutionID)]
+                new basicCalls.QueryValue("solutionIDInput", sql.Int, solutionID),
+                new basicCalls.QueryValue("priorityInput", sql.Int, warningPriority)]
             );
         } catch (err) {
             console.log(err);
@@ -179,7 +180,7 @@ module.exports.adminClass = class {
         }
 
         try {
-            await basicCalls.MakeQuery("DELETE FROM [Warnings] WHERE [SolutionID]=@solutionIDInput", [new basicCalls.QueryValue("solutionIDInput", sql.Int, solutionID)]);
+            await basicCalls.MakeQuery("DELETE FROM [Solutions] WHERE [SolutionID]=@solutionIDInput", [new basicCalls.QueryValue("solutionIDInput", sql.Int, solutionID)]);
         } catch (err) {
             console.log(err);
             return err;
