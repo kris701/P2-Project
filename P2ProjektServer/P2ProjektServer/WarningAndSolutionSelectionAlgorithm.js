@@ -1,5 +1,10 @@
+/*
+    =========================
+            Header
+    =========================
+*/
 const sql = require("mssql");
-let basicCalls = require(__dirname + "/BasicCalls.js");
+let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
 class SolutionInfo {
     constructor(WarningPriority, Message) {
@@ -32,18 +37,30 @@ const PriorityEnum = {
     High: 3
 };
 
-module.exports.getWarningsAndSolutions = async function (predictionDataArray) {
-    let returnItem = new ReturnClass([]);
+/*
+    =========================
+            Code Part
+    =========================
+*/
 
-    await basicCalls.asyncForEach(predictionDataArray.Data, async function (v) {
-        returnItem = await getWASForEachThesholdPass(v, predictionDataArray.Interval, returnItem);
-    });
+// Public Area
+// WASC, Warnings And Solutions Class
+module.exports.WASC = class {
+    static async getWarningsAndSolutions(predictionDataArray) {
+        let returnItem = new ReturnClass([]);
 
-    return returnItem;
+        await BCC.asyncForEach(predictionDataArray.Data, async function (v) {
+            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.Interval, returnItem);
+        });
+
+        return returnItem;
+    }
 }
 
+// Private Area
+
 async function getWASForEachThesholdPass(predictionData, interval, returnItem) {
-    await basicCalls.asyncForEach(predictionData.ThresholdPasses, async function (v) {
+    await BCC.asyncForEach(predictionData.ThresholdPasses, async function (v) {
         let priority = getPriority(v.TimeUntil, interval);
 
         if (priority != PriorityEnum.None) {
@@ -73,8 +90,8 @@ function getPriority(timeUntilBadIAQ, interval) {
 async function getWarningInfoQuery(sensorType, priority) {
     let result = new WarningInfo(sensorType, []);
 
-    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [Warnings] WHERE [SensorType]=@sensorTypeInput", [new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
-    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+    let queryTable = await BCC.MakeQuery("SELECT * FROM [Warnings] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+    await BCC.asyncForEach(queryTable.recordset, async function (v) {
         let solutionInfo = await getSolutionQuery(v.WarningID, priority);
         let warningItem = new WarningItem(v.Message, solutionInfo);
         result.WarningItems.push(warningItem);
@@ -86,12 +103,12 @@ async function getWarningInfoQuery(sensorType, priority) {
 async function getSolutionQuery(warningID, priority) {
     let result = [];
 
-    let queryTable = await basicCalls.MakeQuery(
+    let queryTable = await BCC.MakeQuery(
         "SELECT * FROM [Solutions] WHERE [WarningID]=@warningIDInput AND [WarningPriority]=@priorityInput",
-        [new basicCalls.QueryValue("warningIDInput", sql.Int, warningID),
-         new basicCalls.QueryValue("priorityInput", sql.Int, priority)]
+        [new BCC.QueryValue("warningIDInput", sql.Int, warningID),
+         new BCC.QueryValue("priorityInput", sql.Int, priority)]
     );
-    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+    await BCC.asyncForEach(queryTable.recordset, async function (v) {
         let solutionItem = new SolutionInfo(priority, v.Message);
         result.push(solutionItem);
     });

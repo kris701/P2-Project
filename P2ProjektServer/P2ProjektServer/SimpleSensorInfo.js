@@ -1,5 +1,10 @@
+/*
+    =========================
+            Header
+    =========================
+*/
 const sql = require("mssql");
-let basicCalls = require(__dirname + "/BasicCalls.js")
+let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
 class Sensor {
     constructor(SensorID, Types) {
@@ -16,23 +21,35 @@ class Room {
     }
 }
 
-module.exports.getSensorInfoQuery = async function () {
-    let sensorInfo = [];
+/*
+    =========================
+            Code Part
+    =========================
+*/
+// Public Area
+// SSIC, Simple Sensor Info Class
 
-    let allRooms = await getAllRooms();
-    await basicCalls.asyncForEach(allRooms, async function (v) {
-        let sensorsInRoom = await getSensorsInRoom(v.RoomID);
-        let RoomInfo = new Room(v.RoomID, v.RoomName, sensorsInRoom);
-        sensorInfo.push(RoomInfo);
-    });
+module.exports.SSIC = class {
+    static async getSensorInfoQuery() {
+        let sensorInfo = [];
 
-    return sensorInfo;
+        let allRooms = await getAllRooms();
+        await BCC.asyncForEach(allRooms, async function (v) {
+            let sensorsInRoom = await getSensorsInRoom(v.RoomID);
+            let RoomInfo = new Room(v.RoomID, v.RoomName, sensorsInRoom);
+            sensorInfo.push(RoomInfo);
+        });
+
+        return sensorInfo;
+    }
 }
+
+// Private Area
 
 async function getAllRooms() {
     let rooms = [];
     
-    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorRooms]", []);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorRooms]", []);
     queryTable.recordset.forEach(v => rooms.push(v));
 
     return rooms;
@@ -41,8 +58,8 @@ async function getAllRooms() {
 async function getSensorsInRoom(room) {
     let sensors = [];
 
-    let queryTable = await basicCalls.MakeQuery("SELECT [SensorID] FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new basicCalls.QueryValue("roomInput", sql.Int, room)]);
-    await basicCalls.asyncForEach(queryTable.recordset, async function (v) {
+    let queryTable = await BCC.MakeQuery("SELECT [SensorID] FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
+    await BCC.asyncForEach(queryTable.recordset, async function (v) {
         let ReturnTypes = await getSensorTypes(v.SensorID);
         sensors.push(new Sensor(v.SensorID, ReturnTypes))
     });
@@ -54,11 +71,11 @@ async function getSensorTypes(sensorID) {
     let sensorTypes = [];
     let sensorTypeNames = [];
 
-    let queryTable = await basicCalls.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorIDInput", [new basicCalls.QueryValue("sensorIDInput", sql.Int, sensorID)]);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorIDInput", [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]);
 
     queryTable.recordset.forEach(v => sensorTypes.push(v.SensorType));
 
-    await basicCalls.asyncForEach(sensorTypes, async function (v) {
+    await BCC.asyncForEach(sensorTypes, async function (v) {
         sensorTypeNames.push((await getSensorTypeName(v))[0]);
     });
 
@@ -68,7 +85,7 @@ async function getSensorTypes(sensorID) {
 async function getSensorTypeName(sensorType) {
     let sensorTypeName = [];
 
-    let queryTable = await basicCalls.MakeQuery("SELECT [TypeName] FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new basicCalls.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+    let queryTable = await BCC.MakeQuery("SELECT [TypeName] FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
     queryTable.recordset.forEach(v => sensorTypeName.push(v.TypeName));
 
     return sensorTypeName;
