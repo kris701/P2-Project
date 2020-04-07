@@ -157,9 +157,7 @@ header{
 
 footer{
     width: 100%;
-    background-color: #261727;
     color: white;
+    background: #261727;
     padding: 5px;
-    position: absolute;
-    bottom: 0px;
 }
