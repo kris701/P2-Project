@@ -1,9 +1,21 @@
+/*
+    =========================
+            Header
+    =========================
+*/
+
 var path = require('path');
 var expect = require('chai').expect;
 
 var PredictionCalls = require(path.join(__dirname, '..', './PredictionAlgorithms.js'));
 
-describe('Get predictions function', function () {
+/*
+    =========================
+          Testing code
+    =========================
+*/
+
+describe('getPredictionDatetimeQuery function', function () {
 
     this.timeout(10000);
     this.retries(3);

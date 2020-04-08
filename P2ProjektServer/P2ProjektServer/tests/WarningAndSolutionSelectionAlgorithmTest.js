@@ -1,8 +1,20 @@
+/*
+    =========================
+            Header
+    =========================
+*/
+
 var path = require('path');
 var expect = require('chai').expect;
 
 var WASACall = require(path.join(__dirname, '..', './WarningAndSolutionSelectionAlgorithm.js'));
 var PredictionCalls = require(path.join(__dirname, '..', './PredictionAlgorithms.js'));
+
+/*
+    =========================
+          Testing code
+    =========================
+*/
 
 describe('getWarningsAndSolutions function', function () {
 
