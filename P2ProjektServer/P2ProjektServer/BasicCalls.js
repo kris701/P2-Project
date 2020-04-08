@@ -23,6 +23,9 @@ const ServerConfig = {
 
 module.exports.BCC = class {
     static async asyncForEach(array, callback) {
+        if (!Array.isArray(array))
+            return "err";
+
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
         }
@@ -42,7 +45,7 @@ module.exports.BCC = class {
         if (QueryText == "")
             return "err";
 
-        if (typeof Inputs !== "array")
+        if (!Array.isArray(Inputs))
             return "err";
 
         await sql.connect(ServerConfig);

@@ -47,6 +47,11 @@ const PriorityEnum = {
 // WASC, Warnings And Solutions Class
 module.exports.WASC = class {
     static async getWarningsAndSolutions(predictionDataArray) {
+        if (predictionDataArray == null)
+            return "err";
+        if (!Array.isArray(predictionDataArray.Data))
+            return "err";
+
         let returnItem = new ReturnClass([]);
 
         await BCC.asyncForEach(predictionDataArray.Data, async function (v) {

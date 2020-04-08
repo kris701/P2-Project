@@ -8,7 +8,7 @@ describe('Async foreach', function () {
     it('Should be async', async function () {
         let list = [1, 2, 3, 4, 5];
         let outlist = [];
-        await BasicCalls.BCC.asyncForEach(list, async function (v) {
+        let res = await BasicCalls.BCC.asyncForEach(list, async function (v) {
             outlist.push(v);
             await new Promise(resolve => setTimeout(resolve, 100));
         });
@@ -16,6 +16,14 @@ describe('Async foreach', function () {
         list.push(6);
 
         expect(outlist).to.eql(list);
+        expect(res).to.not.eql("err");
+    });
+
+    it('Should fail if input is not an array', async function () {
+        let res = await BasicCalls.BCC.asyncForEach("abc", async function (v) {
+
+        });
+        expect(res).to.be.equal("err");
     });
 });
 

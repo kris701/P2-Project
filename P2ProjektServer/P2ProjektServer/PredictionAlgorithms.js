@@ -41,6 +41,9 @@ class ThresholdPass {
 
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room) {
+        if (room == null)
+            return "err";
+
         let ReturnItem = new ReturnClass(Interval, []);
 
         let sensorsInRoom = await getPredictionSensorsInRoom(room);

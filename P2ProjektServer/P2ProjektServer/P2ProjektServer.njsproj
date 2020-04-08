@@ -47,7 +47,19 @@
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </Compile>
-    <Content Include="tests\BasicCalls.js">
+    <Compile Include="tests\BasicCallsTest.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
+    <Compile Include="tests\PredictionAlgorithmsTest.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
+    <Compile Include="tests\SimpleSensorInfoTest.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
+    <Content Include="tests\WarningAndSolutionSelectionAlgorithmTest.js">
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </Content>
