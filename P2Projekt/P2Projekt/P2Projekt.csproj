@@ -64,6 +64,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="pages\adminpage\CommonCalls.js" />
     <Content Include="pages\adminpage\admin.css" />
     <Content Include="pages\adminpage\admin.html" />
     <Content Include="pages\adminpage\admin.js" />
