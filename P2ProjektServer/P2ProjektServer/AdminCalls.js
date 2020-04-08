@@ -6,7 +6,8 @@
 
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
-let returnCodes = require(__dirname + "/ReturnCodes.js");
+let successCodes = require(__dirname + "/ReturnCodes.js").adminFunctionsSuccessCodes;
+let failCodes = require(__dirname + "/ReturnCodes.js").adminFunctionsFailCodes;
 
 class WarningItem {
     constructor(WarningID, SensorType, Message, Solutions) {
@@ -66,22 +67,22 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddNewWarning");
-            return 400;
+            return failCodes.NoParameters;
         }
 
-        return 200;
+        return successCodes.AddWarning;
     }
 
     static async adminRemoveWarning(warningID) {
         if (warningID != null) {
             if (warningID == -1) {
                 console.log("Client attempted to remove default warning");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
@@ -89,23 +90,23 @@ module.exports.ACC = class {
                 await BCC.MakeQuery("DELETE FROM [Warnings] WHERE [WarningID]=@warningIDInput", [new BCC.QueryValue("warningIDInput", sql.Int, warningID)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveWarning");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveWarning;
     }
 
     static async adminUpdateWarning(warningID, message) {
         if (warningID != null && message != null) {
             if (warningID == -1) {
                 console.log("Client attempted to update default warning");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
@@ -116,23 +117,23 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminUpdateWarning");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.UpdateWarning;
     }
 
     static async adminAddSolution(warningID, warningPriority, message) {
         if (warningID != null && warningPriority != null && message != null) {
             if (warningPriority < 0 || warningPriority > 3) {
                 console.log("Client tried to add solution with priority outside bounds");
-                return 400;
+                return failCodes.PriorityOutsideRange;
             }
 
             try {
@@ -144,46 +145,46 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddSolution");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.AddSolution;
     }
 
     static async adminRemoveSolutionReference(solutionID) {
         if (solutionID != null) {
             if (solutionID == -1) {
                 console.log("Client attempted to remove reference to default solution");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
                 await BCC.MakeQuery("UPDATE [Solutions] SET [WarningID]=-1 WHERE [SolutionID]=@solutionIDInput", [new BCC.QueryValue("solutionIDInput", sql.Int, solutionID)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveSolutionReference");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveSolutionRef;
     }
 
     static async adminUpdateSolution(solutionID, message, warningPriority) {
         if (solutionID != null && message != null && warningPriority != null) {
             if (solutionID == -1) {
                 console.log("Client attempted to update default solution");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
@@ -195,23 +196,23 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminUpdateSolution");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.UpdateSolution;
     }
 
     static async adminAddExistingSolution(solutionID, warningID) {
         if (solutionID != null && warningID != null) {
             if (solutionID == -1) {
                 console.log("Client attempted to update default solution");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
@@ -222,39 +223,39 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddExistingSolution");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.AddExistingSolution;
     }
 
     static async adminRemoveSolution(solutionID) {
         if (solutionID != null) {
             if (solutionID == -1) {
                 console.log("Client attempted to remove default solution");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
                 await BCC.MakeQuery("DELETE FROM [Solutions] WHERE [SolutionID]=@solutionIDInput", [new BCC.QueryValue("solutionIDInput", sql.Int, solutionID)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveSolution");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveSolution;
     }
 
     static async adminGetAllSolutions() {
@@ -274,46 +275,46 @@ module.exports.ACC = class {
                 await BCC.MakeQuery("INSERT INTO [SensorRooms] (RoomName) values (@roomNameInput)", [new BCC.QueryValue("roomNameInput", sql.NVarChar(50), roomName)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddNewRoom");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.AddRoom;
     }
 
     static async adminRemoveRoom(roomID) {
         if (roomID != null) {
             if (roomID == -1) {
                 console.log("Client attempted to remove default room");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
                 await BCC.MakeQuery("DELETE FROM [SensorRooms] WHERE [RoomID]=@roomIDInput", [new BCC.QueryValue("roomIDInput", sql.Int, roomID)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveRoom");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveRoom;
     }
 
     static async adminUpdateRoom(roomID, roomName) {
         if (roomID != null && roomName != null) {
             if (roomID == -1) {
                 console.log("Client attempted to edit default room");
-                return 400;
+                return failCodes.TargetIsDefaultID;
             }
 
             try {
@@ -324,16 +325,16 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return err;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminUpdateRoom");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.UpdateRoom;
     }
 
     static async adminGetAllSensors() {
@@ -357,16 +358,16 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminUpdateSensor");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.UpdateSensor;
     }
 
     static async adminAddNewSensor(roomID) {
@@ -378,16 +379,16 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddNewSensor");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.AddSensor;
     }
 
     static async adminRemoveSensorReference(sensorID) {
@@ -396,16 +397,16 @@ module.exports.ACC = class {
                 await BCC.MakeQuery("UPDATE [SensorInfo] SET [RoomID]=-1 WHERE [SensorID]=@sensorIDInput", [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveSensorReference");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveSensorRef;
     }
 
     static async adminRemoveSensor(sensorID) {
@@ -416,16 +417,16 @@ module.exports.ACC = class {
                 await BCC.MakeQuery("DELETE FROM [SensorInfo] WHERE [SensorID]=@sensorIDInput", [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveSensor");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveSensor;
     }
 
     static async adminGetAllSensorTypes() {
@@ -445,16 +446,16 @@ module.exports.ACC = class {
                 await BCC.MakeQuery("INSERT INTO [SensorTypes] (TypeName) values (@typeNameInput)", [new BCC.QueryValue("typeNameInput", sql.NVarChar(50), typeName)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddNewSensorType");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.AddSensorType;
     }
 
     static async adminAddExistingSensorType(sensorType, sensorID, threshold) {
@@ -468,34 +469,39 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminAddExistingSensorType");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.AddExistingSensorType;
     }
 
     static async adminRemoveSensorType(sensorType) {
         if (sensorType != null) {
+            if (sensorType == -1) {
+                console.log("Client attempted to remove default sensortype");
+                return failCodes.TargetIsDefaultID;
+            }
+
             try {
                 await BCC.MakeQuery("DELETE FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveSensorType");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveSensorType;
     }
 
     static async adminRemoveSensorTypeReference(sensorType) {
@@ -504,16 +510,16 @@ module.exports.ACC = class {
                 await BCC.MakeQuery("DELETE FROM [SensorThresholds] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminRemoveSensorTypeReference");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.RemoveSensorTypeRef;
     }
 
     static async adminUpdateSensorTypeThreshold(sensorID, sensorType, threshold) {
@@ -527,16 +533,16 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminUpdateSensorTypeThreshold");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.UpdateSensorTypeThreshold;
     }
 
     static async adminInsertSensorValue(sensorID, sensorType, sensorValue) {
@@ -551,16 +557,16 @@ module.exports.ACC = class {
                 );
             } catch (err) {
                 console.log(err);
-                return 400;
+                return failCodes.DatabaseError;
             }
         }
         else {
             console.log("Client failed to send appropriate parameters for function adminInsertSensorValue");
-            return 400;
+            return failCodes.NoParameters;
         }
 
 
-        return 200;
+        return successCodes.InsertSensorValue;
     }
 }
 
