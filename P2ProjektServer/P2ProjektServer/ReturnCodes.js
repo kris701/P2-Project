@@ -1,4 +1,4 @@
-module.exports.adminFunctionsSuccessCodes = {
+module.exports.successCodes = {
     AddWarning: 201,
     RemoveWarning: 202,
     UpdateWarning: 203,
@@ -22,7 +22,7 @@ module.exports.adminFunctionsSuccessCodes = {
     InsertSensorValue: 221
 }
 
-module.exports.adminFunctionsFailCodes = {
+module.exports.failCodes = {
     NoParameters: 401,
     TargetIsDefaultID: 402,
     PriorityOutsideRange: 403,
@@ -30,5 +30,7 @@ module.exports.adminFunctionsFailCodes = {
     InputNotAnArray: 405,
     NoSensorTypes: 406,
     IDDoesNotExist: 407,
-    DatabaseError: 408
+    DatabaseError: 408,
+    InputNotAString: 409,
+    EmptyString: 410
 }

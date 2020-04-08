@@ -2,8 +2,7 @@ var path = require('path');
 var expect = require('chai').expect;
 
 var AdminCall = require(path.join(__dirname, '..', './AdminCalls.js'));
-var successCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).adminFunctionsSuccessCodes;
-var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).adminFunctionsFailCodes;
+var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 
 describe('Get all WAS', function () {
 

@@ -6,8 +6,8 @@
 
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
-let successCodes = require(__dirname + "/ReturnCodes.js").adminFunctionsSuccessCodes;
-let failCodes = require(__dirname + "/ReturnCodes.js").adminFunctionsFailCodes;
+let successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
+let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
 class WarningItem {
     constructor(WarningID, SensorType, Message, Solutions) {

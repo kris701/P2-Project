@@ -6,6 +6,7 @@
 
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
+let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
 const Interval = 15;
 const WeekOffset = 5;
@@ -42,7 +43,7 @@ class ThresholdPass {
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room) {
         if (room == null)
-            return "err";
+            return failCodes.NoParameters;
 
         let ReturnItem = new ReturnClass(Interval, []);
 

@@ -13,6 +13,8 @@ const ServerConfig = {
     "database": "DB_A4BDCF_p2projekt"
 };
 
+let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+
 /*
     =========================
             Code Part
@@ -24,7 +26,7 @@ const ServerConfig = {
 module.exports.BCC = class {
     static async asyncForEach(array, callback) {
         if (!Array.isArray(array))
-            return "err";
+            return failCodes.InputNotAnArray;
 
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
@@ -41,12 +43,12 @@ module.exports.BCC = class {
 
     static async MakeQuery(QueryText, Inputs) {
         if (typeof QueryText !== "string")
-            return "err";
+            return failCodes.InputNotAString;
         if (QueryText == "")
-            return "err";
+            return failCodes.EmptyString;
 
         if (!Array.isArray(Inputs))
-            return "err";
+            return failCodes.InputNotAnArray;
 
         await sql.connect(ServerConfig);
 
