@@ -344,7 +344,7 @@ module.exports.ACC = class {
     static async adminAddExistingSensorType(sensorType, sensorID, threshold) {
         try {
             await BCC.MakeQuery(
-                "INSERT INTO [SensorThresholds] (SensorID, SensorType, ThresholdValue) values (@sensorIDInput, @sensorTypeInput, @thresholdInput",
+                "INSERT INTO [SensorThresholds] (SensorID, SensorType, ThresholdValue) values (@sensorIDInput, @sensorTypeInput, @thresholdInput)",
                 [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID),
                 new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType),
                 new BCC.QueryValue("thresholdInput", sql.Int, threshold)]

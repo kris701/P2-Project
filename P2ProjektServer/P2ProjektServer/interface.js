@@ -138,34 +138,6 @@ try {
                             res.write(JSON.stringify(response));
                         }
                     }
-                    else if (CheckForResource(req, "/getallsensors")) {
-                        let response = await adminCalls.adminGetAllSensors();
-                        res.write(JSON.stringify(response));
-                    }
-                    else if (CheckForResource(req, "/updatesensor")) {
-                        if (queryUrl.sensorID != null && queryUrl.roomID) {
-                            let response = await adminCalls.adminUpdateSensor(queryUrl.sensorID, queryUrl.roomID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/addnewsensor")) {
-                        if (queryUrl.roomID != null) {
-                            let response = await adminCalls.adminAddNewSensor(queryUrl.roomID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesensorreference")) {
-                        if (queryUrl.sensorID != null) {
-                            let response = await adminCalls.adminRemoveSensorReference(queryUrl.sensorID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesensor")) {
-                        if (queryUrl.sensorID != null) {
-                            let response = await adminCalls.adminRemoveSensor(queryUrl.sensorID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
                     else if (CheckForResource(req, "/getallsensortypes")) {
                         let response = await adminCalls.adminGetAllSensorTypes();
                         res.write(JSON.stringify(response));
@@ -200,9 +172,37 @@ try {
                             res.write(JSON.stringify(response));
                         }
                     }
+                    else if (CheckForResource(req, "/getallsensors")) {
+                        let response = await adminCalls.adminGetAllSensors();
+                        res.write(JSON.stringify(response));
+                    }
+                    else if (CheckForResource(req, "/updatesensor")) {
+                        if (queryUrl.sensorID != null && queryUrl.roomID) {
+                            let response = await adminCalls.adminUpdateSensor(queryUrl.sensorID, queryUrl.roomID);
+                            res.write(JSON.stringify(response));
+                        }
+                    }
+                    else if (CheckForResource(req, "/addnewsensor")) {
+                        if (queryUrl.roomID != null) {
+                            let response = await adminCalls.adminAddNewSensor(queryUrl.roomID);
+                            res.write(JSON.stringify(response));
+                        }
+                    }
+                    else if (CheckForResource(req, "/removesensorreference")) {
+                        if (queryUrl.sensorID != null) {
+                            let response = await adminCalls.adminRemoveSensorReference(queryUrl.sensorID);
+                            res.write(JSON.stringify(response));
+                        }
+                    }
+                    else if (CheckForResource(req, "/removesensor")) {
+                        if (queryUrl.sensorID != null) {
+                            let response = await adminCalls.adminRemoveSensor(queryUrl.sensorID);
+                            res.write(JSON.stringify(response));
+                        }
+                    }
                     else if (CheckForResource(req, "/insertsensorvalue")) {
-                        if (queryUrl.SensorID != null && queryUrl.SensorType && queryUrl.SensorValue != null) {
-                            let response = await adminCalls.adminInsertSensorValue(queryUrl.SensorID, queryUrl.SensorType, queryUrl.SensorValue);
+                        if (queryUrl.sensorID != null && queryUrl.sensorType && queryUrl.sensorValue != null) {
+                            let response = await adminCalls.adminInsertSensorValue(queryUrl.sensorID, queryUrl.sensorType, queryUrl.sensorValue);
                             res.write(JSON.stringify(response));
                         }
                     }
