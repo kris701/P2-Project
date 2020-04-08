@@ -1,7 +1,19 @@
+/*
+    =========================
+            Header
+    =========================
+*/
+
 var path = require('path');
 var expect = require('chai').expect;
 
 var BasicCalls = require(path.join(__dirname, '..', './BasicCalls.js'));
+
+/*
+    =========================
+          Testing code
+    =========================
+*/
 
 describe('asyncForEach function', function () {
 

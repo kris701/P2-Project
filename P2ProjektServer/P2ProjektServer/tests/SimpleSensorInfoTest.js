@@ -1,7 +1,19 @@
+/*
+    =========================
+            Header
+    =========================
+*/
+
 var path = require('path');
 var expect = require('chai').expect;
 
 var SimpleSensorInfoCall = require(path.join(__dirname, '..', './SimpleSensorInfo.js'));
+
+/*
+    =========================
+          Testing code
+    =========================
+*/
 
 describe('getSensorInfoQuery function', function () {
 

@@ -1,7 +1,19 @@
+/*
+    =========================
+            Header
+    =========================
+*/
+
 var path = require('path');
 var expect = require('chai').expect;
 
 var PredictionCalls = require(path.join(__dirname, '..', './PredictionAlgorithms.js'));
+
+/*
+    =========================
+          Testing code
+    =========================
+*/
 
 describe('getPredictionDatetimeQuery function', function () {
 
