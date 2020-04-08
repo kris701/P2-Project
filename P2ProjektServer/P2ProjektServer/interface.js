@@ -253,7 +253,7 @@ try {
         res.write(JSON.stringify("Wrong username or password"));
     }
 
-    server.listen(5000);
+    server.listen(3910);
     console.log("Node.js server is running and listening at port 5000.");
 
 } catch (err) {
