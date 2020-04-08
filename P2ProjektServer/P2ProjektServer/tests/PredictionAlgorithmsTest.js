@@ -13,10 +13,10 @@ describe('Get predictions function', function () {
         expect(res).to.be.equal("err");
     });
 
-    it('Should fail if room does not exist', async function () {
-        let res = await PredictionCalls.PAC.getPredictionDatetimeQuery(-9999);
-        expect(res).to.be.equal("err");
-    });
+    //it('Should fail if room does not exist', async function () {
+    //    let res = await PredictionCalls.PAC.getPredictionDatetimeQuery(-9999);
+    //    expect(res).to.be.equal("err");
+    //});
 
     it('Should return an array', async function () {
         let res = await PredictionCalls.PAC.getPredictionDatetimeQuery(0);
