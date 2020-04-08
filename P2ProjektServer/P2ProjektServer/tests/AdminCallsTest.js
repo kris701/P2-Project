@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 
 var AdminCall = require(path.join(__dirname, '..', './AdminCalls.js'));
 
-describe('Get all WAS', function () {
+describe('adminGetAllWarningsAndSolutions function', function () {
 
     this.timeout(20000);
 
@@ -13,7 +13,7 @@ describe('Get all WAS', function () {
     });
 });
 
-describe('Get all sensor types', function () {
+describe('adminGetAllSensorTypes function', function () {
 
     it('Should return an array', async function () {
         const ReturnValue = await AdminCall.ACC.adminGetAllSensorTypes();
@@ -25,7 +25,7 @@ describe('Get all sensor types', function () {
     });
 });
 
-describe('Add warning', function () {
+describe('adminAddNewWarning function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewWarning();
         expect(ReturnValue).to.be.equal(401);
@@ -37,7 +37,7 @@ describe('Add warning', function () {
     //});
 });
 
-describe('Remove warning', function () {
+describe('adminRemoveWarning function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveWarning();
         expect(ReturnValue).to.be.equal(401);
@@ -54,7 +54,7 @@ describe('Remove warning', function () {
     //});
 });
 
-describe('Update warning', function () {
+describe('adminUpdateWarning function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateWarning();
         expect(ReturnValue).to.be.equal(401);
@@ -71,7 +71,7 @@ describe('Update warning', function () {
     //});
 });
 
-describe('Add solution', function () {
+describe('adminAddSolution function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddSolution();
         expect(ReturnValue).to.be.equal(401);
@@ -88,7 +88,7 @@ describe('Add solution', function () {
     //});
 });
 
-describe('Remove solution reference', function () {
+describe('adminRemoveSolutionReference function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSolutionReference();
         expect(ReturnValue).to.be.equal(401);
@@ -105,7 +105,7 @@ describe('Remove solution reference', function () {
     //});
 });
 
-describe('Update solution', function () {
+describe('adminUpdateSolution function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSolution();
         expect(ReturnValue).to.be.equal(401);
@@ -122,7 +122,7 @@ describe('Update solution', function () {
     //});
 });
 
-describe('Add existing solution', function () {
+describe('adminAddExistingSolution function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddExistingSolution();
         expect(ReturnValue).to.be.equal(401);
@@ -139,7 +139,7 @@ describe('Add existing solution', function () {
     //});
 });
 
-describe('Remove solution', function () {
+describe('adminRemoveSolution function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSolution();
         expect(ReturnValue).to.be.equal(401);
@@ -156,7 +156,7 @@ describe('Remove solution', function () {
     //});
 });
 
-describe('Get all solutions', function () {
+describe('adminGetAllSolutions function', function () {
 
     it('Should return an array', async function () {
         const ReturnValue = await AdminCall.ACC.adminGetAllSolutions();
@@ -164,14 +164,14 @@ describe('Get all solutions', function () {
     });
 });
 
-describe('Add new room', function () {
+describe('adminAddNewRoom function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewRoom();
         expect(ReturnValue).to.be.equal(401);
     });
 });
 
-describe('Remove Room', function () {
+describe('adminRemoveRoom function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveRoom();
         expect(ReturnValue).to.be.equal(401);
@@ -188,7 +188,7 @@ describe('Remove Room', function () {
     //});
 });
 
-describe('Update Room', function () {
+describe('adminUpdateRoom function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateRoom();
         expect(ReturnValue).to.be.equal(401);
@@ -205,14 +205,14 @@ describe('Update Room', function () {
     //});
 });
 
-describe('Get all sensors', function () {
+describe('adminGetAllWarningsAndSolutions function', function () {
     it('Should return an array', async function () {
         const ReturnValue = await AdminCall.ACC.adminGetAllWarningsAndSolutions();
         expect(ReturnValue.Data).to.be.an('array');
     });
 });
 
-describe('Update Sensor', function () {
+describe('adminUpdateSensor function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSensor();
         expect(ReturnValue).to.be.equal(401);
@@ -229,7 +229,7 @@ describe('Update Sensor', function () {
     //});
 });
 
-describe('Add new sensor', function () {
+describe('adminAddNewSensor function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewSensor();
         expect(ReturnValue).to.be.equal(401);
@@ -241,7 +241,7 @@ describe('Add new sensor', function () {
     //});
 });
 
-describe('Remove Sensor reference', function () {
+describe('adminRemoveSensorReference function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensorReference();
         expect(ReturnValue).to.be.equal(401);
@@ -253,7 +253,7 @@ describe('Remove Sensor reference', function () {
     //});
 });
 
-describe('Remove Sensor', function () {
+describe('adminRemoveSensor function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensor();
         expect(ReturnValue).to.be.equal(401);
@@ -265,14 +265,14 @@ describe('Remove Sensor', function () {
     //});
 });
 
-describe('Add new Sensor type', function () {
+describe('adminAddNewSensorType function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewSensorType();
         expect(ReturnValue).to.be.equal(401);
     });
 });
 
-describe('Add existing Sensor type', function () {
+describe('adminAddExistingSensorType function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddExistingSensorType();
         expect(ReturnValue).to.be.equal(401);
@@ -289,7 +289,7 @@ describe('Add existing Sensor type', function () {
     //});
 });
 
-describe('Remove Sensor type', function () {
+describe('adminRemoveSensorType function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensorType();
         expect(ReturnValue).to.be.equal(401);
@@ -301,7 +301,7 @@ describe('Remove Sensor type', function () {
     //});
 });
 
-describe('Remove Sensor type reference', function () {
+describe('adminRemoveSensorTypeReference function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensorTypeReference();
         expect(ReturnValue).to.be.equal(401);
@@ -313,7 +313,7 @@ describe('Remove Sensor type reference', function () {
     //});
 });
 
-describe('Update sensor threshold', function () {
+describe('adminUpdateSensorTypeThreshold function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSensorTypeThreshold();
         expect(ReturnValue).to.be.equal(401);
@@ -330,7 +330,7 @@ describe('Update sensor threshold', function () {
     //});
 });
 
-describe('Insert sensor value', function () {
+describe('adminInsertSensorValue function', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminInsertSensorValue();
         expect(ReturnValue).to.be.equal(401);

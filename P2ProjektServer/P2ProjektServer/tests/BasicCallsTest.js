@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 
 var BasicCalls = require(path.join(__dirname, '..', './BasicCalls.js'));
 
-describe('Async foreach', function () {
+describe('asyncForEach function', function () {
 
     it('Should be async', async function () {
         let list = [1, 2, 3, 4, 5];
