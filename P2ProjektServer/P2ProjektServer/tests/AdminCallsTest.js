@@ -2,6 +2,8 @@ var path = require('path');
 var expect = require('chai').expect;
 
 var AdminCall = require(path.join(__dirname, '..', './AdminCalls.js'));
+var successCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).adminFunctionsSuccessCodes;
+var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).adminFunctionsFailCodes;
 
 describe('Get all WAS', function () {
 
@@ -28,7 +30,7 @@ describe('Get all sensor types', function () {
 describe('Add warning', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewWarning();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if target sensortype does not exist', async function () {
@@ -40,12 +42,12 @@ describe('Add warning', function () {
 describe('Remove warning', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveWarning();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target warning ID is equal to the default warning', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveWarning(-1);
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target warning ID does not exist', async function () {
@@ -57,12 +59,12 @@ describe('Remove warning', function () {
 describe('Update warning', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateWarning();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target warning ID is equal to the default warning', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateWarning(-1, "");
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target warning ID does not exist', async function () {
@@ -74,12 +76,12 @@ describe('Update warning', function () {
 describe('Add solution', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddSolution();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target priority is outside of range', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddSolution(-1, -1, "");
-        expect(ReturnValue).to.be.equal(403);
+        expect(ReturnValue).to.be.equal(failCodes.PriorityOutsideRange);
     });
 
     //it('Should fail if target warning ID does not exist', async function () {
@@ -91,12 +93,12 @@ describe('Add solution', function () {
 describe('Remove solution reference', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSolutionReference();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target solution ID is equal to the default warning', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSolutionReference(-1);
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target solution ID does not exist', async function () {
@@ -108,12 +110,12 @@ describe('Remove solution reference', function () {
 describe('Update solution', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSolution();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target solution ID is equal to the default solution', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSolution(-1, "", 0);
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target solution ID does not exist', async function () {
@@ -125,12 +127,12 @@ describe('Update solution', function () {
 describe('Add existing solution', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddExistingSolution();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target solution ID is equal to the default solution', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddExistingSolution(-1, 0);
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target solution ID or warning ID does not exist', async function () {
@@ -142,12 +144,12 @@ describe('Add existing solution', function () {
 describe('Remove solution', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSolution();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target solution ID is equal to the default solution', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSolution(-1);
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target solution ID or warning ID does not exist', async function () {
@@ -167,19 +169,19 @@ describe('Get all solutions', function () {
 describe('Add new room', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewRoom();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 });
 
 describe('Remove Room', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveRoom();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target room ID is equal to the default room', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveRoom(-1);
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target room ID does not exist', async function () {
@@ -191,12 +193,12 @@ describe('Remove Room', function () {
 describe('Update Room', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateRoom();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if target room ID is equal to the default room', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateRoom(-1, "");
-        expect(ReturnValue).to.be.equal(402);
+        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
     });
 
     //it('Should fail if target room ID does not exist', async function () {
@@ -215,7 +217,7 @@ describe('Get all sensors', function () {
 describe('Update Sensor', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSensor();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if target room ID does not exist', async function () {
@@ -232,7 +234,7 @@ describe('Update Sensor', function () {
 describe('Add new sensor', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewSensor();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if target room ID does not exist', async function () {
@@ -244,7 +246,7 @@ describe('Add new sensor', function () {
 describe('Remove Sensor reference', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensorReference();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if target sensor ID does not exist', async function () {
@@ -256,7 +258,7 @@ describe('Remove Sensor reference', function () {
 describe('Remove Sensor', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensor();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if target sensor ID does not exist', async function () {
@@ -268,14 +270,14 @@ describe('Remove Sensor', function () {
 describe('Add new Sensor type', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddNewSensorType();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 });
 
 describe('Add existing Sensor type', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminAddExistingSensorType();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if sensor type does not exist', async function () {
@@ -292,7 +294,7 @@ describe('Add existing Sensor type', function () {
 describe('Remove Sensor type', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensorType();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if sensor type does not exist', async function () {
@@ -304,7 +306,7 @@ describe('Remove Sensor type', function () {
 describe('Remove Sensor type reference', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminRemoveSensorTypeReference();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if sensor type does not exist', async function () {
@@ -316,7 +318,7 @@ describe('Remove Sensor type reference', function () {
 describe('Update sensor threshold', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminUpdateSensorTypeThreshold();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if sensor type does not exist', async function () {
@@ -333,7 +335,7 @@ describe('Update sensor threshold', function () {
 describe('Insert sensor value', function () {
     it('Should fail with no parameters', async function () {
         const ReturnValue = await AdminCall.ACC.adminInsertSensorValue();
-        expect(ReturnValue).to.be.equal(401);
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if sensor type does not exist', async function () {
