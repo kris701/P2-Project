@@ -5,6 +5,8 @@ var AdminCall = require(path.join(__dirname, '..', './AdminCalls.js'));
 
 describe('Get all WAS', function () {
 
+    this.timeout(20000);
+
     it('Should return an array', async function () {
         const ReturnValue = await AdminCall.ACC.adminGetAllWarningsAndSolutions();
         expect(ReturnValue.Data).to.be.an('array');
