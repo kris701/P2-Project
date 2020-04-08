@@ -39,9 +39,6 @@
   <ItemGroup>
     <Content Include="AdminCalls.js" />
     <Content Include="Interface.js" />
-    <Content Include="Config.json">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="BasicCalls.js">
       <SubType>Code</SubType>
     </Content>
@@ -50,6 +47,10 @@
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </Compile>
+    <Content Include="tests\BasicCalls.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Content>
     <Content Include="Thresholds.json">
       <SubType>Code</SubType>
     </Content>

@@ -4,7 +4,14 @@
     =========================
 */
 
-// Empty
+const fs = require("fs");
+const sql = require("mssql");
+const ServerConfig = {
+    "server": "sql6009.site4now.net",
+    "user": "DB_A4BDCF_p2projekt_admin",
+    "password": "a12345678",
+    "database": "DB_A4BDCF_p2projekt"
+};
 
 /*
     =========================
@@ -30,10 +37,15 @@ module.exports.BCC = class {
     }
 
     static async MakeQuery(QueryText, Inputs) {
-        const fs = require("fs");
-        const sql = require("mssql");
-        let file = fs.readFileSync(__dirname + "/Config.json");
-        await sql.connect(JSON.parse(file));
+        if (typeof QueryText !== "string")
+            return "err";
+        if (QueryText == "")
+            return "err";
+
+        if (typeof Inputs !== "array")
+            return "err";
+
+        await sql.connect(ServerConfig);
 
         var request = new sql.Request();
 
