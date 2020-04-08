@@ -42,23 +42,28 @@ module.exports.BCC = class {
     }
 
     static async MakeQuery(QueryText, Inputs) {
-        if (typeof QueryText !== "string")
-            return failCodes.InputNotAString;
-        if (QueryText == "")
-            return failCodes.EmptyString;
+        if (QueryText != null && Inputs != null) {
+            if (typeof QueryText !== "string")
+                return failCodes.InputNotAString;
+            if (QueryText == "")
+                return failCodes.EmptyString;
 
-        if (!Array.isArray(Inputs))
-            return failCodes.InputNotAnArray;
+            if (!Array.isArray(Inputs))
+                return failCodes.InputNotAnArray;
 
-        await sql.connect(ServerConfig);
+            await sql.connect(ServerConfig);
 
-        var request = new sql.Request();
+            var request = new sql.Request();
 
-        await this.asyncForEach(Inputs, async function (Value) {
-            request.input(Value.Name, Value.Type, Value.Value);
-        });
+            await this.asyncForEach(Inputs, async function (Value) {
+                request.input(Value.Name, Value.Type, Value.Value);
+            });
 
-        return await request.query(QueryText);
+            return await request.query(QueryText);
+        }
+        else {
+            return failCodes.NoParameters;
+        }
     }
 }
 

@@ -8,6 +8,7 @@ var path = require('path');
 var expect = require('chai').expect;
 
 var BasicCalls = require(path.join(__dirname, '..', './BasicCalls.js'));
+var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 
 /*
     =========================
@@ -28,14 +29,14 @@ describe('asyncForEach function', function () {
         list.push(6);
 
         expect(outlist).to.eql(list);
-        expect(res).to.not.eql("err");
+        expect(res).to.not.eql(failCodes.InputNotAnArray);
     });
 
     it('Should fail if input is not an array', async function () {
         let res = await BasicCalls.BCC.asyncForEach("abc", async function (v) {
 
         });
-        expect(res).to.be.equal("err");
+        expect(res).to.be.equal(failCodes.InputNotAnArray);
     });
 });
 
@@ -43,16 +44,21 @@ describe('MakeQuery function', function () {
 
     it('Should fail with no parameters', async function () {
         const ReturnValue = await BasicCalls.BCC.MakeQuery();
-        expect(ReturnValue).to.be.equal("err");
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
+    });
+
+    it('Should fail if querytext not a string', async function () {
+        const ReturnValue = await BasicCalls.BCC.MakeQuery(-99999, []);
+        expect(ReturnValue).to.be.equal(failCodes.InputNotAString);
     });
 
     it('Should fail with no querytext', async function () {
         const ReturnValue = await BasicCalls.BCC.MakeQuery("", []);
-        expect(ReturnValue).to.be.equal("err");
+        expect(ReturnValue).to.be.equal(failCodes.EmptyString);
     });
 
-    it('Should fail with wrong parameters', async function () {
-        const ReturnValue = await BasicCalls.BCC.MakeQuery([1, 4], "some text");
-        expect(ReturnValue).to.be.equal("err");
+    it('Should fail if Input is not an array', async function () {
+        const ReturnValue = await BasicCalls.BCC.MakeQuery("some text", "some text");
+        expect(ReturnValue).to.be.equal(failCodes.InputNotAnArray);
     });
 });

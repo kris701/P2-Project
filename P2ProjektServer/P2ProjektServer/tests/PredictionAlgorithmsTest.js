@@ -8,6 +8,7 @@ var path = require('path');
 var expect = require('chai').expect;
 
 var PredictionCalls = require(path.join(__dirname, '..', './PredictionAlgorithms.js'));
+var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 
 /*
     =========================
@@ -22,7 +23,7 @@ describe('getPredictionDatetimeQuery function', function () {
 
     it('Should fail if not room is given', async function () {
         let res = await PredictionCalls.PAC.getPredictionDatetimeQuery();
-        expect(res).to.be.equal("err");
+        expect(res).to.be.equal(failCodes.NoParameters);
     });
 
     //it('Should fail if room does not exist', async function () {

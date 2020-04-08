@@ -9,6 +9,7 @@ var expect = require('chai').expect;
 
 var WASACall = require(path.join(__dirname, '..', './WarningAndSolutionSelectionAlgorithm.js'));
 var PredictionCalls = require(path.join(__dirname, '..', './PredictionAlgorithms.js'));
+var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 
 /*
     =========================
@@ -23,12 +24,12 @@ describe('getWarningsAndSolutions function', function () {
 
     it('Should fail with no parameters', async function () {
         const ReturnValue = await WASACall.WASC.getWarningsAndSolutions();
-        expect(ReturnValue).to.be.equal("err");
+        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
     });
 
     it('Should fail if parameter is not an array', async function () {
         const ReturnValue = await WASACall.WASC.getWarningsAndSolutions("abc");
-        expect(ReturnValue).to.be.equal("err");
+        expect(ReturnValue).to.be.equal(failCodes.InputNotAnArray);
     });
 
     it('Should return an array', async function () {

@@ -51,7 +51,7 @@ module.exports.WASC = class {
         if (predictionDataArray == null)
             return failCodes.NoParameters;
         if (!Array.isArray(predictionDataArray.Data))
-            return failCodes.InputIsNotAnArray;
+            return failCodes.InputNotAnArray;
 
         let returnItem = new ReturnClass([]);
 
