@@ -11,6 +11,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SensorCode", "SensorCode\Se
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E0CFD53-086D-4543-A6B1-F91D6157EB12}"
+	ProjectSection(SolutionItems) = preProject
+		GeneralReadmes.txt = GeneralReadmes.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
