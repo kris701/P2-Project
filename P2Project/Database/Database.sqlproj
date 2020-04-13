@@ -6,14 +6,14 @@
     <Name>Database</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{2def10b0-92bf-47b9-a3e1-6e6906b359d9}</ProjectGuid>
+    <ProjectGuid>{ad3eaa17-21a0-4c25-a3f4-8778ea2998e2}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
     <RootNamespace>Database</RootNamespace>
     <AssemblyName>Database</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
+    <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -22,6 +22,8 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -58,18 +60,16 @@
     <Folder Include="Properties" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
-    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="dbo\Tables\SensorTypes.sql" />
+    <Build Include="dbo\Tables\SensorThresholds.sql" />
+    <Build Include="dbo\Tables\Warnings.sql" />
+    <Build Include="dbo\Tables\Solutions.sql" />
     <Build Include="dbo\Tables\SensorInfo.sql" />
     <Build Include="dbo\Tables\SensorRooms.sql" />
-    <Build Include="dbo\Tables\SensorThresholds.sql" />
-    <Build Include="dbo\Tables\SensorTypes.sql" />
     <Build Include="dbo\Tables\SensorValue_CO2.sql" />
     <Build Include="dbo\Tables\SensorValue_RH.sql" />
     <Build Include="dbo\Tables\SensorValue_Temperature.sql" />
-    <Build Include="dbo\Tables\Solutions.sql" />
-    <Build Include="dbo\Tables\Warnings.sql" />
-    <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
   </ItemGroup>
 </Project>

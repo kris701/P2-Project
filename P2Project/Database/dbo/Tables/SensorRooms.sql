@@ -1,8 +1,6 @@
-﻿CREATE TABLE [dbo].[SensorRooms](
-	[RoomID] [int] NOT NULL,
-	[RoomName] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_SensorRooms] PRIMARY KEY CLUSTERED 
-(
-	[RoomID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+﻿CREATE TABLE [dbo].[SensorRooms] (
+    [RoomID]   INT           IDENTITY (-1, 1) NOT NULL,
+    [RoomName] NVARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_SensorRooms] PRIMARY KEY CLUSTERED ([RoomID] ASC)
+);
+

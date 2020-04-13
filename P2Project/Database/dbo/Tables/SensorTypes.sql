@@ -1,8 +1,6 @@
-﻿CREATE TABLE [dbo].[SensorTypes](
-	[SensorType] [int] NOT NULL,
-	[TypeName] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_SensorTypes] PRIMARY KEY CLUSTERED 
-(
-	[SensorType] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+﻿CREATE TABLE [dbo].[SensorTypes] (
+    [SensorType] INT           IDENTITY (-1, 1) NOT NULL,
+    [TypeName]   NVARCHAR (50) NOT NULL,
+    CONSTRAINT [PK_SensorTypes] PRIMARY KEY CLUSTERED ([SensorType] ASC)
+);
+
