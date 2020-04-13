@@ -1,14 +1,15 @@
-P2Projekt/.vs
-P2Projekt/P2Projekt/obj
-P2Projekt/P2Projekt/bin
-P2ProjektServer/.vs
-P2ProjektServer/P2ProjektServer/obj
-P2ProjektServer/P2ProjektServer/bin
+P2Project/.vs
+P2Project/ServerSide/obj
+P2Project/ServerSide/bin
+P2Project/ServerSide/node_modules
 
-P2ProjektTestServer/.vs
-P2ProjektTestServer/P2TestServer1/obj
-P2ProjektTestServer/P2TestServer1/bin
+P2Project/Database/bin
+P2Project/Database/Import Script Logs
+P2Project/Database/obj
 
-P2ProjectVirtualSensors/P2ProjectVirtualSensors/.vs
-P2ProjectVirtualSensors/P2ProjectVirtualSensors/P2ProjectVirtualSensors/obj
-P2ProjectVirtualSensors/P2ProjectVirtualSensors/P2ProjectVirtualSensors/bin
+P2Project/ClientSide/bin
+P2Project/ClientSide/obj
+P2Project/ClientSide/Properties
+
+P2Project/SensorCode/__vm
+P2Project/SensorCode/Debug
