@@ -6,6 +6,8 @@ P2Project/ServerSide/node_modules
 P2Project/Database/bin
 P2Project/Database/Import Script Logs
 P2Project/Database/obj
+P2Project/Database/Database.dbmdl
+P2Project/Database/Database.jfm
 
 P2Project/ClientSide/bin
 P2Project/ClientSide/obj
