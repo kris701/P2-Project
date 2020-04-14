@@ -66,3 +66,9 @@ To update the server backend code:
 	8. Go to: srv => www => dat2c1-3.p2datsw.cs.aau.dk => data => node
 	9. Type "node interface.js"
 	10. The server should now be running
+
+To run Unit-test
+	1. Right-click "npm" in Solution Explore
+	2. Click install new packages
+	3. Install the packages "Mocha", "Chai" and "path"
+	4. The tests should now show up
