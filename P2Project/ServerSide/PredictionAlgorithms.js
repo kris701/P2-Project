@@ -157,29 +157,29 @@ class IVC {
     }
 
     // O(n), Omega(1), Theta(n)
-    static async InsertIntoCorrectPositionInArray(NewInterval, ReturnArray, timestamp, date) {
+    static async InsertIntoCorrectPositionInArray(NewInterval, InsertArray, timestamp, date) {
         let Index = 0;
-        for (let i = 0; i < ReturnArray.length; i++) {
-            if (ReturnArray[i].TimeUntil > NewInterval) {
+        for (let i = 0; i < InsertArray.length; i++) {
+            if (InsertArray[i].TimeUntil > NewInterval) {
                 break;
             }
             Index++;
         }
         let weight = await WC.getWeight(timestamp, date);
-        ReturnArray.splice(Index, 0, new ThresholdPass(NewInterval, weight));
-        return ReturnArray;
+        InsertArray.splice(Index, 0, new ThresholdPass(NewInterval, weight));
+        return InsertArray;
     }
 
     // O(n), Omega(1), Theta(1)
-    static async DoesValueExistAndInsert(ReturnArray, NewInterval, timestamp, date) {
+    static async DoesValueExistAndInsert(InsertArray, NewInterval, timestamp, date) {
         let Exist = false;
-        for (let i = 0; i < ReturnArray.length; i++) {
-            if (ReturnArray[i].TimeUntil == NewInterval) {
+        for (let i = 0; i < InsertArray.length; i++) {
+            if (InsertArray[i].TimeUntil == NewInterval) {
                 Exist = true;
                 let weight = await WC.getWeight(timestamp, date);
-                ReturnArray[i].TimesExceeded += weight;
+                InsertArray[i].TimesExceeded += weight;
             }
-            if (ReturnArray[i].TimeUntil > NewInterval)
+            if (InsertArray[i].TimeUntil > NewInterval)
                 break;
         }
         return Exist;
@@ -194,7 +194,9 @@ class QCC {
         let result = [];
 
         let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
-        queryTable.recordset.forEach(v => result.push(v));
+        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+            result.push(v);
+        });
 
         return result;
     }
@@ -245,7 +247,9 @@ class QCC {
             new BCC.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
             new BCC.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
         ]);
-        queryTable.recordset.forEach(v => result.push(v));
+        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+            result.push(v);
+        });
 
         return result;
     }

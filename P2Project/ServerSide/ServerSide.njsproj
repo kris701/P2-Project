@@ -54,6 +54,10 @@
     <Compile Include="tests\WarningAndSolutionSelectionAlgorithmTest.js">
       <TestFramework>mocha</TestFramework>
     </Compile>
+    <Compile Include="tests\GeneralTests.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
     <Content Include="WarningAndSolutionSelectionAlgorithm.js" />
   </ItemGroup>
   <ItemGroup>

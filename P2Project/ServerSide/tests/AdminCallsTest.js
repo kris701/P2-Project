@@ -9,6 +9,8 @@ var expect = require('chai').expect;
 
 var AdminCall = require(path.join(__dirname, '..', './AdminCalls.js'));
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
+var successCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).successCodes;
+var generalTests = require("./GeneralTests.js").GTC;
 
 /*
     =========================
@@ -17,345 +19,163 @@ var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCode
 */
 
 describe('adminGetAllWarningsAndSolutions function', function () {
+    this.timeout(200000);
 
-    this.timeout(20000);
-
-    it('Should return an array', async function () {
-        const ReturnValue = await AdminCall.ACC.adminGetAllWarningsAndSolutions();
-        expect(ReturnValue.Data).to.be.an('array');
-    });
+    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.WASC.adminGetAllWarningsAndSolutions());
 });
 
 describe('adminGetAllSensorTypes function', function () {
-
-    it('Should return an array', async function () {
-        const ReturnValue = await AdminCall.ACC.adminGetAllSensorTypes();
-        expect(ReturnValue.Data).to.be.an('array');
-    });
-    it('Should include at least one sensor type', async function () {
-        const AllSensorTypes = await AdminCall.ACC.adminGetAllSensorTypes();
-        expect(AllSensorTypes.Data).to.have.length.above(0);
-    });
+    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.SEC.adminGetAllSensorTypes());
+    generalTests.OutputArrayMustBeLargerThanDotData(AdminCall.ACC.SEC.adminGetAllSensorTypes(), 0);
 });
 
 describe('adminAddNewWarning function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddNewWarning();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if target sensortype does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminAddNewWarning(99999, "");
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminAddNewWarning(), failCodes.NoParameters);
+    generalTests.ShouldReturnDatabaseErrorWithInput(AdminCall.ACC.WASC.adminAddNewWarning(-99, ""), failCodes.DatabaseError);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddNewWarning(0, []), successCodes.AddWarning);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddNewWarning([], 0), successCodes.AddWarning);
 });
 
 describe('adminRemoveWarning function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveWarning();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target warning ID is equal to the default warning', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveWarning(-1);
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target warning ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveWarning(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminRemoveWarning(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminRemoveWarning(-1), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminRemoveWarning([]), successCodes.RemoveWarning);
 });
 
 describe('adminUpdateWarning function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateWarning();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target warning ID is equal to the default warning', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateWarning(-1, "");
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target warning ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateWarning(-99999, "");
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminUpdateWarning(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminUpdateWarning(-1, ""), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateWarning(0, []), successCodes.UpdateWarning);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateWarning([], 0), successCodes.UpdateWarning);
 });
 
 describe('adminAddSolution function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddSolution();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target priority is outside of range', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddSolution(-1, -1, "");
-        expect(ReturnValue).to.be.equal(failCodes.PriorityOutsideRange);
-    });
-
-    //it('Should fail if target warning ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminAddSolution(-99999, 0, "");
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminAddSolution(), failCodes.NoParameters);
+    generalTests.ExpectErrorCodeFromInput('Should fail if target priority is outside of range', AdminCall.ACC.WASC.adminAddSolution(-1, -1, ""), failCodes.PriorityOutsideRange);
+    generalTests.ShouldReturnDatabaseErrorWithInput(AdminCall.ACC.WASC.adminAddSolution(-99, 0, ""), failCodes.DatabaseError);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddSolution(0, [], ""), successCodes.AddSolution);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddSolution(0, 0, []), successCodes.AddSolution);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddSolution([], 0, ""), successCodes.AddSolution);
 });
 
 describe('adminRemoveSolutionReference function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSolutionReference();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target solution ID is equal to the default warning', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSolutionReference(-1);
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target solution ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveSolutionReference(-99999, 0, "");
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminRemoveSolutionReference(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminRemoveSolutionReference(-1), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminRemoveSolutionReference([]), successCodes.RemoveSolutionRef);
 });
 
 describe('adminUpdateSolution function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateSolution();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target solution ID is equal to the default solution', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateSolution(-1, "", 0);
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target solution ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateSolution(-99999, "");
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminUpdateSolution(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminUpdateSolution(-1, "", 0), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateSolution(-1, [], 0), successCodes.UpdateSolution);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateSolution([], "", 0), successCodes.UpdateSolution);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateSolution(-1, "", []), successCodes.UpdateSolution);
 });
 
 describe('adminAddExistingSolution function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddExistingSolution();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target solution ID is equal to the default solution', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddExistingSolution(-1, 0);
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target solution ID or warning ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminAddExistingSolution(-99999, -99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminAddExistingSolution(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminAddExistingSolution(-1, 0), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddExistingSolution(0, []), successCodes.AddExistingSolution);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddExistingSolution([], 0), successCodes.AddExistingSolution);
 });
 
 describe('adminRemoveSolution function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSolution();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target solution ID is equal to the default solution', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSolution(-1);
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target solution ID or warning ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveSolution(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminRemoveSolution(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminRemoveSolution(-1), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminRemoveSolution([]), successCodes.RemoveSolution);
 });
 
 describe('adminGetAllSolutions function', function () {
+    this.timeout(200000);
 
-    it('Should return an array', async function () {
-        const ReturnValue = await AdminCall.ACC.adminGetAllSolutions();
-        expect(ReturnValue.Data).to.be.an('array');
-    });
-});
-
-describe('adminAddNewRoom function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddNewRoom();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-});
-
-describe('adminRemoveRoom function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveRoom();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target room ID is equal to the default room', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveRoom(-1);
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target room ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveRoom(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
-});
-
-describe('adminUpdateRoom function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateRoom();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    it('Should fail if target room ID is equal to the default room', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateRoom(-1, "");
-        expect(ReturnValue).to.be.equal(failCodes.TargetIsDefaultID);
-    });
-
-    //it('Should fail if target room ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateRoom(-99999, "");
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.WASC.adminGetAllSolutions());
 });
 
 describe('adminGetAllWarningsAndSolutions function', function () {
-    it('Should return an array', async function () {
-        const ReturnValue = await AdminCall.ACC.adminGetAllWarningsAndSolutions();
-        expect(ReturnValue.Data).to.be.an('array');
-    });
+    this.timeout(200000);
+
+    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.WASC.adminGetAllWarningsAndSolutions());
+});
+
+
+
+describe('adminAddNewRoom function', function () {
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddNewRoom(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddNewRoom([]), successCodes.AddRoom);
+});
+
+describe('adminRemoveRoom function', function () {
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveRoom(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminRemoveRoom(-1), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveRoom([]), successCodes.RemoveRoom);
+});
+
+describe('adminUpdateRoom function', function () {
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminUpdateRoom(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminUpdateRoom(-1, ""), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateRoom(0, []), successCodes.UpdateRoom);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateRoom([],0), successCodes.UpdateRoom);
 });
 
 describe('adminUpdateSensor function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateSensor();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if target room ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateSensor(0, -99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
-
-    //it('Should fail if target sensor ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateSensor(0, -99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminUpdateSensor(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensor(0, []), successCodes.UpdateSensor);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensor([], 0), successCodes.UpdateSensor);
 });
 
 describe('adminAddNewSensor function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddNewSensor();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if target room ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminAddNewSensor(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddNewSensor(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddNewSensor([]), successCodes.AddSensor);
 });
 
 describe('adminRemoveSensorReference function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSensorReference();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if target sensor ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveSensorReference(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensorReference(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensorReference([]), successCodes.RemoveSensorRef);
 });
 
 describe('adminRemoveSensor function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSensor();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if target sensor ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveSensor(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensor(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminRemoveSensor(-1), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensor([]), successCodes.RemoveSensor);
 });
 
 describe('adminAddNewSensorType function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddNewSensorType();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddNewSensorType(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddNewSensorType([]), successCodes.AddSensorType);
 });
 
 describe('adminAddExistingSensorType function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminAddExistingSensorType();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if sensor type does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminAddExistingSensorType(-99999, 0, 0);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
-
-    //it('Should fail if target sensor ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminAddExistingSensorType(0, -99999, 0);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddExistingSensorType(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddExistingSensorType([],0,0), successCodes.AddExistingSensorType);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddExistingSensorType(0,[],0), successCodes.AddExistingSensorType);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddExistingSensorType(0,0,[]), successCodes.AddExistingSensorType);
 });
 
 describe('adminRemoveSensorType function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSensorType();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if sensor type does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveSensorType(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensorType(), failCodes.NoParameters);
+    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminRemoveSensorType(-1), -1, failCodes.TargetIsDefaultID);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensorType([]), successCodes.RemoveSensorType);
 });
 
 describe('adminRemoveSensorTypeReference function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminRemoveSensorTypeReference();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if sensor type does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminRemoveSensorTypeReference(-99999);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensorTypeReference(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensorTypeReference([]), successCodes.RemoveSensorTypeRef);
 });
 
 describe('adminUpdateSensorTypeThreshold function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminUpdateSensorTypeThreshold();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if sensor type does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateSensorTypeThreshold(-99999, 0, 0);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
-
-    //it('Should fail if target sensor ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminUpdateSensorTypeThreshold(0, -99999, 0);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold([], 0, 0), successCodes.UpdateSensorTypeThreshold);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold(0, [], 0), successCodes.UpdateSensorTypeThreshold);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold(0, 0, []), successCodes.UpdateSensorTypeThreshold);
 });
+
+
 
 describe('adminInsertSensorValue function', function () {
-    it('Should fail with no parameters', async function () {
-        const ReturnValue = await AdminCall.ACC.adminInsertSensorValue();
-        expect(ReturnValue).to.be.equal(failCodes.NoParameters);
-    });
-
-    //it('Should fail if sensor type does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminInsertSensorValue(-99999, 0, 0);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
-
-    //it('Should fail if target sensor ID does not exist', async function () {
-    //    const ReturnValue = await AdminCall.ACC.adminInsertSensorValue(0, -99999, 0);
-    //    expect(ReturnValue).to.be.above(399);
-    //});
+    generalTests.ShouldFailWithToParameters(AdminCall.ACC.adminInsertSensorValue(), failCodes.NoParameters);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue([], 0, 0), successCodes.InsertSensorValue);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue(0, [], 0), successCodes.InsertSensorValue);
+    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue(0, 0, []), successCodes.InsertSensorValue);
 });
+
+
