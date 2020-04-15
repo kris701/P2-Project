@@ -265,10 +265,12 @@ class WC {
     }
 
     static async getDaysSince(timestamp, date) {
-        return ((date.getTime() - timestamp.getTime()) * millisecondsPerDay);
+        let timestampDate = new Date(timestamp);
+        let senderDate = new Date(date);
+        return ((senderDate.getTime() - timestampDate.getTime()) / millisecondsPerDay);
     }
 
     static async weightConverter(timeSince) {
-        return ((-1) * timeSince + 14);
+        return (1 / timeSince);
     }
 }
