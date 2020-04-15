@@ -165,7 +165,7 @@ class IVC {
             }
             Index++;
         }
-        let weight = await WC.getWeight(timestamp, date);
+        let weight = WC.getWeight(timestamp, date);
         InsertArray.splice(Index, 0, new ThresholdPass(NewInterval, weight));
         return InsertArray;
     }
@@ -173,10 +173,11 @@ class IVC {
     // O(n), Omega(1), Theta(1)
     static async DoesValueExistAndInsert(InsertArray, NewInterval, timestamp, date) {
         let Exist = false;
+
         for (let i = 0; i < InsertArray.length; i++) {
             if (InsertArray[i].TimeUntil == NewInterval) {
                 Exist = true;
-                let weight = await WC.getWeight(timestamp, date);
+                let weight = WC.getWeight(timestamp, date);
                 InsertArray[i].TimesExceeded += weight;
             }
             if (InsertArray[i].TimeUntil > NewInterval)
@@ -258,19 +259,19 @@ class QCC {
 
 // WC: Weight class
 class WC {
-    static async getWeight(timestamp, date) {
-        let daysSince = await WC.getDaysSince(timestamp, date);
-        let weight = await WC.weightConverter(daysSince);
+    static getWeight(timestamp, date) {
+        let daysSince = WC.getDaysSince(timestamp, date);
+        let weight = WC.weightConverter(daysSince);
         return weight;
     }
 
-    static async getDaysSince(timestamp, date) {
+    static getDaysSince(timestamp, date) {
         let timestampDate = new Date(timestamp);
         let senderDate = new Date(date);
         return ((senderDate.getTime() - timestampDate.getTime()) / millisecondsPerDay);
     }
 
-    static async weightConverter(timeSince) {
+    static weightConverter(timeSince) {
         return (1 / timeSince);
     }
 }
