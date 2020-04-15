@@ -254,7 +254,7 @@ try {
     }
 
     server.listen(3910);
-    console.log("Node.js server is running and listening at port 5000.");
+    console.log("Node.js server is running and listening at port 3910.");
 
 } catch (err) {
     /*

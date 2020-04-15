@@ -7,4 +7,4 @@ async function jsonFetch(url) {
     console.log(myJson);
 }
 
-jsonFetch("http://localhost:5000/getsensorinfo").catch(e => console.log(e));
+jsonFetch("http://localhost:3910/getsensorinfo").catch(e => console.log(e));

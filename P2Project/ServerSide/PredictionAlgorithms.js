@@ -9,8 +9,8 @@ let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
 const Interval = 15;
-const WeekOffset = 5;
-const HourReach = 24;
+const WeekOffset = 20;
+const HourReach = 3;
 
 class ReturnClass {
     constructor(Interval, Data) {
@@ -63,7 +63,7 @@ module.exports.PAC = class {
 async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
     await BCC.asyncForEach(SensorSensorTypes, async function (v) {
 
-        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID);
+        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID, v.ThresholdValue);
         if (!Exists) {
             let NewName = await getSensorTypeName(v.SensorType);
             let NewReturnValue = new SensorType(v.SensorType, NewName, []);
@@ -73,11 +73,11 @@ async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
     });
 }
 
-async function CheckForEqualValue(SearchArray, SensorType, SensorID) {
+async function CheckForEqualValue(SearchArray, SensorType, SensorID, ThresholdValue) {
     let ReturnValue = false;
     await BCC.asyncForEach(SearchArray, async function (v) {
         if (v.SensorType == SensorType) {
-            await CheckForThresholdPass(SensorID, v.Name, v.ThresholdValue, v.ThresholdPasses);
+            await CheckForThresholdPass(SensorID, v.Name, ThresholdValue, v.ThresholdPasses);
             ReturnValue = true;
         }
     });
@@ -138,7 +138,7 @@ async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue) {
     let OldestEntry = await GetOldestEntry(sensorType, sensorID);
     OldestEntry.setDate(OldestEntry.getDate() - 1 - Math.ceil(HourReach / 24));
 
-    for (let i = 1; i <= (WeekOffset * 7); i+=1) {
+    for (let i = 7; i <= (WeekOffset * 7); i+=7) {
         let dateMin = new Date();
         let dateMax = new Date();
 
@@ -157,7 +157,7 @@ async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue) {
 
 async function GetOldestEntry(SensorType, SensorID) {
     let queryTable = await BCC.MakeQuery(
-        "SELECT TOP 1 Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
+        "SELECT MIN(Timestamp) as Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
             new BCC.QueryValue("sensorIDInput", sql.Int, SensorID),
     ]);
 

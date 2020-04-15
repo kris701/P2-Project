@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
+    "http": "0.0.1-security",
     "mocha": "^7.1.1",
+    "mssql": "^6.2.0",
     "path": "^0.12.7"
   },
   "scripts": {
