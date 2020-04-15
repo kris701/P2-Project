@@ -46,16 +46,18 @@ try {
             else if (CheckForResource(req, "/getpredictiondata")) {
                 var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
 
-                if (queryUrl.room != null) {
-                    let response = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room);
+                //jsonFetch("http://localhost:3910/getpredictiondata?room=0&date=2020-04-15T09:00:00").catch(e => console.log(e));
+
+                if (queryUrl.room != null && queryUrl.date != null) {
+                    let response = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room, queryUrl.date);
                     res.write(JSON.stringify(response));
                 }
             }
             else if (CheckForResource(req, "/getwarningsandsolutions")) {
                 var queryUrl = queryStringParse(req.url);
 
-                if (queryUrl.room != null) {
-                    let predictionData = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room);
+                if (queryUrl.room != null && queryUrl.date != null) {
+                    let predictionData = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room, queryUrl.date);
                     let response = await warningAndSolution.WASC.getWarningsAndSolutions(predictionData);
                     res.write(JSON.stringify(response));
                 }

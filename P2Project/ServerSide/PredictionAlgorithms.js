@@ -41,8 +41,10 @@ class ThresholdPass {
 // Prediction Algorithm Class
 
 module.exports.PAC = class {
-    static async getPredictionDatetimeQuery(room) {
+    static async getPredictionDatetimeQuery(room, date) {
         if (room == null)
+            return failCodes.NoParameters;
+        if (date == null)
             return failCodes.NoParameters;
 
         let ReturnItem = new ReturnClass(Interval, []);
@@ -51,7 +53,7 @@ module.exports.PAC = class {
         await BCC.asyncForEach(sensorsInRoom, async function (v) {
             let SensorSensorTypes = await getSensorTypesForSensor(v.SensorID);
 
-            await LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem);
+            await LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem, date);
         });
 
         return ReturnItem;
@@ -60,35 +62,35 @@ module.exports.PAC = class {
 
 // Private Area
 
-async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem) {
+async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem, date) {
     await BCC.asyncForEach(SensorSensorTypes, async function (v) {
 
-        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID, v.ThresholdValue);
+        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID, v.ThresholdValue, date);
         if (!Exists) {
             let NewName = await getSensorTypeName(v.SensorType);
             let NewReturnValue = new SensorType(v.SensorType, NewName, []);
-            await CheckForThresholdPass(v.SensorID, NewName, v.ThresholdValue, NewReturnValue.ThresholdPasses)
+            await CheckForThresholdPass(v.SensorID, NewName, v.ThresholdValue, NewReturnValue.ThresholdPasses, date)
             ReturnItem.Data.push(NewReturnValue);
         }
     });
 }
 
-async function CheckForEqualValue(SearchArray, SensorType, SensorID, ThresholdValue) {
+async function CheckForEqualValue(SearchArray, SensorType, SensorID, ThresholdValue, date) {
     let ReturnValue = false;
     await BCC.asyncForEach(SearchArray, async function (v) {
         if (v.SensorType == SensorType) {
-            await CheckForThresholdPass(SensorID, v.Name, ThresholdValue, v.ThresholdPasses);
+            await CheckForThresholdPass(SensorID, v.Name, ThresholdValue, v.ThresholdPasses, date);
             ReturnValue = true;
         }
     });
     return ReturnValue;
 }
 
-async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray) {
-    let SensorValues = await getPredictionSensorValues(SensorID, SensorType, ThresholdValue);
+async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray, date) {
+    let SensorValues = await getPredictionSensorValues(SensorID, SensorType, ThresholdValue, date);
 
     await BCC.asyncForEach(SensorValues, async function (v) {
-        let NewInterval = getTimeLeftInIntervals(v.Timestamp);
+        let NewInterval = getTimeLeftInIntervals(v.Timestamp, date);
         let Exist = await DoesValueExistAndInsert(ReturnArray, NewInterval);
 
         if (!Exist)
@@ -132,15 +134,15 @@ async function getPredictionSensorsInRoom(room) {
     return result;
 }
 
-async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue) {
+async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue, date) {
     let result = [];
 
     let OldestEntry = await GetOldestEntry(sensorType, sensorID);
     OldestEntry.setDate(OldestEntry.getDate() - 1 - Math.ceil(HourReach / 24));
 
     for (let i = 7; i <= (WeekOffset * 7); i+=7) {
-        let dateMin = new Date();
-        let dateMax = new Date();
+        let dateMin = new Date(date);
+        let dateMax = new Date(date);
 
         dateMin.setDate(dateMin.getDate() - i);
         dateMax.setDate(dateMax.getDate() - i);
@@ -182,9 +184,9 @@ async function getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax
 }
 
 
-function getTimeLeftInIntervals(timestamp) {
+function getTimeLeftInIntervals(timestamp, senderdate) {
     let date = new Date(timestamp);
-    let CurrentDate = new Date();
+    let CurrentDate = new Date(senderdate);
     date.setDate(CurrentDate.getDate());
     date.setMonth(CurrentDate.getMonth());
 

@@ -32,7 +32,7 @@ describe('getPredictionDatetimeQuery function', function () {
     //});
 
     it('Should return an array', async function () {
-        let res = await PredictionCalls.PAC.getPredictionDatetimeQuery(0);
+        let res = await PredictionCalls.PAC.getPredictionDatetimeQuery(0, new Date());
         expect(res.Data).to.be.an('array');
     });
 });
