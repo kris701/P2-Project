@@ -31,6 +31,11 @@ class ThresholdPass {
         this.TimesExceeded = TimesExceeded;
     }
 }
+class ThresholdWeight {
+    static async weightConverter(timeSince) {
+        return ((-1) * timeSince + 5);
+    }
+}
 
 /*
     =========================
