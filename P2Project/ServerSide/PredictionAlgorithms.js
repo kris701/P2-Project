@@ -11,6 +11,7 @@ let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 const Interval = 15;
 const WeekOffset = 20;
 const HourReach = 3;
+const millisecondsPerDay = 86400000;
 
 class ReturnClass {
     constructor(Interval, Data) {
@@ -29,11 +30,6 @@ class ThresholdPass {
     constructor(TimeUntil, TimesExceeded) {
         this.TimeUntil = TimeUntil;
         this.TimesExceeded = TimesExceeded;
-    }
-}
-class ThresholdWeight {
-    static async weightConverter(timeSince) {
-        return ((-1) * timeSince + 5);
     }
 }
 
@@ -102,7 +98,7 @@ class IRVC {
         await BCC.asyncForEach(SensorValues, async function (SensorValue) {
             let NewInterval = IRVC.TimeDiffToInterval(SensorValue.Timestamp, date);
 
-            IVC.InsertNewInterval(ThresholdPassesArray, NewInterval);
+            IVC.InsertNewInterval(ThresholdPassesArray, NewInterval, SensorValue.Timestamp, date);
         });
     }
 
@@ -153,15 +149,15 @@ class IRVC {
 class IVC {
 
     // Insert interval value, if it exists, increment that value
-    static async InsertNewInterval(InsertArray, Interval) {
-        let Exist = await IVC.DoesValueExistAndInsert(InsertArray, Interval);
+    static async InsertNewInterval(InsertArray, Interval, timestamp, date) {
+        let Exist = await IVC.DoesValueExistAndInsert(InsertArray, Interval, timestamp, date);
 
         if (!Exist)
-            InsertArray = await IVC.InsertIntoCorrectPositionInArray(Interval, InsertArray);
+            InsertArray = await IVC.InsertIntoCorrectPositionInArray(Interval, InsertArray, timestamp, date);
     }
 
     // O(n), Omega(1), Theta(n)
-    static async InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
+    static async InsertIntoCorrectPositionInArray(NewInterval, ReturnArray, timestamp, date) {
         let Index = 0;
         for (let i = 0; i < ReturnArray.length; i++) {
             if (ReturnArray[i].TimeUntil > NewInterval) {
@@ -169,17 +165,19 @@ class IVC {
             }
             Index++;
         }
-        ReturnArray.splice(Index, 0, new ThresholdPass(NewInterval, 1));
+        let weight = await WC.getWeight(timestamp, date);
+        ReturnArray.splice(Index, 0, new ThresholdPass(NewInterval, weight));
         return ReturnArray;
     }
 
     // O(n), Omega(1), Theta(1)
-    static async DoesValueExistAndInsert(ReturnArray, NewInterval) {
+    static async DoesValueExistAndInsert(ReturnArray, NewInterval, timestamp, date) {
         let Exist = false;
         for (let i = 0; i < ReturnArray.length; i++) {
             if (ReturnArray[i].TimeUntil == NewInterval) {
                 Exist = true;
-                ReturnArray[i].TimesExceeded += 1;
+                let weight = await WC.getWeight(timestamp, date);
+                ReturnArray[i].TimesExceeded += weight;
             }
             if (ReturnArray[i].TimeUntil > NewInterval)
                 break;
@@ -252,4 +250,21 @@ class QCC {
         return result;
     }
 
+}
+
+// WC: Weight class
+class WC {
+    static async getWeight(timestamp, date) {
+        let daysSince = await WC.getDaysSince(timestamp, date);
+        let weight = await WC.weightConverter(daysSince);
+        return weight;
+    }
+
+    static async getDaysSince(timestamp, date) {
+        return ((date.getTime() - timestamp.getTime()) * millisecondsPerDay);
+    }
+
+    static async weightConverter(timeSince) {
+        return ((-1) * timeSince + 14);
+    }
 }
