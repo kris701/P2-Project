@@ -33,7 +33,7 @@ describe('getWarningsAndSolutions function', function () {
     });
 
     it('Should return an array', async function () {
-        const Predictions = await PredictionCalls.PAC.getPredictionDatetimeQuery(0);
+        const Predictions = await PredictionCalls.PAC.getPredictionDatetimeQuery(0, new Date());
         const ReturnValue = await WASACall.WASC.getWarningsAndSolutions(Predictions);
         expect(ReturnValue.Data).to.be.an('array');
     });

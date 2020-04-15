@@ -40,6 +40,9 @@ try {
 
         try {
             if (CheckForResource(req, "/getsensorinfo")) {
+
+                // jsonFetch("http://localhost:3910/getsensorinfo").catch(e => console.log(e));
+
                 let response = await sensorInfo.SSIC.getSensorInfoQuery();
                 res.write(JSON.stringify(response));
             }
@@ -55,6 +58,8 @@ try {
             }
             else if (CheckForResource(req, "/getwarningsandsolutions")) {
                 var queryUrl = queryStringParse(req.url);
+
+                //jsonFetch("http://localhost:3910/getwarningsandsolutions?room=0&date=2020-04-15T09:00:00").catch(e => console.log(e));
 
                 if (queryUrl.room != null && queryUrl.date != null) {
                     let predictionData = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room, queryUrl.date);
