@@ -49,11 +49,11 @@ module.exports.PAC = class {
 
         let ReturnItem = new ReturnClass(Interval, []);
 
-        let sensorsInRoom = await getPredictionSensorsInRoom(room);
-        await BCC.asyncForEach(sensorsInRoom, async function (v) {
-            let SensorSensorTypes = await getSensorTypesForSensor(v.SensorID);
+        let sensorsInRoom = await QCC.getPredictionSensorsInRoom(room);
+        await BCC.asyncForEach(sensorsInRoom, async function (SensorInfo) {
+            let SensorSensorTypes = await QCC.getSensorTypesForSensor(SensorInfo.SensorID);
 
-            await LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem, date);
+            await IRVC.insertAllThressholdPassesForSensorType(SensorSensorTypes, ReturnItem.Data, date);
         });
 
         return ReturnItem;
@@ -62,166 +62,189 @@ module.exports.PAC = class {
 
 // Private Area
 
-async function LoopThroughAllSensorTypes(SensorSensorTypes, ReturnItem, date) {
-    await BCC.asyncForEach(SensorSensorTypes, async function (v) {
+// Insert Return Values Class
+class IRVC {
+    static async insertAllThressholdPassesForSensorType(SensorTypes, InsertArray, TargetDate) {
+        await BCC.asyncForEach(SensorTypes, async function (SensorTypeInfo) {
 
-        let Exists = await CheckForEqualValue(ReturnItem.Data, v.SensorType, v.SensorID, v.ThresholdValue, date);
-        if (!Exists) {
-            let NewName = await getSensorTypeName(v.SensorType);
-            let NewReturnValue = new SensorType(v.SensorType, NewName, []);
-            await CheckForThresholdPass(v.SensorID, NewName, v.ThresholdValue, NewReturnValue.ThresholdPasses, date)
-            ReturnItem.Data.push(NewReturnValue);
+            let Exists = await IRVC.CheckIfSensorTypeExistsAndInsert(InsertArray, SensorTypeInfo.SensorType, SensorTypeInfo.SensorID, SensorTypeInfo.ThresholdValue, TargetDate);
+            if (!Exists) {
+                let NewName = await QCC.getSensorTypeName(SensorTypeInfo.SensorType);
+                let NewReturnValue = new SensorType(SensorTypeInfo.SensorType, NewName, []);
+                await IRVC.CheckForThresholdPass(SensorTypeInfo.SensorID, NewName, SensorTypeInfo.ThresholdValue, NewReturnValue.ThresholdPasses, TargetDate)
+                InsertArray.push(NewReturnValue);
+            }
+
+        });
+    }
+
+    static async CheckIfSensorTypeExistsAndInsert(SearchArray, SensorType, SensorID, ThresholdValue, date) {
+        let doesExist = false;
+
+        await BCC.asyncForEach(SearchArray, async function (SearchArrayItem) {
+            if (SearchArrayItem.SensorType == SensorType) {
+                await IRVC.CheckForThresholdPass(SensorID, SearchArrayItem.Name, ThresholdValue, SearchArrayItem.ThresholdPasses, date);
+                doesExist = true;
+            }
+        });
+
+        return doesExist;
+    }
+
+    static async CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ThresholdPassesArray, date) {
+        let SensorValues = await IRVC.getPredictionSensorValues(SensorID, SensorType, ThresholdValue, date);
+
+        await BCC.asyncForEach(SensorValues, async function (SensorValue) {
+            let NewInterval = IRVC.TimeDiffToInterval(SensorValue.Timestamp, date);
+
+            IVC.InsertNewInterval(ThresholdPassesArray, NewInterval);
+        });
+    }
+
+    static async getPredictionSensorValues(sensorID, sensorType, ThresholdValue, date) {
+        let result = [];
+
+        let OldestEntry = await QCC.GetOldestEntry(sensorType, sensorID);
+        OldestEntry.setDate(OldestEntry.getDate() - 1 - Math.ceil(HourReach / 24));
+
+        for (let i = 7; i <= (WeekOffset * 7); i += 7) {
+            let dateMin = new Date(date);
+            let dateMax = new Date(date);
+
+            dateMin.setDate(dateMin.getDate() - i);
+            dateMax.setDate(dateMax.getDate() - i);
+            dateMax.setHours(dateMax.getHours() + HourReach);
+
+            if (dateMin < OldestEntry)
+                break;
+
+            result = await QCC.getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue);
         }
-    });
+
+        return result;
+    }
+
+    static TimeDiffToInterval(timestamp, senderdate) {
+        let date = new Date(timestamp);
+        let CurrentDate = new Date(senderdate);
+        date.setDate(CurrentDate.getDate());
+        date.setMonth(CurrentDate.getMonth());
+
+        if (date < CurrentDate) {
+            date.setDate(date.getDate() + 1);
+        }
+
+        let millisecondsLeft = (date.getTime() - CurrentDate.getTime());
+        let secondsLeft = Math.floor(millisecondsLeft / 1000);
+        let minutesLeft = Math.floor(secondsLeft / 60);
+        let IntervalMinutesLeft = Math.floor(minutesLeft / Interval);
+
+        return IntervalMinutesLeft;
+    }
+
 }
 
-async function CheckForEqualValue(SearchArray, SensorType, SensorID, ThresholdValue, date) {
-    let ReturnValue = false;
-    await BCC.asyncForEach(SearchArray, async function (v) {
-        if (v.SensorType == SensorType) {
-            await CheckForThresholdPass(SensorID, v.Name, ThresholdValue, v.ThresholdPasses, date);
-            ReturnValue = true;
-        }
-    });
-    return ReturnValue;
-}
+// Insert Value Class
+class IVC {
 
-async function CheckForThresholdPass(SensorID, SensorType, ThresholdValue, ReturnArray, date) {
-    let SensorValues = await getPredictionSensorValues(SensorID, SensorType, ThresholdValue, date);
-
-    await BCC.asyncForEach(SensorValues, async function (v) {
-        let NewInterval = getTimeLeftInIntervals(v.Timestamp, date);
-        let Exist = await DoesValueExistAndInsert(ReturnArray, NewInterval);
+    // Insert interval value, if it exists, increment that value
+    static async InsertNewInterval(InsertArray, Interval) {
+        let Exist = await IVC.DoesValueExistAndInsert(InsertArray, Interval);
 
         if (!Exist)
-            ReturnArray = await InsertIntoCorrectPositionInArray(NewInterval, ReturnArray);
-    });
-}
+            InsertArray = await IVC.InsertIntoCorrectPositionInArray(Interval, InsertArray);
+    }
 
-// O(n), Omega(1), Theta(n)
-async function InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
-    let Index = 0;
-    for (let i = 0; i < ReturnArray.length; i++) {
-        if (ReturnArray[i].TimeUntil > NewInterval) {
-            break;
+    // O(n), Omega(1), Theta(n)
+    static async InsertIntoCorrectPositionInArray(NewInterval, ReturnArray) {
+        let Index = 0;
+        for (let i = 0; i < ReturnArray.length; i++) {
+            if (ReturnArray[i].TimeUntil > NewInterval) {
+                break;
+            }
+            Index++;
         }
-        Index++;
+        ReturnArray.splice(Index, 0, new ThresholdPass(NewInterval, 1));
+        return ReturnArray;
     }
-    ReturnArray.splice(Index, 0, new ThresholdPass(NewInterval, 1));
-    return ReturnArray;
-}
 
-// O(n), Omega(1), Theta(1)
-async function DoesValueExistAndInsert(ReturnArray, NewInterval) {
-    let Exist = false;
-    for (let i = 0; i < ReturnArray.length; i++) {
-        if (ReturnArray[i].TimeUntil == NewInterval) {
-            Exist = true;
-            ReturnArray[i].TimesExceeded += 1;
+    // O(n), Omega(1), Theta(1)
+    static async DoesValueExistAndInsert(ReturnArray, NewInterval) {
+        let Exist = false;
+        for (let i = 0; i < ReturnArray.length; i++) {
+            if (ReturnArray[i].TimeUntil == NewInterval) {
+                Exist = true;
+                ReturnArray[i].TimesExceeded += 1;
+            }
+            if (ReturnArray[i].TimeUntil > NewInterval)
+                break;
         }
-        if (ReturnArray[i].TimeUntil > NewInterval)
-            break;
+        return Exist;
     }
-    return Exist;
 }
 
-async function getPredictionSensorsInRoom(room) {
-    let result = [];
+// QCC: Query Call Class
+class QCC {
+    // All the query calls to the database.
 
-    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
-    queryTable.recordset.forEach(v => result.push(v));
+    static async getPredictionSensorsInRoom(room) {
+        let result = [];
 
-    return result;
-}
+        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
+        queryTable.recordset.forEach(v => result.push(v));
 
-async function getPredictionSensorValues(sensorID, sensorType, ThresholdValue, date) {
-    let result = [];
-
-    let OldestEntry = await GetOldestEntry(sensorType, sensorID);
-    OldestEntry.setDate(OldestEntry.getDate() - 1 - Math.ceil(HourReach / 24));
-
-    for (let i = 7; i <= (WeekOffset * 7); i+=7) {
-        let dateMin = new Date(date);
-        let dateMax = new Date(date);
-
-        dateMin.setDate(dateMin.getDate() - i);
-        dateMax.setDate(dateMax.getDate() - i);
-        dateMax.setHours(dateMax.getHours() + HourReach);
-
-        if (dateMin < OldestEntry)
-            break;
-
-        result = await getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue);
+        return result;
     }
 
-    return result;
-}
+    static async getSensorTypeName(SensorTypeID) {
+        let result;
 
-async function GetOldestEntry(SensorType, SensorID) {
-    let queryTable = await BCC.MakeQuery(
-        "SELECT MIN(Timestamp) as Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
+        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new BCC.QueryValue("typeID", sql.Int, SensorTypeID)]);
+
+        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+            result = v.TypeName;
+        });
+
+        return result;
+    }
+
+    static async getSensorTypesForSensor(sensorID) {
+        let result = [];
+
+        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new BCC.QueryValue("sensorID", sql.Int, sensorID)]);
+
+        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+            result.push(v);
+        });
+
+        return result;
+    }
+
+
+    static async GetOldestEntry(SensorType, SensorID) {
+        let queryTable = await BCC.MakeQuery(
+            "SELECT MIN(Timestamp) as Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
             new BCC.QueryValue("sensorIDInput", sql.Int, SensorID),
-    ]);
+        ]);
 
-    if (queryTable.recordset.length >= 1) {
-        return new Date(queryTable.recordset[0].Timestamp);
+        if (queryTable.recordset.length >= 1) {
+            return new Date(queryTable.recordset[0].Timestamp);
+        }
+        else
+            return new Date();
     }
-    else
-        return new Date();
-}
 
-async function getPredictionSensorValuesQuery(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue) {
-    let queryTable = await BCC.MakeQuery(
-        "SELECT * FROM [SensorValue_" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorValue]>=@thresholdValueInput", [
-        new BCC.QueryValue("sensorIDInput", sql.Int, sensorID),
-        new BCC.QueryValue("timestampMinInput", sql.DateTime, dateMin),
-        new BCC.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
+    static async getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue) {
+        let queryTable = await BCC.MakeQuery(
+            "SELECT * FROM [SensorValue_" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorValue]>=@thresholdValueInput", [
+            new BCC.QueryValue("sensorIDInput", sql.Int, sensorID),
+            new BCC.QueryValue("timestampMinInput", sql.DateTime, dateMin),
+            new BCC.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
             new BCC.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
-    ]);
-    queryTable.recordset.forEach(v => result.push(v));
+        ]);
+        queryTable.recordset.forEach(v => result.push(v));
 
-    return result;
-}
-
-
-function getTimeLeftInIntervals(timestamp, senderdate) {
-    let date = new Date(timestamp);
-    let CurrentDate = new Date(senderdate);
-    date.setDate(CurrentDate.getDate());
-    date.setMonth(CurrentDate.getMonth());
-
-    if (date < CurrentDate) {
-        date.setDate(date.getDate() + 1);
+        return result;
     }
 
-    let millisecondsLeft = (date.getTime() - CurrentDate.getTime());
-    let secondsLeft = Math.floor(millisecondsLeft / 1000);
-    let minutesLeft = Math.floor(secondsLeft / 60);
-    let IntervalMinutesLeft = Math.floor(minutesLeft / Interval);
-
-    return IntervalMinutesLeft;
-}
-
-async function getSensorTypeName(SensorTypeID) {
-    let result;
-
-    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new BCC.QueryValue("typeID", sql.Int, SensorTypeID)]);
-
-    await BCC.asyncForEach(queryTable.recordset, async function (v) {
-        result = v.TypeName;
-    });
-
-    return result;
-}
-
-async function getSensorTypesForSensor(sensorID) {
-    let result = [];
-
-    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new BCC.QueryValue("sensorID", sql.Int, sensorID)]);
-
-    await BCC.asyncForEach(queryTable.recordset, async function (v) {
-        result.push(v);
-    });
-
-    return result;
 }
