@@ -72,3 +72,10 @@ To run Unit-test
 	2. Click install new packages
 	3. Install the packages "Mocha", "Chai" and "path"
 	4. The tests should now show up
+
+If server instance does not stop:
+	1. Open Putty
+	2. Type "ps - aux | grep node"
+	3. Find the PID of the process
+	4. Type "kill -9 <PID>"
+	5. The server should now be dead
