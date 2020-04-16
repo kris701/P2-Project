@@ -79,7 +79,7 @@ module.exports.BCC = class {
         }
     }
 
-    static async IsErrorCode(value) {
+    static IsErrorCode(value) {
         if (typeof value == typeof 0)
             return true;
         return false;
