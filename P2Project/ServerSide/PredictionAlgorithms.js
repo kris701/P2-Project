@@ -8,10 +8,22 @@ const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
+// Time interval in minutes
 const Interval = 15;
+
+// How many weeks should we reach back
 const WeekOffset = 20;
+// Hów many hours should we watch forward
 const HourReach = 3;
+
 const millisecondsPerDay = 86400000;
+
+// A and B variables for the weight class
+const WC_A = -0.01;
+const WC_B = 1;
+
+// Minimum Times Exeded Value, if below, the value is removed
+const MTEV = 0.5;
 
 class ReturnClass {
     constructor(Interval, Data) {
@@ -56,12 +68,31 @@ module.exports.PAC = class {
 
             await IRVC.insertAllThressholdPassesForSensorType(SensorSensorTypes, ReturnItem.Data, date);
         });
+        await ROOBVC.checkAndRemoveOutOfBounds(ReturnItem.Data);
 
         return ReturnItem;
     }
 }
 
 // Private Area
+
+// Remove Out of Bounds Values Class
+class ROOBVC {
+    static async checkAndRemoveOutOfBounds(CheckArray) {
+        for (let i = 0; i < CheckArray.length; i++) {
+            ROOBVC.checkAndRemoveTooLow(CheckArray[i].ThresholdPasses);
+        }
+    }
+
+    static async checkAndRemoveTooLow(CheckArray) {
+        for (let i = 0; i < CheckArray.length; i++) {
+            if (CheckArray[i].TimesExceeded <= MTEV) {
+                CheckArray.splice(i, 1);
+                i--;
+            }
+        }
+    }
+}
 
 // Insert Return Values Class
 class IRVC {
@@ -75,7 +106,6 @@ class IRVC {
                 await IRVC.CheckForThresholdPass(SensorTypeInfo.SensorID, NewName, SensorTypeInfo.ThresholdValue, NewReturnValue.ThresholdPasses, TargetDate)
                 InsertArray.push(NewReturnValue);
             }
-
         });
     }
 
@@ -272,6 +302,9 @@ class WC {
     }
 
     static weightConverter(timeSince) {
-        return (1 / timeSince);
+        let RetWeight = WC_A * timeSince + WC_B;
+        if (RetWeight < 0)
+            RetWeight = 0;
+        return RetWeight;
     }
 }
