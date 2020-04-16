@@ -135,7 +135,6 @@ describe('adminRemoveSensorReference function', function () {
 
 describe('adminRemoveSensor function', function () {
     generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensor(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminRemoveSensor(-1), -1, failCodes.TargetIsDefaultID);
     generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensor([]), successCodes.RemoveSensor);
 });
 
