@@ -44,67 +44,6 @@ try {
         return querystring.parse(url.split("?")[1], "&", "=");
     }
 
-    function CheckForResource(Request, TargetResource, QueryStringArray, QueryURL) {
-        if (Request.url.includes(TargetResource)) {
-            if (DoesQueryContainAllNeededKeys(QueryStringArray, QueryURL)) {
-                console.error("Client (" + Request.headers.host + ") Attempted to request resource: " + Request.url + ". However input was wrong!");
-                return false;
-            }
-
-            console.log("Client (" + Request.headers.host + ") requested resource: " + TargetResource);
-            return true;
-        }
-        return false;
-    }
-
-    function DoesQueryContainAllNeededKeys(QueryStringArray, QueryURL) {
-        let WrongInput = false;
-        for (let i = 0; i < QueryStringArray.length; i++) {
-            WrongInput = true;
-            for (let j = 0; j < Object.keys(QueryURL).length; j++) {
-                if (QueryStringArray[i] == Object.keys(QueryURL)[j]) {
-                    WrongInput = false;
-                    break;
-                }
-            }
-            if (WrongInput)
-                break;
-        }
-        return WrongInput;
-    }
-
-    async function ExecuteResource(FunctionCall, QueryStringArray, QueryURL) {
-        if (QueryStringArray.length == 0)
-            return await FunctionCall();
-        else {
-            let AccArr = TranslateQueryToResourceParameters(QueryStringArray, QueryURL);
-
-            if (QueryStringArray.length == 1)
-                return await FunctionCall(AccArr[0]);
-            if (QueryStringArray.length == 2)
-                return await FunctionCall(AccArr[0], AccArr[1]);
-            if (QueryStringArray.length == 3)
-                return await FunctionCall(AccArr[0], AccArr[1], AccArr[2]);
-            if (QueryStringArray.length == 4)
-                return await FunctionCall(AccArr[0], AccArr[1], AccArr[2], AccArr[3]);
-            if (QueryStringArray.length == 5)
-                return await FunctionCall(AccArr[0], AccArr[1], AccArr[2], AccArr[3], AccArr[4]);
-        }
-    }
-
-    function TranslateQueryToResourceParameters(QueryStringArray, QueryURL) {
-        let ReturnArray = new Array(QueryStringArray.length);
-        for (let i = 0; i < QueryStringArray.length; i++) {
-            for (let j = 0; j < Object.keys(QueryURL).length; j++) {
-                if (QueryStringArray[i] == Object.keys(QueryURL)[j]) {
-                    ReturnArray.splice(i, 0, QueryURL[Object.keys(QueryURL)[j]]);
-                    break;
-                }
-            }
-        }
-        return ReturnArray;
-    }
-
     server.listen(3910);
     console.log("Node.js server is running and listening at port 3910.");
 
