@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 var path = require('path');
 var expect = require('chai').expect;
@@ -11,11 +7,9 @@ var WASACall = require(path.join(__dirname, '..', './WarningAndSolutionSelection
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 var generalTests = require("./GeneralTests.js").GTC;
 
-/*
-    =========================
-          Testing code
-    =========================
-*/
+//#endregion
+
+//#region Tests
 
 describe('getWarningsAndSolutions function', function () {
 
@@ -27,3 +21,5 @@ describe('getWarningsAndSolutions function', function () {
     generalTests.ShouldNotReturnOKCodeIfInputIsWrong(WASACall.WASC.getWarningsAndSolutions(0, []), -999);
     generalTests.ShouldReturnArrayDotData(WASACall.WASC.getWarningsAndSolutions(0, new Date()));
 });
+
+//#endregion

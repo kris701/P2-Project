@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
@@ -45,12 +41,9 @@ class ThresholdPass {
     }
 }
 
-/*
-    =========================
-            Code Part
-    =========================
-*/
-// Public Area
+//#endregion
+
+//#region Public
 // Prediction Algorithm Class
 
 module.exports.PAC = class {
@@ -74,7 +67,9 @@ module.exports.PAC = class {
     }
 }
 
-// Private Area
+//#endregion
+
+//#region Private
 
 // Remove Out of Bounds Values Class
 class ROOBVC {
@@ -316,3 +311,5 @@ class WC {
         return RetWeight;
     }
 }
+
+//#endregion

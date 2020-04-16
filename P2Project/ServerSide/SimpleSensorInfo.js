@@ -1,8 +1,5 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
+
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
@@ -21,12 +18,9 @@ class Room {
     }
 }
 
-/*
-    =========================
-            Code Part
-    =========================
-*/
-// Public Area
+//#endregion
+
+//#region Public
 // SSIC, Simple Sensor Info Class
 
 module.exports.SSIC = class {
@@ -43,8 +37,9 @@ module.exports.SSIC = class {
         return new BCC.ReturnMessage(200, sensorInfo);;
     }
 }
+//#endregion
 
-// Private Area
+//#region Private
 
 async function getAllRooms() {
     let rooms = [];
@@ -90,3 +85,5 @@ async function getSensorTypeName(sensorType) {
 
     return sensorTypeName;
 }
+
+//#endregion

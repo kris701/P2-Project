@@ -1,5 +1,10 @@
+//#region Header
 
 var expect = require('chai').expect;
+
+//#endregion
+
+//#region Tests
 
 // General Tests Class
 module.exports.GTC = class {
@@ -73,3 +78,5 @@ module.exports.GTC = class {
         });
     }
 }
+
+//#endregion

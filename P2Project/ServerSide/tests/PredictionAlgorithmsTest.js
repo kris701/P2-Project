@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 var path = require('path');
 var expect = require('chai').expect;
@@ -11,11 +7,9 @@ var PredictionCalls = require(path.join(__dirname, '..', './PredictionAlgorithms
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 var generalTests = require("./GeneralTests.js").GTC;
 
-/*
-    =========================
-          Testing code
-    =========================
-*/
+//#endregion
+
+//#region Tests
 
 describe('getPredictionDatetimeQuery function', function () {
 
@@ -25,3 +19,5 @@ describe('getPredictionDatetimeQuery function', function () {
     generalTests.ShouldFailWithToParameters(PredictionCalls.PAC.getPredictionDatetimeQuery(), failCodes.NoParameters);
     generalTests.ShouldReturnArrayDotData(PredictionCalls.PAC.getPredictionDatetimeQuery(0, new Date()));
 });
+
+//#endregion

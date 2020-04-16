@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
@@ -31,21 +27,11 @@ class ReturnItem {
     }
 }
 
+//#endregion
 
+//#region Public
 
-
-
-
-/*
-    =========================
-            Code Part
-    =========================
-*/
-
-
-// Public Area
 // Admin Call Class
-
 module.exports.ACC = class {
     // Warning And Solutions Class
     static WASC = class {
@@ -448,7 +434,9 @@ module.exports.ACC = class {
     }
 }
 
-// Private Area
+//#endregion
+
+//#region Private
 
 async function getAllWarningsQuery() {
     let result = [];
@@ -483,3 +471,5 @@ async function removeSensorsFromValueTables(sensorID) {
         }
     });
 }
+
+//#endregion

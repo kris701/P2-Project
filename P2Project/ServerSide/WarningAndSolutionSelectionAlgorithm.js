@@ -1,8 +1,5 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
+
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let prediction = require(__dirname + "/PredictionAlgorithms.js");
@@ -42,13 +39,10 @@ const PriorityEnum = {
     High: 3
 };
 
-/*
-    =========================
-            Code Part
-    =========================
-*/
+//#endregion
 
-// Public Area
+//#region Public
+
 // WASC, Warnings And Solutions Class
 module.exports.WASC = class {
     static async getWarningsAndSolutions(room, date) {
@@ -69,7 +63,9 @@ module.exports.WASC = class {
     }
 }
 
-// Private Area
+//#endregion
+
+//#region Private
 
 async function getWASForEachThesholdPass(predictionData, interval, returnItem) {
     await BCC.asyncForEach(predictionData.ThresholdPasses, async function (v) {
@@ -153,3 +149,5 @@ async function getSolutionQuery(warningID, priority) {
 
     return result;
 }
+
+//#endregion

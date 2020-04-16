@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 var path = require('path');
 var expect = require('chai').expect;
@@ -11,11 +7,9 @@ var BasicCalls = require(path.join(__dirname, '..', './BasicCalls.js'));
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 var generalTests = require("./GeneralTests.js").GTC;
 
-/*
-    =========================
-          Testing code
-    =========================
-*/
+//#endregion
+
+//#region Tests
 
 describe('asyncForEach function', function () {
 
@@ -42,3 +36,5 @@ describe('MakeQuery function', function () {
     generalTests.ExpectErrorCodeFromInputSimple('Should fail with no querytext', BasicCalls.BCC.MakeQuery("", []), failCodes.EmptyString);
     generalTests.ExpectErrorCodeFromInputSimple('Should fail if Input is not an array', BasicCalls.BCC.MakeQuery("some text", "some text"), failCodes.InputNotAnArray);
 });
+
+//#endregion

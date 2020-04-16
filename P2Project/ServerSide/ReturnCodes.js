@@ -1,4 +1,5 @@
 
+//#region Header
 module.exports.successCodes = {
     AddWarning: 201,
     RemoveWarning: 202,
@@ -35,6 +36,9 @@ module.exports.failCodes = {
     InputNotAString: 409,
     EmptyString: 410
 }
+//#endregion
+
+//#region Public
 
 module.exports.ParseCode = function(code)
 {
@@ -56,3 +60,5 @@ module.exports.ParseToReturnMessage = function(code)
     let BCC = require(__dirname + "/BasicCalls.js").BCC;
     return new BCC.ReturnMessage(code, module.exports.ParseCode(code));
 }
+
+//#endregion

@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 // External files
 let prediction = require(__dirname + "/PredictionAlgorithms.js");
@@ -65,13 +61,10 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
 // Admin credentials
 let AdminCredentials = [new Credentials("Admin", "Password"), new Credentials("Sensor", "SensorPassword")]
 
-/*
-    =========================
-            Code Part
-    =========================
-*/
+//#endregion
 
-// Public:
+//#region Public
+
 // Resource Check Class
 module.exports.RCC = class {
     static async CheckAllResource(Response, req, QueryURL) {
@@ -79,7 +72,10 @@ module.exports.RCC = class {
     }
 }
 
-// Private:
+//#endregion
+
+//#region Private
+
 async function InnerCheckAllResource(Response, req, Resource, QueryURL) {
     if (CheckForResource(req, Resource.Name, Resource.Parameters, QueryURL) == true) {
         if (Resource.SubResources.length != 0) {
@@ -172,3 +168,5 @@ function CheckCredentials(Username, Password) {
 
     return ReturnValue;
 }
+
+//#endregion

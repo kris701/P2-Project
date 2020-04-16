@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 var path = require('path');
 var expect = require('chai').expect;
@@ -12,11 +8,9 @@ var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCode
 var successCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).successCodes;
 var generalTests = require("./GeneralTests.js").GTC;
 
-/*
-    =========================
-          Testing code
-    =========================
-*/
+//#endregion
+
+//#region Tests
 
 describe('adminGetAllWarningsAndSolutions function', function () {
     this.timeout(200000);
@@ -177,4 +171,4 @@ describe('adminInsertSensorValue function', function () {
     generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue(0, 0, []), successCodes.InsertSensorValue);
 });
 
-
+//#endregion

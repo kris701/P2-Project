@@ -1,9 +1,5 @@
 try {
-    /*
-        =========================
-                Header
-        =========================
-    */
+    //#region Header
 
     let BCC = require(__dirname + "/BasicCalls.js").BCC;
     let RCC = require(__dirname + "/ResourceCheck.js").RCC;
@@ -12,11 +8,9 @@ try {
     let http = require("http");
     const querystring = require("querystring");
 
-    /*
-        =========================
-                Code Part
-        =========================
-    */
+    //#endregion
+
+    //#region Main server code
 
     // Main Server Code
     let server = http.createServer(async function (req, res) {
@@ -47,14 +41,10 @@ try {
     server.listen(3910);
     console.log("Node.js server is running and listening at port 3910.");
 
+    //#endregion
+
 } catch (err) {
-    /*
-        =========================
-            Main Error catch
-        =========================
-    */
-
-
+    //#region Error Catching
 
     // Simplified error for missing modules
     if (err.code == "MODULE_NOT_FOUND")
@@ -66,4 +56,6 @@ try {
     process.stdin.setRawMode(true);
     process.stdin.resume();
     process.stdin.on('data', process.exit.bind(process, 0))
+
+    //#endregion
 }

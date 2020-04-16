@@ -1,8 +1,4 @@
-/*
-    =========================
-            Header
-    =========================
-*/
+//#region Header
 
 const fs = require("fs");
 const sql = require("mssql");
@@ -15,13 +11,9 @@ const ServerConfig = {
 
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
-/*
-    =========================
-            Code Part
-    =========================
-*/
-// Public Area
-// BCC, Basic Calls Class
+//#endregion
+
+//#region Public
 
 module.exports.BCC = class {
     static async asyncForEach(array, callback) {
@@ -86,4 +78,8 @@ module.exports.BCC = class {
     }
 }
 
-// Private Area
+//#endregion
+
+//#region Public
+
+//#endregion
