@@ -123,7 +123,9 @@ function getPriority(timeUntilBadIAQ, interval) {
 async function getWarningInfoQuery(sensorType, priority) {
     let result = new WarningInfo(-1, sensorType, "", new SolutionInfo(priority, ""));
 
-    let queryTable = await BCC.MakeQuery("SELECT * FROM [Warnings] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+    let ret = await BCC.MakeQuery("SELECT * FROM [Warnings] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+    if (BCC.IsErrorCode(ret))
+        return result;
 
     if (queryTable.recordset.length != 0) {
         result.Message = queryTable.recordset[0].Message;
@@ -137,14 +139,16 @@ async function getWarningInfoQuery(sensorType, priority) {
 async function getSolutionQuery(warningID, priority) {
     let result = new SolutionInfo(priority, "");
 
-    let queryTable = await BCC.MakeQuery(
+    let ret = await BCC.MakeQuery(
         "SELECT * FROM [Solutions] WHERE [WarningID]=@warningIDInput AND [WarningPriority]=@priorityInput",
         [new BCC.QueryValue("warningIDInput", sql.Int, warningID),
         new BCC.QueryValue("priorityInput", sql.Int, priority.Priority)]
     );
+    if (BCC.IsErrorCode(ret))
+        return result;
 
-    if (queryTable.recordset.length != 0) {
-        result.Message = queryTable.recordset[0].Message;
+    if (ret.recordset.length != 0) {
+        result.Message = ret.recordset[0].Message;
     }
 
     return result;

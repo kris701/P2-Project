@@ -224,8 +224,10 @@ class QCC {
     static async getPredictionSensorsInRoom(room) {
         let result = [];
 
-        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
-        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+        let ret = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
+        if (BCC.IsErrorCode(ret))
+            return result;
+        await BCC.asyncForEach(ret.recordset, async function (v) {
             result.push(v);
         });
 
@@ -235,9 +237,10 @@ class QCC {
     static async getSensorTypeName(SensorTypeID) {
         let result;
 
-        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new BCC.QueryValue("typeID", sql.Int, SensorTypeID)]);
-
-        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+        let ret = await BCC.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new BCC.QueryValue("typeID", sql.Int, SensorTypeID)]);
+        if (BCC.IsErrorCode(ret))
+            return result;
+        await BCC.asyncForEach(ret.recordset, async function (v) {
             result = v.TypeName;
         });
 
@@ -247,9 +250,10 @@ class QCC {
     static async getSensorTypesForSensor(sensorID) {
         let result = [];
 
-        let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new BCC.QueryValue("sensorID", sql.Int, sensorID)]);
-
-        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+        let ret = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new BCC.QueryValue("sensorID", sql.Int, sensorID)]);
+        if (BCC.IsErrorCode(ret))
+            return result;
+        await BCC.asyncForEach(ret.recordset, async function (v) {
             result.push(v);
         });
 
@@ -258,27 +262,31 @@ class QCC {
 
 
     static async GetOldestEntry(SensorType, SensorID) {
-        let queryTable = await BCC.MakeQuery(
+        let ret = await BCC.MakeQuery(
             "SELECT MIN(Timestamp) as Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
             new BCC.QueryValue("sensorIDInput", sql.Int, SensorID),
         ]);
+        if (BCC.IsErrorCode(ret))
+            return new Date();
 
-        if (queryTable.recordset.length >= 1) {
-            return new Date(queryTable.recordset[0].Timestamp);
+        if (ret.recordset.length >= 1) {
+            return new Date(ret.recordset[0].Timestamp);
         }
         else
             return new Date();
     }
 
     static async getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue) {
-        let queryTable = await BCC.MakeQuery(
+        let ret = await BCC.MakeQuery(
             "SELECT * FROM [SensorValue_" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorValue]>=@thresholdValueInput", [
             new BCC.QueryValue("sensorIDInput", sql.Int, sensorID),
             new BCC.QueryValue("timestampMinInput", sql.DateTime, dateMin),
             new BCC.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
             new BCC.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
         ]);
-        await BCC.asyncForEach(queryTable.recordset, async function (v) {
+        if (BCC.IsErrorCode(ret))
+            return new Date();
+        await BCC.asyncForEach(ret.recordset, async function (v) {
             result.push(v);
         });
 

@@ -76,9 +76,11 @@ try {
                     response = await CheckForResource(req, "/getallwarningsandsolutions", [], response, adminCalls.WASC.adminGetAllWarningsAndSolutions);
                 }
                 else {
-                    console.error("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + " with wrong credentials");
-                    response.ReturnCode = 404;
-                    response.Message = "Credentials Wrong!";
+                    if (AdminCheck.ReturnCode == 0) {
+                        console.error("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + " with wrong credentials");
+                        response.ReturnCode = 404;
+                        response.Message = "Credentials Wrong!";
+                    }
                 }
             }
 
@@ -138,10 +140,10 @@ try {
     }
 
     function CheckCredentials(Username, Password) {
-        let ReturnValue = new BCC.ReturnMessage(-1, false);
+        let ReturnValue = new BCC.ReturnMessage(0, false);
         AdminCredentials.forEach(function (v) {
             if (v.Username == Username && v.Password == Password)
-                ReturnValue = new BCC.ReturnMessage(-1, true);
+                ReturnValue = new BCC.ReturnMessage(0, true);
         });
 
         return ReturnValue;
