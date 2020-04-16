@@ -21,6 +21,7 @@ try {
     let sensorInfo = require(__dirname + "/SimpleSensorInfo.js");
     let warningAndSolution = require(__dirname + "/WarningAndSolutionSelectionAlgorithm");
     let adminCalls = require(__dirname + "/AdminCalls.js").ACC;
+    let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
     // Include modules
     let http = require("http");
@@ -36,198 +37,65 @@ try {
     */
 
     let server = http.createServer(async function (req, res) {
-        res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-
+        let response = new BCC.ReturnMessage(-1,"");
         try {
-            if (CheckForResource(req, "/getsensorinfo")) {
+            var queryUrl = queryStringParse(req.url);
 
-                // jsonFetch("http://localhost:3910/getsensorinfo").catch(e => console.log(e));
+            response = await CheckForResource(req, "/getsensorinfo", [], response, sensorInfo.SSIC.getSensorInfoQuery);
+            response = await CheckForResource(req, "/getpredictiondata", [queryUrl.room, queryUrl.date], response, prediction.PAC.getPredictionDatetimeQuery);
+            response = await CheckForResource(req, "/getwarningsandsolutions", [queryUrl.room, queryUrl.date], response, warningAndSolution.WASC.getWarningsAndSolutions);
 
-                let response = await sensorInfo.SSIC.getSensorInfoQuery();
-                res.write(JSON.stringify(response));
-            }
-            else if (CheckForResource(req, "/getpredictiondata")) {
-                var queryUrl = queryStringParse(req.url); // This splits the url at the ? sign and returns the last part, so abc?def becomes def
-
-                //jsonFetch("http://localhost:3910/getpredictiondata?room=0&date=2020-04-15T09:00:00").catch(e => console.log(e));
-
-                if (queryUrl.room != null && queryUrl.date != null) {
-                    let response = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room, queryUrl.date);
-                    res.write(JSON.stringify(response));
+            if (response.Message == "") {
+                let AdminCheck = await CheckForResource(req, "/admin", [queryUrl.Username, queryUrl.Password], new BCC.ReturnMessage(-1, ""), CheckCredentials);
+                if (AdminCheck.Message) {
+                    response = await CheckForResource(req, "/getallwarningsandsolutions", [], response, adminCalls.WASC.adminGetAllWarningsAndSolutions);
+                    response = await CheckForResource(req, "/addnewwarning", [queryUrl.sensorType, queryUrl.message], response, adminCalls.WASC.adminAddNewWarning);
+                    response = await CheckForResource(req, "/removewarning", [queryUrl.warningID], response, adminCalls.WASC.adminRemoveWarning);
+                    response = await CheckForResource(req, "/updatewarning", [queryUrl.warningID, queryUrl.message], response, adminCalls.WASC.adminUpdateWarning);
+                    response = await CheckForResource(req, "/addnewsolution", [queryUrl.warningID, queryUrl.priority, queryUrl.message], response, adminCalls.WASC.adminAddSolution);
+                    response = await CheckForResource(req, "/removesolutionreference", [queryUrl.solutionID], response, adminCalls.WASC.adminRemoveSolutionReference);
+                    response = await CheckForResource(req, "/updatesolution", [queryUrl.solutionID, queryUrl.message, queryUrl.priorit], response, adminCalls.WASC.adminUpdateSolution);
+                    response = await CheckForResource(req, "/addexistingsolution", [queryUrl.solutionID, queryUrl.warningID], response, adminCalls.WASC.adminAddExistingSolution);
+                    response = await CheckForResource(req, "/removesolution", [queryUrl.solutionID], response, adminCalls.WASC.adminRemoveSolution);
+                    response = await CheckForResource(req, "/getallsolutions", [], response, adminCalls.WASC.adminGetAllSolutions);
+                    response = await CheckForResource(req, "/addnewroom", [queryUrl.roomName], response, adminCalls.SEC.adminAddNewRoom);
+                    response = await CheckForResource(req, "/removeroom", [queryUrl.roomID], response, adminCalls.SEC.adminRemoveRoom);
+                    response = await CheckForResource(req, "/updateroom", [queryUrl.roomID, queryUrl.roomName], response, adminCalls.SEC.adminUpdateRoom);
+                    response = await CheckForResource(req, "/getallsensortypes", [], response, adminCalls.SEC.adminGetAllSensorTypes);
+                    response = await CheckForResource(req, "/addnewsensortype", [queryUrl.typeName], response, adminCalls.SEC.adminAddNewSensorType);
+                    response = await CheckForResource(req, "/addexistingsensortype", [queryUrl.sensorType, queryUrl.sensorID, queryUrl.threshold], response, adminCalls.SEC.adminAddExistingSensorType);
+                    response = await CheckForResource(req, "/removesensortype", [queryUrl.sensorType], response, adminCalls.SEC.adminRemoveSensorType);
+                    response = await CheckForResource(req, "/removesensortypereference", [queryUrl.sensorType], response, adminCalls.SEC.adminRemoveSensorTypeReference);
+                    response = await CheckForResource(req, "/updatesensortypethreshold", [queryUrl.sensorID, queryUrl.sensorType, queryUrl.threshold], response, adminCalls.SEC.adminUpdateSensorTypeThreshold);
+                    response = await CheckForResource(req, "/getallsensors", [], response, adminCalls.SEC.adminGetAllSensors);
+                    response = await CheckForResource(req, "/updatesensor", [queryUrl.sensorID, queryUrl.roomID], response, adminCalls.SEC.adminUpdateSensor);
+                    response = await CheckForResource(req, "/addnewsensor", [queryUrl.roomID], response, adminCalls.SEC.adminAddNewSensor);
+                    response = await CheckForResource(req, "/removesensorreference", [queryUrl.sensorID], response, adminCalls.SEC.adminRemoveSensorReference);
+                    response = await CheckForResource(req, "/removesensor", [queryUrl.sensorID], response, adminCalls.SEC.adminRemoveSensor);
+                    response = await CheckForResource(req, "/insertsensorvalue", [queryUrl.sensorID, queryUrl.sensorType, queryUrl.sensorValue], response, adminCalls.adminInsertSensorValue);
+                    response = await CheckForResource(req, "/getallwarningsandsolutions", [], response, adminCalls.WASC.adminGetAllWarningsAndSolutions);
+                }
+                else {
+                    console.error("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + " with wrong credentials");
+                    response.ReturnCode = 404;
+                    response.Message = "Credentials Wrong!";
                 }
             }
-            else if (CheckForResource(req, "/getwarningsandsolutions")) {
-                var queryUrl = queryStringParse(req.url);
 
-                //jsonFetch("http://localhost:3910/getwarningsandsolutions?room=0&date=2020-04-15T09:00:00").catch(e => console.log(e));
-
-                if (queryUrl.room != null && queryUrl.date != null) {
-                    let predictionData = await prediction.PAC.getPredictionDatetimeQuery(queryUrl.room, queryUrl.date);
-                    let response = await warningAndSolution.WASC.getWarningsAndSolutions(predictionData);
-                    res.write(JSON.stringify(response));
-                }
-            } 
-            else if (CheckForResource(req, "/admin")) {
-                var queryUrl = queryStringParse(req.url);
-
-                if (CheckCredentials(new Credentials(queryUrl.Username, queryUrl.Password))) {
-                    if (CheckForResource(req, "/getallwarningsandsolutions")) {
-                        let response = await adminCalls.WASC.adminGetAllWarningsAndSolutions();
-                        res.write(JSON.stringify(response));
-                    }
-                    else if (CheckForResource(req, "/addnewwarning")) {
-                        if (queryUrl.sensorType != null && queryUrl.message != null) {
-                            let response = await adminCalls.WASC.adminAddNewWarning(queryUrl.sensorType, queryUrl.message);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removewarning")) {
-                        if (queryUrl.warningID != null) {
-                            let response = await adminCalls.WASC.adminRemoveWarning(queryUrl.warningID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/updatewarning")) {
-                        if (queryUrl.warningID != null && queryUrl.message != null) {
-                            let response = await adminCalls.WASC.adminUpdateWarning(queryUrl.warningID, queryUrl.message);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/addnewsolution")) {
-                        if (queryUrl.warningID != null && queryUrl.priority != null && queryUrl.message != null) {
-                            let response = await adminCalls.WASC.adminAddSolution(queryUrl.warningID, queryUrl.priority, queryUrl.message);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesolutionreference")) {
-                        if (queryUrl.solutionID != null) {
-                            let response = await adminCalls.WASC.adminRemoveSolutionReference(queryUrl.solutionID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/updatesolution")) {
-                        if (queryUrl.solutionID != null && queryUrl.message != null && queryUrl.priority) {
-                            let response = await adminCalls.WASC.adminUpdateSolution(queryUrl.solutionID, queryUrl.message, queryUrl.priority);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/addexistingsolution")) {
-                        if (queryUrl.solutionID != null && queryUrl.warningID != null) {
-                            let response = await adminCalls.WASC.adminAddExistingSolution(queryUrl.solutionID, queryUrl.warningID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesolution")) {
-                        if (queryUrl.solutionID != null) {
-                            let response = await adminCalls.WASC.adminRemoveSolution(queryUrl.solutionID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/getallsolutions")) {
-                        let response = await adminCalls.WASC.adminGetAllSolutions();
-                        res.write(JSON.stringify(response));
-                    }
-                    else if (CheckForResource(req, "/addnewroom")) {
-                        if (queryUrl.roomName != null) {
-                            let response = await adminCalls.SEC.adminAddNewRoom(queryUrl.roomName);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removeroom")) {
-                        if (queryUrl.roomID != null) {
-                            let response = await adminCalls.SEC.adminRemoveRoom(queryUrl.roomID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/updateroom")) {
-                        if (queryUrl.roomID != null && queryUrl.roomName != null) {
-                            let response = await adminCalls.SEC.adminUpdateRoom(queryUrl.roomID, queryUrl.roomName);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/getallsensortypes")) {
-                        let response = await adminCalls.SEC.adminGetAllSensorTypes();
-                        res.write(JSON.stringify(response));
-                    }
-                    else if (CheckForResource(req, "/addnewsensortype")) {
-                        if (queryUrl.typeName != null) {
-                            let response = await adminCalls.SEC.adminAddNewSensorType(queryUrl.typeName);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/addexistingsensortype")) {
-                        if (queryUrl.sensorType != null && queryUrl.sensorID != null && queryUrl.threshold != null) {
-                            let response = await adminCalls.SEC.adminAddExistingSensorType(queryUrl.sensorType, queryUrl.sensorID, queryUrl.threshold);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesensortype")) {
-                        if (queryUrl.sensorType != null) {
-                            let response = await adminCalls.SEC.adminRemoveSensorType(queryUrl.sensorType);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesensortypereference")) {
-                        if (queryUrl.sensorType != null) {
-                            let response = await adminCalls.SEC.adminRemoveSensorTypeReference(queryUrl.sensorType);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/updatesensortypethreshold")) {
-                        if (queryUrl.sensorID != null && queryUrl.sensorType && queryUrl.threshold != null) {
-                            let response = await adminCalls.SEC.adminUpdateSensorTypeThreshold(queryUrl.sensorID, queryUrl.sensorType, queryUrl.threshold);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/getallsensors")) {
-                        let response = await adminCalls.SEC.adminGetAllSensors();
-                        res.write(JSON.stringify(response));
-                    }
-                    else if (CheckForResource(req, "/updatesensor")) {
-                        if (queryUrl.sensorID != null && queryUrl.roomID) {
-                            let response = await adminCalls.SEC.adminUpdateSensor(queryUrl.sensorID, queryUrl.roomID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/addnewsensor")) {
-                        if (queryUrl.roomID != null) {
-                            let response = await adminCalls.SEC.adminAddNewSensor(queryUrl.roomID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesensorreference")) {
-                        if (queryUrl.sensorID != null) {
-                            let response = await adminCalls.SEC.adminRemoveSensorReference(queryUrl.sensorID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/removesensor")) {
-                        if (queryUrl.sensorID != null) {
-                            let response = await adminCalls.SEC.adminRemoveSensor(queryUrl.sensorID);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                    else if (CheckForResource(req, "/insertsensorvalue")) {
-                        if (queryUrl.sensorID != null && queryUrl.sensorType && queryUrl.sensorValue != null) {
-                            let response = await adminCalls.adminInsertSensorValue(queryUrl.sensorID, queryUrl.sensorType, queryUrl.sensorValue);
-                            res.write(JSON.stringify(response));
-                        }
-                    }
-                }
-                else
-                    CredentialsWrong(req, res);
-            }
-            else {
-                console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + ". However the resource was not found.");
-                res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-                res.write(JSON.stringify("Resource not found!"));
+            if (response.ReturnCode == -1) {
+                console.error("Resource not found!");
+                response.ReturnCode = 404;
+                response.Message = "Resource not found!";
             }
 
         } catch (err) {
-            console.log(err);
-            res.write(JSON.stringify("An error occured on the server!"));
+            console.error(err);
+            response.ReturnCode = 404;
+            response.Message = "An error occured on the server!";
         }
 
+        res.writeHead(response.ReturnCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+        res.write(JSON.stringify(response.Message));
         res.end();
     });
 
@@ -235,29 +103,48 @@ try {
         return querystring.parse(url.split("?")[1], "&", "=");
     }
 
-    function CheckForResource(Request, TargetResource) {
+    async function CheckForResource(Request, TargetResource, CheckQueryStringArray, Response, FunctionCall) {
+        if (Response.ReturnCode != -1)
+            return Response;
         if (Request.url.includes(TargetResource)) {
-            console.log("Client (" + Request.headers.host + ") requested resource: " + TargetResource);
-            return true;
+            if (CheckQueryStringArray != null) {
+                let WrongInput = false;
+                for (let i = 0; i < CheckQueryStringArray.length; i++)
+                    if (CheckQueryStringArray[i] == null)
+                        WrongInput = true;
+                if (WrongInput) {
+                    console.error("Client (" + Request.headers.host + ") Attempted to request resource: " + Request.url + ". However input was wrong!");
+                    Response.Message = "Wrong input!";
+                    Response.ReturnCode = 404;
+                    return Response;
+                }
+
+                console.log("Client (" + Request.headers.host + ") requested resource: " + TargetResource);
+                if (CheckQueryStringArray.length == 0)
+                    Response = await FunctionCall();
+                if (CheckQueryStringArray.length == 1)
+                    Response = await FunctionCall(CheckQueryStringArray[0]);
+                if (CheckQueryStringArray.length == 2)
+                    Response = await FunctionCall(CheckQueryStringArray[0], CheckQueryStringArray[1]);
+                if (CheckQueryStringArray.length == 3)
+                    Response = await FunctionCall(CheckQueryStringArray[0], CheckQueryStringArray[1], CheckQueryStringArray[2]);
+            }
+            else {
+                console.log("Client (" + Request.headers.host + ") requested resource: " + TargetResource);
+                Response = await FunctionCall;
+            }
         }
-        else return false;
+        return Response;
     }
 
-    function CheckCredentials(CredentialsInfo) {
-        let credentialsCheck = false;
-
+    function CheckCredentials(Username, Password) {
+        let ReturnValue = new BCC.ReturnMessage(-1, false);
         AdminCredentials.forEach(function (v) {
-            if (v.Username == CredentialsInfo.Username && v.Password == CredentialsInfo.Password)
-                credentialsCheck = true;
+            if (v.Username == Username && v.Password == Password)
+                ReturnValue = new BCC.ReturnMessage(-1, true);
         });
 
-        return credentialsCheck;
-    }
-
-    function CredentialsWrong(req, res) {
-        console.log("Client (" + req.headers.host + ") Attempted to request resource: " + req.url + " with wrong credentials");
-        res.writeHead(404, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-        res.write(JSON.stringify("Wrong username or password"));
+        return ReturnValue;
     }
 
     server.listen(3910);

@@ -40,7 +40,7 @@ module.exports.SSIC = class {
             sensorInfo.push(RoomInfo);
         });
 
-        return sensorInfo;
+        return new BCC.ReturnMessage(200, sensorInfo);;
     }
 }
 

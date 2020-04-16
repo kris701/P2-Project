@@ -56,9 +56,9 @@ class ThresholdPass {
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room, date) {
         if (room == null)
-            return failCodes.NoParameters;
+            return new BCC.ReturnMessage(failCodes.NoParameters, "Missing or wrong parameters exeption!");
         if (date == null)
-            return failCodes.NoParameters;
+            return new BCC.ReturnMessage(failCodes.NoParameters, "Missing or wrong parameters exeption!");
 
         let ReturnItem = new ReturnClass(Interval, []);
 
@@ -70,7 +70,7 @@ module.exports.PAC = class {
         });
         await ROOBVC.checkAndRemoveOutOfBounds(ReturnItem.Data);
 
-        return ReturnItem;
+        return new BCC.ReturnMessage(200, ReturnItem);
     }
 }
 

@@ -33,12 +33,12 @@ describe('asyncForEach function', function () {
         expect(res).to.not.eql(failCodes.InputNotAnArray);
     });
 
-    generalTests.ExpectErrorCodeFromInput('Should fail if input is not an array', BasicCalls.BCC.asyncForEach("abc", async function (v) { }), failCodes.InputNotAnArray);
+    generalTests.ExpectErrorCodeFromInputSimple('Should fail if input is not an array', BasicCalls.BCC.asyncForEach("abc", async function (v) { }), failCodes.InputNotAnArray);
 });
 
 describe('MakeQuery function', function () {
-    generalTests.ShouldFailWithToParameters(BasicCalls.BCC.MakeQuery(), failCodes.NoParameters);
-    generalTests.ExpectErrorCodeFromInput('Should fail if querytext not a string', BasicCalls.BCC.MakeQuery(-99999, []), failCodes.InputNotAString);
-    generalTests.ExpectErrorCodeFromInput('Should fail with no querytext', BasicCalls.BCC.MakeQuery("", []), failCodes.EmptyString);
-    generalTests.ExpectErrorCodeFromInput('Should fail if Input is not an array', BasicCalls.BCC.MakeQuery("some text", "some text"), failCodes.InputNotAnArray);
+    generalTests.ShouldFailWithToParametersSimple(BasicCalls.BCC.MakeQuery(), failCodes.NoParameters);
+    generalTests.ExpectErrorCodeFromInputSimple('Should fail if querytext not a string', BasicCalls.BCC.MakeQuery(-99999, []), failCodes.InputNotAString);
+    generalTests.ExpectErrorCodeFromInputSimple('Should fail with no querytext', BasicCalls.BCC.MakeQuery("", []), failCodes.EmptyString);
+    generalTests.ExpectErrorCodeFromInputSimple('Should fail if Input is not an array', BasicCalls.BCC.MakeQuery("some text", "some text"), failCodes.InputNotAnArray);
 });

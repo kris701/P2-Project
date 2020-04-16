@@ -5,6 +5,7 @@
 */
 const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
+let prediction = require(__dirname + "/PredictionAlgorithms.js");
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
 class SolutionInfo {
@@ -50,11 +51,11 @@ const PriorityEnum = {
 // Public Area
 // WASC, Warnings And Solutions Class
 module.exports.WASC = class {
-    static async getWarningsAndSolutions(predictionDataArray) {
-        if (predictionDataArray == null)
-            return failCodes.NoParameters;
-        if (!Array.isArray(predictionDataArray.Data))
-            return failCodes.InputNotAnArray;
+    static async getWarningsAndSolutions(room, date) {
+        if (room == null || date == null)
+            return new BCC.ReturnMessage(failCodes.NoParameters, "");
+
+        let predictionDataArray = await prediction.PAC.getPredictionDatetimeQuery(room, date)
 
         let returnItem = new ReturnClass([]);
 
@@ -64,7 +65,7 @@ module.exports.WASC = class {
         if (returnItem.Data.length == 0)
             returnItem.Data.push(NoWarnMessasge);
 
-        return returnItem;
+        return new BCC.ReturnMessage(200, returnItem);
     }
 }
 

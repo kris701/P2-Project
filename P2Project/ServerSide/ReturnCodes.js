@@ -1,3 +1,4 @@
+
 module.exports.successCodes = {
     AddWarning: 201,
     RemoveWarning: 202,
@@ -33,4 +34,25 @@ module.exports.failCodes = {
     DatabaseError: 408,
     InputNotAString: 409,
     EmptyString: 410
+}
+
+module.exports.ParseCode = function(code)
+{
+    if (code == module.exports.failCodes.NoParameters) return "Error: No, missing or wrong parameters!";
+    if (code == module.exports.failCodes.TargetIsDefaultID) return "Error: Target ID is default ID";
+    if (code == module.exports.failCodes.PriorityOutsideRange) return "Error: Priority out of range!";
+    if (code == module.exports.failCodes.OutputNotAnArray) return "Error: Output not an array!";
+    if (code == module.exports.failCodes.InputNotAnArray) return "Error: Input not an array!";
+    if (code == module.exports.failCodes.NoSensorTypes) return "Error: No sensor types!";
+    if (code == module.exports.failCodes.IDDoesNotExist) return "Error: ID Does not exist!";
+    if (code == module.exports.failCodes.DatabaseError) return "Error: Database error!";
+    if (code == module.exports.failCodes.InputNotAString) return "Error: Input not a string!";
+    if (code == module.exports.failCodes.EmptyString) return "Error: String is empty";
+    return "Unknown code!"
+}
+
+module.exports.ParseToReturnMessage = function(code)
+{
+    let BCC = require(__dirname + "/BasicCalls.js").BCC;
+    return new BCC.ReturnMessage(code, module.exports.ParseCode(code));
 }
