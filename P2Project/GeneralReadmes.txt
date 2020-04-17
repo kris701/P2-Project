@@ -90,3 +90,8 @@ If server instance does not stop:
 	3. Find the PID of the process
 	4. Type "kill -9 <PID>"
 	5. The server should now be dead
+
+To start the server "permanently" in the background:
+	1. Same connection method as with updating code
+	2. Type: "node interface.js > stdout.txt 2> stderr.txt &"
+	3. Type: "exit"
