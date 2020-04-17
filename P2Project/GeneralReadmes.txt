@@ -14,6 +14,7 @@ To upload to Uni servers:
 		 Database
 =============================
 
+   For MSSQL:
 To update the database project (only do this if database is complete):
 	1. Remove all old files in the "Database" project
 	2. Right-click the project and go to import => database
@@ -39,6 +40,16 @@ To connect to the database live, and edit it:
 		a. Right-click a table
 		b. Click "Show Table Data"
 		c. Edit what data you want, every time you go to a new row, it automatically updates the database
+
+   For MySQL:
+To enable you to use the DB from home:
+	1. https://linuxize.com/post/mysql-ssh-tunnel/
+	2. You should now be able to run the server like normal.
+
+To connect to the database live, and edit it:
+	1. Install MySQL for VS2019 https://dev.mysql.com/downloads/windows/visualstudio/
+	2. Follow same steps as for the MSSQL DB
+	3. The credentials can be found in the BasicCalls.js file
 
 =============================
 		Sensor Code
@@ -75,7 +86,7 @@ To run Unit-test
 
 If server instance does not stop:
 	1. Open Putty
-	2. Type "ps - aux | grep node"
+	2. Type "ps -aux | grep node"
 	3. Find the PID of the process
 	4. Type "kill -9 <PID>"
 	5. The server should now be dead

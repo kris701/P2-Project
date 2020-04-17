@@ -1,6 +1,5 @@
 //#region Header
 
-const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
@@ -49,9 +48,9 @@ class ThresholdPass {
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room, date) {
         if (room == null)
-            return new BCC.ReturnMessage(failCodes.NoParameters, "Missing or wrong parameters exeption!");
+            return new BCC.ParseToReturnMessage(failCodes.NoParameters);
         if (date == null)
-            return new BCC.ReturnMessage(failCodes.NoParameters, "Missing or wrong parameters exeption!");
+            return new BCC.ParseToReturnMessage(failCodes.NoParameters);
 
         let ReturnItem = new ReturnClass(Interval, []);
 
@@ -219,7 +218,7 @@ class QCC {
     static async getPredictionSensorsInRoom(room) {
         let result = [];
 
-        let ret = await BCC.MakeQuery("SELECT * FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
+        let ret = await BCC.MakeQuery("SELECT * FROM SensorInfo WHERE RoomID=?", [room]);
         if (BCC.IsErrorCode(ret))
             return result;
         await BCC.asyncForEach(ret.recordset, async function (v) {
@@ -232,7 +231,7 @@ class QCC {
     static async getSensorTypeName(SensorTypeID) {
         let result;
 
-        let ret = await BCC.MakeQuery("SELECT * FROM [SensorTypes]WHERE [SensorType]=@typeID", [new BCC.QueryValue("typeID", sql.Int, SensorTypeID)]);
+        let ret = await BCC.MakeQuery("SELECT * FROM SensorTypes WHERE SensorType=?", [SensorTypeID]);
         if (BCC.IsErrorCode(ret))
             return result;
         await BCC.asyncForEach(ret.recordset, async function (v) {
@@ -245,7 +244,7 @@ class QCC {
     static async getSensorTypesForSensor(sensorID) {
         let result = [];
 
-        let ret = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorID", [new BCC.QueryValue("sensorID", sql.Int, sensorID)]);
+        let ret = await BCC.MakeQuery("SELECT * FROM SensorThresholds WHERE SensorID=?", [sensorID]);
         if (BCC.IsErrorCode(ret))
             return result;
         await BCC.asyncForEach(ret.recordset, async function (v) {
@@ -258,9 +257,7 @@ class QCC {
 
     static async GetOldestEntry(SensorType, SensorID) {
         let ret = await BCC.MakeQuery(
-            "SELECT MIN(Timestamp) as Timestamp FROM [SensorValue_" + SensorType + "] WHERE [SensorID]=@sensorIDInput", [
-            new BCC.QueryValue("sensorIDInput", sql.Int, SensorID),
-        ]);
+            "SELECT MIN(Timestamp) as Timestamp FROM SensorValue_" + SensorType + " WHERE SensorID=?", [SensorID]);
         if (BCC.IsErrorCode(ret))
             return new Date();
 
@@ -273,11 +270,11 @@ class QCC {
 
     static async getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, ThresholdValue) {
         let ret = await BCC.MakeQuery(
-            "SELECT * FROM [SensorValue_" + sensorType + "] WHERE [SensorID]=@sensorIDInput AND [Timestamp] BETWEEN @timestampMinInput AND @timestampMaxInput AND [SensorValue]>=@thresholdValueInput", [
-            new BCC.QueryValue("sensorIDInput", sql.Int, sensorID),
-            new BCC.QueryValue("timestampMinInput", sql.DateTime, dateMin),
-            new BCC.QueryValue("timestampMaxInput", sql.DateTime, dateMax),
-            new BCC.QueryValue("thresholdValueInput", sql.Int, ThresholdValue)
+            "SELECT * FROM SensorValue_" + sensorType + " WHERE SensorID=? AND Timestamp BETWEEN ? AND ? AND SensorValue>=?", [
+            sensorID,
+            dateMin,
+            dateMax,
+            ThresholdValue
         ]);
         if (BCC.IsErrorCode(ret))
             return new Date();

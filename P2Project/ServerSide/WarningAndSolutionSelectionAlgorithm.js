@@ -1,6 +1,5 @@
 //#region Header
 
-const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let prediction = require(__dirname + "/PredictionAlgorithms.js");
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
@@ -119,7 +118,7 @@ function getPriority(timeUntilBadIAQ, interval) {
 async function getWarningInfoQuery(sensorType, priority) {
     let result = new WarningInfo(-1, sensorType, "", new SolutionInfo(priority, ""));
 
-    let ret = await BCC.MakeQuery("SELECT * FROM [Warnings] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+    let ret = await BCC.MakeQuery("SELECT * FROM Warnings WHERE SensorType=?", [sensorType]);
     if (BCC.IsErrorCode(ret))
         return result;
 
@@ -136,9 +135,7 @@ async function getSolutionQuery(warningID, priority) {
     let result = new SolutionInfo(priority, "");
 
     let ret = await BCC.MakeQuery(
-        "SELECT * FROM [Solutions] WHERE [WarningID]=@warningIDInput AND [WarningPriority]=@priorityInput",
-        [new BCC.QueryValue("warningIDInput", sql.Int, warningID),
-        new BCC.QueryValue("priorityInput", sql.Int, priority.Priority)]
+        "SELECT * FROM Solutions WHERE WarningID=? AND WarningPriority=?", [warningID, priority.Priority]
     );
     if (BCC.IsErrorCode(ret))
         return result;

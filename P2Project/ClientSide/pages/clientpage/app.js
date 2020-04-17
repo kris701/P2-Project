@@ -1,12 +1,12 @@
 ﻿try {
 
     // Use this to get resource data:
-    //      let fetchedData = await jsonFetch("http://localhost:5000/resource").catch(e => console.log(e));
+    //      let fetchedData = await jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
 
-    let RoomData;
+    let RoomData = [];
 
     async function GetInformation() {
-        RoomData = await jsonFetch("http://localhost:5000/getsensorinfo").catch(e => console.log(e));
+        RoomData = await jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
         await importDataToSelect();
     }
     window.onload = GetInformation;
@@ -63,4 +63,4 @@
         }
     }
 
-} catch (err) {console.log(err)}
+} catch (err) { console.log(err) }

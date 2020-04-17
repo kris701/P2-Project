@@ -1,6 +1,5 @@
 //#region Header
 
-const sql = require("mssql");
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
 class Sensor {
@@ -44,7 +43,7 @@ module.exports.SSIC = class {
 async function getAllRooms() {
     let rooms = [];
     
-    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorRooms]", []);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM SensorRooms", []);
     queryTable.recordset.forEach(v => rooms.push(v));
 
     return rooms;
@@ -53,7 +52,7 @@ async function getAllRooms() {
 async function getSensorsInRoom(room) {
     let sensors = [];
 
-    let queryTable = await BCC.MakeQuery("SELECT [SensorID] FROM [SensorInfo] WHERE [RoomID]=@roomInput", [new BCC.QueryValue("roomInput", sql.Int, room)]);
+    let queryTable = await BCC.MakeQuery("SELECT SensorID FROM SensorInfo WHERE RoomID=?", [room]);
     await BCC.asyncForEach(queryTable.recordset, async function (v) {
         let ReturnTypes = await getSensorTypes(v.SensorID);
         sensors.push(new Sensor(v.SensorID, ReturnTypes))
@@ -66,7 +65,7 @@ async function getSensorTypes(sensorID) {
     let sensorTypes = [];
     let sensorTypeNames = [];
 
-    let queryTable = await BCC.MakeQuery("SELECT * FROM [SensorThresholds] WHERE [SensorID]=@sensorIDInput", [new BCC.QueryValue("sensorIDInput", sql.Int, sensorID)]);
+    let queryTable = await BCC.MakeQuery("SELECT * FROM SensorThresholds WHERE SensorID=?", [sensorID]);
 
     queryTable.recordset.forEach(v => sensorTypes.push(v.SensorType));
 
@@ -80,7 +79,7 @@ async function getSensorTypes(sensorID) {
 async function getSensorTypeName(sensorType) {
     let sensorTypeName = [];
 
-    let queryTable = await BCC.MakeQuery("SELECT [TypeName] FROM [SensorTypes] WHERE [SensorType]=@sensorTypeInput", [new BCC.QueryValue("sensorTypeInput", sql.Int, sensorType)]);
+    let queryTable = await BCC.MakeQuery("SELECT TypeName FROM SensorTypes WHERE SensorType=?", [sensorType]);
     queryTable.recordset.forEach(v => sensorTypeName.push(v.TypeName));
 
     return sensorTypeName;
