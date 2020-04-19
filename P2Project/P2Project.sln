@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSide", "ClientSide\Cl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SensorCode", "SensorCode\SensorCode.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E0CFD53-086D-4543-A6B1-F91D6157EB12}"
 	ProjectSection(SolutionItems) = preProject
 		GeneralReadmes.txt = GeneralReadmes.txt
@@ -51,18 +49,6 @@ Global
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|Any CPU.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Debug|x86.Build.0 = Debug|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Debug|x86.Deploy.0 = Debug|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Release|x86.ActiveCfg = Release|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Release|x86.Build.0 = Release|Any CPU
-		{AD3EAA17-21A0-4C25-A3F4-8778EA2998E2}.Release|x86.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
