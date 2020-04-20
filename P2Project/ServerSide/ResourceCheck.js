@@ -130,17 +130,7 @@ async function ExecuteResource(FunctionCall, QueryStringArray, QueryURL) {
         return await FunctionCall();
     else {
         let AccArr = TranslateQueryToResourceParameters(QueryStringArray, QueryURL);
-
-        if (QueryStringArray.length == 1)
-            return await FunctionCall(AccArr[0]);
-        if (QueryStringArray.length == 2)
-            return await FunctionCall(AccArr[0], AccArr[1]);
-        if (QueryStringArray.length == 3)
-            return await FunctionCall(AccArr[0], AccArr[1], AccArr[2]);
-        if (QueryStringArray.length == 4)
-            return await FunctionCall(AccArr[0], AccArr[1], AccArr[2], AccArr[3]);
-        if (QueryStringArray.length == 5)
-            return await FunctionCall(AccArr[0], AccArr[1], AccArr[2], AccArr[3], AccArr[4]);
+        return await FunctionCall(...AccArr)
     }
 }
 
