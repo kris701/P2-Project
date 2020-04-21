@@ -19,7 +19,8 @@ class WarningInfo {
     }
 }
 class ReturnClass {
-    constructor(data) {
+    constructor(data, interval) {
+        this.interval = interval;
         this.data = data;
     }
 }
@@ -54,10 +55,10 @@ module.exports.WASC = class {
 
         let predictionDataArray = await PAC.getPredictionDatetimeQuery(room, date)
 
-        let returnItem = new ReturnClass([]);
+        let returnItem = new ReturnClass([], predictionDataArray.message.interval);
 
         await BCC.asyncForEach(predictionDataArray.message.data, async function (v) {
-            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.interval, returnItem);
+            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.message.interval, returnItem);
         });
         if (returnItem.data.length == 0)
             returnItem.data.push(noWarnMessasge);

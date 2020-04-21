@@ -30,7 +30,8 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
     new Resource("getsensorinfo", [], SSIC.getSensorInfoQuery, []),
     new Resource("getpredictiondata", ["room", "date"], PAC.getPredictionDatetimeQuery, []),
     new Resource("getwarningsandsolutions", ["room", "date"], WASC.getWarningsAndSolutions, []),
-    new Resource("admin", ["Username", "Password"], checkCredentials, [
+    new Resource("admin", ["username", "password"], checkCredentials, [
+        new Resource("login", [], function () { return new BCC.retMSG(RC.successCodes.CredentialsCorrect, "Credentials correct!") }, []),
         new Resource("getallwarningsandsolutions", [], ACC.WASC.getAllWarningsAndSolutions, []),
         new Resource("addnewwarning", ["sensorType", "message"], ACC.WASC.addNewWarning, []),
         new Resource("removewarning", ["warningID"], ACC.WASC.removeWarning, []),

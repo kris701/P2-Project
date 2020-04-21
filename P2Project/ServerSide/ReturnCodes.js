@@ -24,7 +24,8 @@ module.exports.successCodes = {
     InsertSensorValue: 221,
     GotWarningsAndSoluton: 222,
     GotSimpleSensorInfo: 223,
-    GotPredictions: 224
+    GotPredictions: 224,
+    CredentialsCorrect: 225
 }
 
 module.exports.failCodes = {
