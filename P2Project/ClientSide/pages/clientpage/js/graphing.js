@@ -1,4 +1,4 @@
-﻿let UC = require('utils.js').UC;
+﻿import UC from './utils.js';
 
 try {
 

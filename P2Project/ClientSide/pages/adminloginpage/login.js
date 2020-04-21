@@ -1,5 +1,6 @@
-﻿let CC = require(path.join(__dirname, '..', './adminpage/Cookies.js')).CC;
-let UC = require(path.join(__dirname, '..', './clientpage/js/utils.js')).UC;
+﻿let path = require('path');
+import CC from path.join(__dirname, '..', './adminpage/Cookies.js');
+import UC from path.join(__dirname, '..', './clientpage/js/utils.js');
 
 async function login() {
     let cookie = CC.getLogin();
@@ -24,8 +25,12 @@ async function login() {
 document.getElementById("login_submit").onclick = login;
 
 async function CheckCredentials(username, password) {
-    let check = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin?Username=" + username + "&Password=" + password).catch(e => console.log(e));
-    return check;
+    let returnValue = false;
+    let code = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login?username=" + username + "&password=" + password).catch(e => console.log(e));
+    if (code == 225)
+        returnValue = true;
+
+    return returnValue;
 }
 
 //function appendProperties(url, properties) {
@@ -37,8 +42,3 @@ async function CheckCredentials(username, password) {
 //    }
 //    return url;
 //}
-
-// For debugging
-function Cookie() {
-    console.log(CommonCalls.getCookie);
-}
