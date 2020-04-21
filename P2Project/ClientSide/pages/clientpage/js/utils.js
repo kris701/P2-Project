@@ -1,5 +1,5 @@
-﻿export class UC {
-    static async jsonFetch(url) {
+﻿function UtilsClass() {
+    this.jsonFetch = async function (url) {
         let response = await fetch(url);
         let returnData = await response.json();
 
