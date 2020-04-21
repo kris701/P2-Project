@@ -1,6 +1,5 @@
-﻿let path = require('path');
-import CC from path.join(__dirname, '..', './adminpage/Cookies.js');
-import UC from path.join(__dirname, '..', './clientpage/js/utils.js');
+﻿import { CC } from './../adminpage/Cookies.js'
+import { CC } from './../clientpage/js/utils.js'
 
 async function login() {
     let cookie = CC.getLogin();
