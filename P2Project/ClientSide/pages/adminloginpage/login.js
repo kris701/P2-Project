@@ -26,7 +26,7 @@ document.getElementById("login_submit").onclick = login;
 async function CheckCredentials(username, password) {
     let returnValue = false;
     let code = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login?username=" + username + "&password=" + password).catch(e => console.log(e));
-    if (code == 225)
+    if (code == "Credentials correct!")
         returnValue = true;
 
     return returnValue;
