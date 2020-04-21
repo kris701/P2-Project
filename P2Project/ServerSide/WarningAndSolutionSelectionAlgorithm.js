@@ -1,37 +1,37 @@
 //#region Header
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
-let prediction = require(__dirname + "/PredictionAlgorithms.js");
+let PAC = require(__dirname + "/PredictionAlgorithms.js").PAC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 
 class SolutionInfo {
-    constructor(WarningPriority, Message) {
-        this.WarningPriority = WarningPriority;
-        this.Message = Message;
+    constructor(warningPriority, message) {
+        this.warningPriority = warningPriority;
+        this.message = message;
     }
 }
 class WarningInfo {
-    constructor(WarningID, SensorType, Message, SolutionInfo) {
-        this.WarningID = WarningID;
-        this.SensorType = SensorType;
-        this.Message = Message;
-        this.SolutionInfo = SolutionInfo;
+    constructor(warningID, sensorType, message, solutionInfo) {
+        this.warningID = warningID;
+        this.sensorType = sensorType;
+        this.message = message;
+        this.solutionInfo = solutionInfo;
     }
 }
 class ReturnClass {
-    constructor(Data) {
-        this.Data = Data;
+    constructor(data) {
+        this.data = data;
     }
 }
 class PriorityInfo {
-    constructor(Priority, TimeUntil) {
-        this.Priority = Priority;
-        this.TimeUntil = TimeUntil;
+    constructor(priority, timeUntil) {
+        this.priority = priority;
+        this.timeUntil = timeUntil;
     }
 }
-const NoWarnMessasge = new WarningInfo(-2, -2, "No Warnings", new SolutionInfo(0, "No Solution"));
+const noWarnMessasge = new WarningInfo(-2, -2, "No Warnings", new SolutionInfo(0, "No Solution"));
 
-const PriorityEnum = {
+const priorityEnum = {
     None: 0,
     Low: 1,
     Medium: 2,
@@ -46,19 +46,19 @@ const PriorityEnum = {
 module.exports.WASC = class {
     static async getWarningsAndSolutions(room, date) {
         if (room == null || date == null)
-            return new BCC.ReturnMessage(failCodes.NoParameters, "");
+            return new BCC.retMSG(failCodes.NoParameters, "");
 
-        let predictionDataArray = await prediction.PAC.getPredictionDatetimeQuery(room, date)
+        let predictionDataArray = await PAC.getPredictionDatetimeQuery(room, date)
 
         let returnItem = new ReturnClass([]);
 
-        await BCC.asyncForEach(predictionDataArray.Data, async function (v) {
-            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.Interval, returnItem);
+        await BCC.asyncForEach(predictionDataArray.message.data, async function (v) {
+            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.interval, returnItem);
         });
-        if (returnItem.Data.length == 0)
-            returnItem.Data.push(NoWarnMessasge);
+        if (returnItem.data.length == 0)
+            returnItem.data.push(noWarnMessasge);
 
-        return new BCC.ReturnMessage(200, returnItem);
+        return new BCC.retMSG(200, returnItem);
     }
 }
 
@@ -67,16 +67,16 @@ module.exports.WASC = class {
 //#region Private
 
 async function getWASForEachThesholdPass(predictionData, interval, returnItem) {
-    await BCC.asyncForEach(predictionData.ThresholdPasses, async function (v) {
-        let priority = getPriority(v.TimeUntil, interval);
+    await BCC.asyncForEach(predictionData.thresholdPasses, async function (passedValueInfo) {
+        let priority = getPriority(passedValueInfo.timeUntil, interval);
 
-        if (priority.Priority != PriorityEnum.None) {
-            let isThere = await checkIfWarningIsThere(predictionData.SensorType, returnItem.Data, priority.Priority);
+        if (priority.priority != priorityEnum.None) {
+            let isThere = await checkIfWarningIsThere(predictionData.sensorType, returnItem.data, priority.priority);
 
             if (!isThere) {
-                let warningInfo = await getWarningInfoQuery(predictionData.SensorType, priority);
-                if (warningInfo.Message != "" && warningInfo.SolutionInfo.Message != "")
-                    returnItem.Data.push(warningInfo);
+                let warningInfo = await getWarningInfoQuery(predictionData.sensorType, priority);
+                if (warningInfo.message != "" && warningInfo.solutionInfo.message != "")
+                    returnItem.data.push(warningInfo);
             }
         }
     });
@@ -88,9 +88,9 @@ async function checkIfWarningIsThere(sensorType, searchArray, priority) {
     let isThere = false;
 
     await BCC.asyncForEach(searchArray, async function (v) {
-        if (v.SensorType == sensorType) {
-            if (v.SolutionInfo.WarningPriority < priority) {
-                v.SolutionInfo = await getSolutionQuery(v.WarningID, priority);
+        if (v.sensorType == sensorType) {
+            if (v.solutionInfo.warningPriority < priority) {
+                v.solutionInfo = await getSolutionQuery(v.warningID, priority);
             }
             isThere = true;
         }
@@ -104,28 +104,28 @@ function getPriority(timeUntilBadIAQ, interval) {
     let minutes = timeUntilBadIAQ * interval;
 
     if (minutes > 60)
-        return new PriorityInfo(PriorityEnum.None, minutes);
+        return new PriorityInfo(priorityEnum.None, minutes);
     else if (minutes > 30)
-        return new PriorityInfo(PriorityEnum.Low, minutes);
+        return new PriorityInfo(priorityEnum.Low, minutes);
     else if (minutes > 10)
-        return new PriorityInfo(PriorityEnum.Medium, minutes);
+        return new PriorityInfo(priorityEnum.Medium, minutes);
     else
-        return new PriorityInfo(PriorityEnum.High, minutes);
+        return new PriorityInfo(priorityEnum.High, minutes);
 
-    return new PriorityInfo(PriorityEnum.None, minutes);
+    return new PriorityInfo(priorityEnum.None, minutes);
 }
 
 async function getWarningInfoQuery(sensorType, priority) {
     let result = new WarningInfo(-1, sensorType, "", new SolutionInfo(priority, ""));
 
-    let ret = await BCC.MakeQuery("SELECT * FROM Warnings WHERE SensorType=?", [sensorType]);
-    if (BCC.IsErrorCode(ret))
+    let ret = await BCC.makeQuery("SELECT * FROM Warnings WHERE SensorType=?", [sensorType]);
+    if (BCC.isErrorCode(ret))
         return result;
 
-    if (queryTable.recordset.length != 0) {
-        result.Message = queryTable.recordset[0].Message;
-        result.WarningID = queryTable.recordset[0].WarningID;
-        result.SolutionInfo = await getSolutionQuery(queryTable.recordset[0].WarningID, priority);
+    if (ret.recordset.length != 0) {
+        result.message = ret.recordset[0].message;
+        result.warningID = ret.recordset[0].warningID;
+        result.solutionInfo = await getSolutionQuery(ret.recordset[0].warningID, priority);
     }
 
     return result;
@@ -134,14 +134,14 @@ async function getWarningInfoQuery(sensorType, priority) {
 async function getSolutionQuery(warningID, priority) {
     let result = new SolutionInfo(priority, "");
 
-    let ret = await BCC.MakeQuery(
-        "SELECT * FROM Solutions WHERE WarningID=? AND WarningPriority=?", [warningID, priority.Priority]
+    let ret = await BCC.makeQuery(
+        "SELECT * FROM Solutions WHERE WarningID=? AND WarningPriority=?", [warningID, priority.priority]
     );
-    if (BCC.IsErrorCode(ret))
+    if (BCC.isErrorCode(ret))
         return result;
 
     if (ret.recordset.length != 0) {
-        result.Message = ret.recordset[0].Message;
+        result.message = ret.recordset[0].message;
     }
 
     return result;

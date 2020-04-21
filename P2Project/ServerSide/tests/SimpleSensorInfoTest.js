@@ -1,10 +1,9 @@
 //#region Header
 
 var path = require('path');
-var expect = require('chai').expect;
 
-var SimpleSensorInfoCall = require(path.join(__dirname, '..', './SimpleSensorInfo.js'));
-var generalTests = require("./GeneralTests.js").GTC;
+var SSIC = require(path.join(__dirname, '..', './SimpleSensorInfo.js')).SSIC;
+var GTC = require("./GeneralTests.js").GTC;
 
 //#endregion
 
@@ -15,7 +14,7 @@ describe('getSensorInfoQuery function', function () {
     this.timeout(10000);
     this.retries(3);
 
-    generalTests.ShouldReturnArray(SimpleSensorInfoCall.SSIC.getSensorInfoQuery());
+    GTC.shouldReturnArray(SSIC.getSensorInfoQuery());
 });
 
 //#endregion

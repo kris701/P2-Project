@@ -3,9 +3,9 @@
 var path = require('path');
 var expect = require('chai').expect;
 
-var BasicCalls = require(path.join(__dirname, '..', './BasicCalls.js'));
+var BCC = require(path.join(__dirname, '..', './BasicCalls.js')).BCC;
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
-var generalTests = require("./GeneralTests.js").GTC;
+var GTC = require("./GeneralTests.js").GTC;
 
 //#endregion
 
@@ -16,7 +16,7 @@ describe('asyncForEach function', function () {
     it('Should be async', async function () {
         let list = [1, 2, 3, 4, 5];
         let outlist = [];
-        let res = await BasicCalls.BCC.asyncForEach(list, async function (v) {
+        let res = await BCC.asyncForEach(list, async function (v) {
             outlist.push(v);
             await new Promise(resolve => setTimeout(resolve, 100));
         });
@@ -27,14 +27,14 @@ describe('asyncForEach function', function () {
         expect(res).to.not.eql(failCodes.InputNotAnArray);
     });
 
-    generalTests.ExpectErrorCodeFromInputSimple('Should fail if input is not an array', BasicCalls.BCC.asyncForEach("abc", async function (v) { }), failCodes.InputNotAnArray);
+    GTC.expectErrorCodeFromInputSimple('Should fail if input is not an array', BCC.asyncForEach("abc", async function (v) { }), failCodes.InputNotAnArray);
 });
 
-describe('MakeQuery function', function () {
-    generalTests.ShouldFailWithToParametersSimple(BasicCalls.BCC.MakeQuery(), failCodes.NoParameters);
-    generalTests.ExpectErrorCodeFromInputSimple('Should fail if querytext not a string', BasicCalls.BCC.MakeQuery(-99999, []), failCodes.InputNotAString);
-    generalTests.ExpectErrorCodeFromInputSimple('Should fail with no querytext', BasicCalls.BCC.MakeQuery("", []), failCodes.EmptyString);
-    generalTests.ExpectErrorCodeFromInputSimple('Should fail if Input is not an array', BasicCalls.BCC.MakeQuery("some text", "some text"), failCodes.InputNotAnArray);
+describe('makeQuery function', function () {
+    GTC.shouldFailWithToParametersSimple(BCC.makeQuery(), failCodes.NoParameters);
+    GTC.expectErrorCodeFromInputSimple('Should fail if querytext not a string', BCC.makeQuery(-99999, []), failCodes.InputNotAString);
+    GTC.expectErrorCodeFromInputSimple('Should fail with no querytext', BCC.makeQuery("", []), failCodes.EmptyString);
+    GTC.expectErrorCodeFromInputSimple('Should fail if Input is not an array', BCC.makeQuery("some text", "some text"), failCodes.InputNotAnArray);
 });
 
 //#endregion

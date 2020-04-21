@@ -6,7 +6,7 @@ try {
 
     // Include modules
     let http = require("http");
-    const querystring = require("querystring");
+    const queryString = require("querystring");
 
     //#endregion
 
@@ -14,28 +14,28 @@ try {
 
     // Main Server Code
     let server = http.createServer(async function (req, res) {
-        let response = new BCC.ReturnMessage(-1,"");
+        let response = new BCC.retMSG(-1,"");
         try {
             let queryUrl = queryStringParse(req.url);
-            response = await RCC.CheckAllResource(response, req, queryUrl);
+            response = await RCC.checkAllResource(response, req, queryUrl);
 
-            if (response.ReturnCode == -1) {
+            if (response.returnCode == -1) {
                 console.error("Resource not found!");
-                response = new BCC.ReturnMessage(404, "Resource not found!");
+                response = new BCC.retMSG(404, "Resource not found!");
             }
 
         } catch (err) {
             console.error(err);
-            response = new BCC.ReturnMessage(404, "An error occured on the server!");
+            response = new BCC.retMSG(404, "An error occured on the server!");
         }
 
-        res.writeHead(response.ReturnCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-        res.write(JSON.stringify(response.Message));
+        res.writeHead(response.returnCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+        res.write(JSON.stringify(response.message));
         res.end();
     });
 
     function queryStringParse(url) {
-        return querystring.parse(url.split("?")[1], "&", "=");
+        return queryString.parse(url.split("?")[1], "&", "=");
     }
 
     server.listen(3910);

@@ -1,11 +1,10 @@
 //#region Header
 
 var path = require('path');
-var expect = require('chai').expect;
 
-var WASACall = require(path.join(__dirname, '..', './WarningAndSolutionSelectionAlgorithm.js'));
+var WASC = require(path.join(__dirname, '..', './WarningAndSolutionSelectionAlgorithm.js')).WASC;
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
-var generalTests = require("./GeneralTests.js").GTC;
+var GTC = require("./GeneralTests.js").GTC;
 
 //#endregion
 
@@ -16,10 +15,10 @@ describe('getWarningsAndSolutions function', function () {
     this.timeout(20000);
     this.retries(3);
 
-    generalTests.ShouldFailWithToParameters(WASACall.WASC.getWarningsAndSolutions(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(WASACall.WASC.getWarningsAndSolutions([], 0), -999);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(WASACall.WASC.getWarningsAndSolutions(0, []), -999);
-    generalTests.ShouldReturnArrayDotData(WASACall.WASC.getWarningsAndSolutions(0, new Date()));
+    GTC.shouldFailWithToParameters(WASC.getWarningsAndSolutions(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(WASC.getWarningsAndSolutions([], 0), -999);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(WASC.getWarningsAndSolutions(0, []), -999);
+    GTC.shouldReturnArrayDotData(WASC.getWarningsAndSolutions(0, new Date()));
 });
 
 //#endregion

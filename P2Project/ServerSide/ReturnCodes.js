@@ -40,7 +40,7 @@ module.exports.failCodes = {
 
 //#region Public
 
-module.exports.ParseCode = function(code)
+module.exports.parseCode = function(code)
 {
     if (code == module.exports.failCodes.NoParameters) return "Error: No, missing or wrong parameters!";
     if (code == module.exports.failCodes.TargetIsDefaultID) return "Error: Target ID is default ID";
@@ -55,10 +55,10 @@ module.exports.ParseCode = function(code)
     return "Unknown code!"
 }
 
-module.exports.ParseToReturnMessage = function(code)
+module.exports.parseToRetMSG = function(code)
 {
     let BCC = require(__dirname + "/BasicCalls.js").BCC;
-    return new BCC.ReturnMessage(code, module.exports.ParseCode(code));
+    return new BCC.retMSG(code, module.exports.parseCode(code));
 }
 
 //#endregion

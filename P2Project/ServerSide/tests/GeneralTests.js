@@ -8,73 +8,73 @@ var expect = require('chai').expect;
 
 // General Tests Class
 module.exports.GTC = class {
-    static ShouldFailWithToParameters(functionCall, returnCode) {
+    static shouldFailWithToParameters(functionCall, returnCode) {
         it('Should fail with no paramteres, by returning code ' + returnCode, async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.ReturnCode).to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue.returnCode).to.be.equal(returnCode);
         });
     }
 
-    static ShouldFailWithToParametersSimple(functionCall, returnCode) {
+    static shouldFailWithToParametersSimple(functionCall, returnCode) {
         it('Should fail with no paramteres, by returning code ' + returnCode, async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue).to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue).to.be.equal(returnCode);
         });
     }
 
-    static ShouldReturnArray(functionCall) {
+    static shouldReturnArray(functionCall) {
         it('Should return an array', async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.Message).to.be.an('array');
+            let returnValue = await functionCall;
+            expect(returnValue.message).to.be.an('array');
         });
     }
 
-    static ShouldReturnArrayDotData(functionCall) {
+    static shouldReturnArrayDotData(functionCall) {
         it('Should return an array', async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.Message.Data).to.be.an('array');
+            let returnValue = await functionCall;
+            expect(returnValue.message.data).to.be.an('array');
         });
     }
 
-    static OutputArrayMustBeLargerThanDotData(functionCall, largerThan) {
+    static outputArrayMustBeLargerThanDotData(functionCall, largerThan) {
         it('Return array should be larger than ' + largerThan, async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.Message.Data).to.have.length.above(largerThan);
+            let returnValue = await functionCall;
+            expect(returnValue.message.data).to.have.length.above(largerThan);
         });
     }
 
-    static ShouldFailIfTargetIDIsDefaultID(functionCall, defaultID, returnCode) {
+    static shouldFailIfTargetIDIsDefaultID(functionCall, defaultID, returnCode) {
         it('Should fail if target id is equal to default id: ' + defaultID + ' and return error code ' + returnCode, async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.ReturnCode).to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue.returnCode).to.be.equal(returnCode);
         });
     }
 
-    static ExpectErrorCodeFromInput(expectText, functionCall, returnCode) {
+    static expectErrorCodeFromInput(expectText, functionCall, returnCode) {
         it('Expect code(' + returnCode + '): ' + expectText, async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.ReturnCode).to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue.returnCode).to.be.equal(returnCode);
         });
     }
 
-    static ExpectErrorCodeFromInputSimple(expectText, functionCall, returnCode) {
+    static expectErrorCodeFromInputSimple(expectText, functionCall, returnCode) {
         it('Expect code(' + returnCode + '): ' + expectText, async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue).to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue).to.be.equal(returnCode);
         });
     }
 
-    static ShouldReturnDatabaseErrorWithInput(functionCall, returnCode) {
+    static shouldReturnDatabaseErrorWithInput(functionCall, returnCode) {
         it('Should return DB error with wrong input', async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.ReturnCode).to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue.returnCode).to.be.equal(returnCode);
         });
     }
 
-    static ShouldNotReturnOKCodeIfInputIsWrong(functionCall, returnCode) {
+    static shouldNotReturnOKCodeIfInputIsWrong(functionCall, returnCode) {
         it('Should not return OK code if input is wrong', async function () {
-            let ReturnValue = await functionCall;
-            expect(ReturnValue.ReturnCode).not.to.be.equal(returnCode);
+            let returnValue = await functionCall;
+            expect(returnValue.returnCode).not.to.be.equal(returnCode);
         });
     }
 }

@@ -1,9 +1,9 @@
 //#region Header
 
-const mysql = require('mysql');
+const mySQL = require('mysql');
 const util = require('util');
 
-const ServerConfig = {
+const serverConfig = {
     "host": "localhost",
     "user": "dat2c1-3@student.aau.dk",
     "password": "acYy96fYfbpcE76N",
@@ -27,28 +27,28 @@ module.exports.BCC = class {
         }
     }
 
-    static ReturnMessage = class {
-        constructor(ReturnCode, Message) {
-            this.ReturnCode = ReturnCode;
-            this.Message = Message;
+    static retMSG = class {
+        constructor(returnCode, message) {
+            this.returnCode = returnCode;
+            this.message = message;
         }
     }
 
-    static async MakeQuery(QueryText, Inputs) {
+    static async makeQuery(queryText, parameterArray) {
         try {
-            if (QueryText != null && Inputs != null) {
-                if (typeof QueryText !== "string")
+            if (queryText != null && parameterArray != null) {
+                if (typeof queryText !== "string")
                     return failCodes.InputNotAString;
-                if (QueryText == "")
+                if (queryText == "")
                     return failCodes.EmptyString;
 
-                if (!Array.isArray(Inputs))
+                if (!Array.isArray(parameterArray))
                     return failCodes.InputNotAnArray;
 
-                const db = makeDb(ServerConfig);
+                const db = makeDb(serverConfig);
                 try {
                     let returnvalue = { recordset: [] };
-                    returnvalue.recordset = await db.query(QueryText, Inputs);
+                    returnvalue.recordset = await db.query(queryText, parameterArray);
                     return returnvalue;
                 } catch (err) {
                     return failCodes.DatabaseError;
@@ -66,7 +66,7 @@ module.exports.BCC = class {
         }
     }
 
-    static IsErrorCode(value) {
+    static isErrorCode(value) {
         if (typeof value == typeof 0)
             return true;
         return false;
@@ -78,7 +78,7 @@ module.exports.BCC = class {
 //#region Private
 
 function makeDb(config) {
-    const connection = mysql.createConnection(config);
+    const connection = mySQL.createConnection(config);
     return {
         query(sql, args) {
             return util.promisify(connection.query)

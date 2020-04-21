@@ -1,174 +1,173 @@
 //#region Header
 
 var path = require('path');
-var expect = require('chai').expect;
 
-var AdminCall = require(path.join(__dirname, '..', './AdminCalls.js'));
+var ACC = require(path.join(__dirname, '..', './AdminCalls.js')).ACC;
 var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 var successCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).successCodes;
-var generalTests = require("./GeneralTests.js").GTC;
+var GTC = require("./GeneralTests.js").GTC;
 
 //#endregion
 
 //#region Tests
 
-describe('adminGetAllWarningsAndSolutions function', function () {
+describe('getAllWarningsAndSolutions function', function () {
     this.timeout(200000);
 
-    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.WASC.adminGetAllWarningsAndSolutions());
+    GTC.shouldReturnArrayDotData(ACC.WASC.getAllWarningsAndSolutions());
 });
 
-describe('adminGetAllSensorTypes function', function () {
-    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.SEC.adminGetAllSensorTypes());
-    generalTests.OutputArrayMustBeLargerThanDotData(AdminCall.ACC.SEC.adminGetAllSensorTypes(), 0);
+describe('getAllSensorTypes function', function () {
+    GTC.shouldReturnArrayDotData(ACC.SEC.getAllSensorTypes());
+    GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllSensorTypes(), 0);
 });
 
-describe('adminAddNewWarning function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminAddNewWarning(), failCodes.NoParameters);
-    generalTests.ShouldReturnDatabaseErrorWithInput(AdminCall.ACC.WASC.adminAddNewWarning(-99, ""), failCodes.DatabaseError);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddNewWarning(0, []), successCodes.AddWarning);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddNewWarning([], 0), successCodes.AddWarning);
+describe('addNewWarning function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.addNewWarning(), failCodes.NoParameters);
+    GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addNewWarning(-99, ""), failCodes.DatabaseError);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addNewWarning(0, []), successCodes.AddWarning);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addNewWarning([], 0), successCodes.AddWarning);
 });
 
-describe('adminRemoveWarning function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminRemoveWarning(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminRemoveWarning(-1), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminRemoveWarning([]), successCodes.RemoveWarning);
+describe('removeWarning function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.removeWarning(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeWarning(-1), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.removeWarning([]), successCodes.RemoveWarning);
 });
 
-describe('adminUpdateWarning function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminUpdateWarning(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminUpdateWarning(-1, ""), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateWarning(0, []), successCodes.UpdateWarning);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateWarning([], 0), successCodes.UpdateWarning);
+describe('updateWarning function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.updateWarning(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.updateWarning(-1, ""), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateWarning(0, []), successCodes.UpdateWarning);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateWarning([], 0), successCodes.UpdateWarning);
 });
 
-describe('adminAddSolution function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminAddSolution(), failCodes.NoParameters);
-    generalTests.ExpectErrorCodeFromInput('Should fail if target priority is outside of range', AdminCall.ACC.WASC.adminAddSolution(-1, -1, ""), failCodes.PriorityOutsideRange);
-    generalTests.ShouldReturnDatabaseErrorWithInput(AdminCall.ACC.WASC.adminAddSolution(-99, 0, ""), failCodes.DatabaseError);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddSolution(0, [], ""), successCodes.AddSolution);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddSolution(0, 0, []), successCodes.AddSolution);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddSolution([], 0, ""), successCodes.AddSolution);
+describe('addSolution function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.addSolution(), failCodes.NoParameters);
+    GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(-1, -1, ""), failCodes.PriorityOutsideRange);
+    GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addSolution(-99, 0, ""), failCodes.DatabaseError);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addSolution(0, [], ""), successCodes.AddSolution);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addSolution(0, 0, []), successCodes.AddSolution);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addSolution([], 0, ""), successCodes.AddSolution);
 });
 
-describe('adminRemoveSolutionReference function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminRemoveSolutionReference(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminRemoveSolutionReference(-1), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminRemoveSolutionReference([]), successCodes.RemoveSolutionRef);
+describe('removeSolutionReference function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.removeSolutionReference(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeSolutionReference(-1), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.removeSolutionReference([]), successCodes.RemoveSolutionRef);
 });
 
-describe('adminUpdateSolution function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminUpdateSolution(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminUpdateSolution(-1, "", 0), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateSolution(-1, [], 0), successCodes.UpdateSolution);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateSolution([], "", 0), successCodes.UpdateSolution);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminUpdateSolution(-1, "", []), successCodes.UpdateSolution);
+describe('updateSolution function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.updateSolution(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.updateSolution(-1, "", 0), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateSolution(-1, [], 0), successCodes.UpdateSolution);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateSolution([], "", 0), successCodes.UpdateSolution);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateSolution(-1, "", []), successCodes.UpdateSolution);
 });
 
-describe('adminAddExistingSolution function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminAddExistingSolution(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminAddExistingSolution(-1, 0), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddExistingSolution(0, []), successCodes.AddExistingSolution);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminAddExistingSolution([], 0), successCodes.AddExistingSolution);
+describe('addExistingSolution function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.addExistingSolution(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.addExistingSolution(-1, 0), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addExistingSolution(0, []), successCodes.AddExistingSolution);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addExistingSolution([], 0), successCodes.AddExistingSolution);
 });
 
-describe('adminRemoveSolution function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.WASC.adminRemoveSolution(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.WASC.adminRemoveSolution(-1), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.WASC.adminRemoveSolution([]), successCodes.RemoveSolution);
+describe('removeSolution function', function () {
+    GTC.shouldFailWithToParameters(ACC.WASC.removeSolution(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeSolution(-1), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.removeSolution([]), successCodes.RemoveSolution);
 });
 
-describe('adminGetAllSolutions function', function () {
+describe('getAllSolutions function', function () {
     this.timeout(200000);
 
-    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.WASC.adminGetAllSolutions());
+    GTC.shouldReturnArrayDotData(ACC.WASC.getAllSolutions());
 });
 
-describe('adminGetAllWarningsAndSolutions function', function () {
+describe('getAllWarningsAndSolutions function', function () {
     this.timeout(200000);
 
-    generalTests.ShouldReturnArrayDotData(AdminCall.ACC.WASC.adminGetAllWarningsAndSolutions());
+    GTC.shouldReturnArrayDotData(ACC.WASC.getAllWarningsAndSolutions());
 });
 
 
 
-describe('adminAddNewRoom function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddNewRoom(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddNewRoom([]), successCodes.AddRoom);
+describe('addNewRoom function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.addNewRoom(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addNewRoom([]), successCodes.AddRoom);
 });
 
-describe('adminRemoveRoom function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveRoom(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminRemoveRoom(-1), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveRoom([]), successCodes.RemoveRoom);
+describe('removeRoom function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.removeRoom(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.removeRoom(-1), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeRoom([]), successCodes.RemoveRoom);
 });
 
-describe('adminUpdateRoom function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminUpdateRoom(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminUpdateRoom(-1, ""), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateRoom(0, []), successCodes.UpdateRoom);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateRoom([],0), successCodes.UpdateRoom);
+describe('updateRoom function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.updateRoom(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.updateRoom(-1, ""), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateRoom(0, []), successCodes.UpdateRoom);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateRoom([],0), successCodes.UpdateRoom);
 });
 
-describe('adminUpdateSensor function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminUpdateSensor(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensor(0, []), successCodes.UpdateSensor);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensor([], 0), successCodes.UpdateSensor);
+describe('updateSensor function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.updateSensor(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensor(0, []), successCodes.UpdateSensor);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensor([], 0), successCodes.UpdateSensor);
 });
 
-describe('adminAddNewSensor function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddNewSensor(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddNewSensor([]), successCodes.AddSensor);
+describe('addNewSensor function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.addNewSensor(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addNewSensor([]), successCodes.AddSensor);
 });
 
-describe('adminRemoveSensorReference function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensorReference(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensorReference([]), successCodes.RemoveSensorRef);
+describe('removeSensorReference function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.removeSensorReference(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensorReference([]), successCodes.RemoveSensorRef);
 });
 
-describe('adminRemoveSensor function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensor(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensor([]), successCodes.RemoveSensor);
+describe('removeSensor function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.removeSensor(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensor([]), successCodes.RemoveSensor);
 });
 
-describe('adminAddNewSensorType function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddNewSensorType(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddNewSensorType([]), successCodes.AddSensorType);
+describe('addNewSensorType function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.addNewSensorType(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addNewSensorType([]), successCodes.AddSensorType);
 });
 
-describe('adminAddExistingSensorType function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminAddExistingSensorType(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddExistingSensorType([],0,0), successCodes.AddExistingSensorType);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddExistingSensorType(0,[],0), successCodes.AddExistingSensorType);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminAddExistingSensorType(0,0,[]), successCodes.AddExistingSensorType);
+describe('addExistingSensorType function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.addExistingSensorType(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addExistingSensorType([],0,0), successCodes.AddExistingSensorType);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addExistingSensorType(0,[],0), successCodes.AddExistingSensorType);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addExistingSensorType(0,0,[]), successCodes.AddExistingSensorType);
 });
 
-describe('adminRemoveSensorType function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensorType(), failCodes.NoParameters);
-    generalTests.ShouldFailIfTargetIDIsDefaultID(AdminCall.ACC.SEC.adminRemoveSensorType(-1), -1, failCodes.TargetIsDefaultID);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensorType([]), successCodes.RemoveSensorType);
+describe('removeSensorType function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.removeSensorType(), failCodes.NoParameters);
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.removeSensorType(-1), -1, failCodes.TargetIsDefaultID);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensorType([]), successCodes.RemoveSensorType);
 });
 
-describe('adminRemoveSensorTypeReference function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminRemoveSensorTypeReference(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminRemoveSensorTypeReference([]), successCodes.RemoveSensorTypeRef);
+describe('removeSensorTypeReference function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.removeSensorTypeReference(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensorTypeReference([]), successCodes.RemoveSensorTypeRef);
 });
 
-describe('adminUpdateSensorTypeThreshold function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold([], 0, 0), successCodes.UpdateSensorTypeThreshold);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold(0, [], 0), successCodes.UpdateSensorTypeThreshold);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.SEC.adminUpdateSensorTypeThreshold(0, 0, []), successCodes.UpdateSensorTypeThreshold);
+describe('updateSensorTypeThreshold function', function () {
+    GTC.shouldFailWithToParameters(ACC.SEC.updateSensorTypeThreshold(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensorTypeThreshold([], 0, 0), successCodes.UpdateSensorTypeThreshold);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensorTypeThreshold(0, [], 0), successCodes.UpdateSensorTypeThreshold);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensorTypeThreshold(0, 0, []), successCodes.UpdateSensorTypeThreshold);
 });
 
 
 
-describe('adminInsertSensorValue function', function () {
-    generalTests.ShouldFailWithToParameters(AdminCall.ACC.adminInsertSensorValue(), failCodes.NoParameters);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue([], 0, 0), successCodes.InsertSensorValue);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue(0, [], 0), successCodes.InsertSensorValue);
-    generalTests.ShouldNotReturnOKCodeIfInputIsWrong(AdminCall.ACC.adminInsertSensorValue(0, 0, []), successCodes.InsertSensorValue);
+describe('insertSensorValue function', function () {
+    GTC.shouldFailWithToParameters(ACC.insertSensorValue(), failCodes.NoParameters);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.insertSensorValue([], 0, 0), successCodes.InsertSensorValue);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.insertSensorValue(0, [], 0), successCodes.InsertSensorValue);
+    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.insertSensorValue(0, 0, []), successCodes.InsertSensorValue);
 });
 
 //#endregion

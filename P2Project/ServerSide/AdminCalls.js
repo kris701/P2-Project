@@ -4,25 +4,25 @@ let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let RC = require(__dirname + "/ReturnCodes.js");
 
 class WarningItem {
-    constructor(WarningID, SensorType, Message, Solutions) {
-        this.WarningID = WarningID;
-        this.SensorType = SensorType;
-        this.Message = Message;
-        this.Solutions = Solutions;
+    constructor(warningID, sensorType, message, solutions) {
+        this.warningID = warningID;
+        this.sensorType = sensorType;
+        this.message = message;
+        this.solutions = solutions;
     }
 }
 
 class SolutionItem {
-    constructor(SolutionID, WarningPriority, Message) {
-        this.SolutionID = SolutionID;
-        this.WarningPriority = WarningPriority;
-        this.Message = Message;
+    constructor(solutionID, warningPriority, message) {
+        this.solutionID = solutionID;
+        this.warningPriority = warningPriority;
+        this.message = message;
     }
 }
 
 class ReturnItem {
-    constructor(Data) {
-        this.Data = Data;
+    constructor(data) {
+        this.data = data;
     }
 }
 
@@ -36,148 +36,148 @@ module.exports.ACC = class {
     static WASC = class {
 
         // Warnings
-        static async adminGetAllWarningsAndSolutions() {
+        static async getAllWarningsAndSolutions() {
             let returnItem = new ReturnItem([]);
 
-            returnItem.Data = await getAllWarningsQuery();
+            returnItem.data = await getAllWarningsQuery();
 
-            return new BCC.ReturnMessage(200, returnItem);
+            return new BCC.retMSG(200, returnItem);
         }
 
-        static async adminAddNewWarning(sensorType, message) {
+        static async addNewWarning(sensorType, message) {
             if (typeof (sensorType) == typeof (0) && typeof (message) == typeof ("")) {
-                let ret = await BCC.MakeQuery("INSERT INTO Warnings (SensorType, Message) values (?, ?)", [sensorType,message]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("INSERT INTO Warnings (SensorType, Message) values (?, ?)", [sensorType,message]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return  RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return  RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.AddWarning);
+            return RC.parseToRetMSG(RC.successCodes.AddWarning);
         }
 
-        static async adminRemoveWarning(warningID) {
+        static async removeWarning(warningID) {
             if (typeof (warningID) == typeof (0)) {
                 if (warningID == -1)
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("UPDATE Solutions SET WarningID=-1 WHERE WarningID=?", [warningID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
-                ret = await BCC.MakeQuery("DELETE FROM Warnings WHERE WarningID=?", [warningID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("UPDATE Solutions SET WarningID=-1 WHERE WarningID=?", [warningID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
+                ret = await BCC.makeQuery("DELETE FROM Warnings WHERE WarningID=?", [warningID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
             
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveWarning);
+            return RC.parseToRetMSG(RC.successCodes.RemoveWarning);
         }
 
-        static async adminUpdateWarning(warningID, message) {
+        static async updateWarning(warningID, message) {
             if (typeof (warningID) == typeof (0) && typeof (message) == typeof ("")) {
                 if (warningID == -1) 
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("UPDATE Warnings SET Message=? WHERE WarningID=?", [warningID,message]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("UPDATE Warnings SET Message=? WHERE WarningID=?", [warningID,message]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
             
-            return RC.ParseToReturnMessage(RC.failCodes.UpdateWarning);
+            return RC.parseToRetMSG(RC.failCodes.UpdateWarning);
         }
 
         // Solutions
-        static async adminAddSolution(warningID, warningPriority, message) {
+        static async addSolution(warningID, warningPriority, message) {
             if (typeof (warningID) == typeof (0) && typeof (warningPriority) == typeof (0) && typeof (message) == typeof ("")) {
                 if (warningPriority < 0 || warningPriority > 3)
-                    return RC.ParseToReturnMessage(RC.failCodes.PriorityOutsideRange);
+                    return RC.parseToRetMSG(RC.failCodes.PriorityOutsideRange);
 
-                let ret = await BCC.MakeQuery("INSERT INTO Solutions (WarningID, WarningPriority, Message) values (?, ?, ?)", [warningID, warningPriority, message]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("INSERT INTO Solutions (WarningID, WarningPriority, Message) values (?, ?, ?)", [warningID, warningPriority, message]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(successCodes.AddSolution);
+            return RC.parseToRetMSG(successCodes.AddSolution);
         }
 
-        static async adminRemoveSolutionReference(solutionID) {
+        static async removeSolutionReference(solutionID) {
             if (typeof (solutionID) == typeof (0)) {
                 if (solutionID == -1) 
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
                 
-                let ret = await BCC.MakeQuery("UPDATE Solutions SET WarningID=-1 WHERE SolutionID=?", [solutionID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("UPDATE Solutions SET WarningID=-1 WHERE SolutionID=?", [solutionID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else 
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
             
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveSolutionRef);
+            return RC.parseToRetMSG(RC.successCodes.RemoveSolutionRef);
         }
 
-        static async adminUpdateSolution(solutionID, message, warningPriority) {
+        static async updateSolution(solutionID, message, warningPriority) {
             if (typeof (solutionID) == typeof (0) && typeof (message) == typeof ("") && typeof (warningPriority) == typeof (0)) {
                 if (solutionID == -1)
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("UPDATE Solutions SET Message=?, WarningPriority=? WHERE SolutionID=?",[message, solutionID, warningPriority]
+                let ret = await BCC.makeQuery("UPDATE Solutions SET Message=?, WarningPriority=? WHERE SolutionID=?",[message, solutionID, warningPriority]
                 );
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.UpdateSolution);
+            return RC.parseToRetMSG(RC.successCodes.UpdateSolution);
         }
 
-        static async adminAddExistingSolution(solutionID, warningID) {
+        static async addExistingSolution(solutionID, warningID) {
             if (typeof (solutionID) == typeof (0) && typeof (warningID) == typeof (0)) {
                 if (solutionID == -1) 
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("UPDATE Solutions SET WarningID=? WHERE SolutionID=?", [warningID, solutionID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("UPDATE Solutions SET WarningID=? WHERE SolutionID=?", [warningID, solutionID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.AddExistingSolution);
+            return RC.parseToRetMSG(RC.successCodes.AddExistingSolution);
         }
 
-        static async adminRemoveSolution(solutionID) {
+        static async removeSolution(solutionID) {
             if (typeof (solutionID) == typeof (0)) {
                 if (solutionID == -1)
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("DELETE FROM Solutions WHERE SolutionID=?", [solutionID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("DELETE FROM Solutions WHERE SolutionID=?", [solutionID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveSolution);
+            return RC.parseToRetMSG(RC.successCodes.RemoveSolution);
         }
 
-        static async adminGetAllSolutions() {
+        static async getAllSolutions() {
             let returnItem = new ReturnItem([]);
 
-            let ret = await BCC.MakeQuery("SELECT * FROM Solutions", []);
-            if (BCC.IsErrorCode(ret))
-                return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+            let ret = await BCC.makeQuery("SELECT * FROM Solutions", []);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
 
             await BCC.asyncForEach(ret.recordset, async function (v) {
-                returnItem.Data.push(v);
+                returnItem.data.push(v);
             });
 
-            return new BCC.ReturnMessage(200, returnItem);
+            return new BCC.retMSG(200, returnItem);
         }
     }
 
@@ -185,210 +185,210 @@ module.exports.ACC = class {
     static SEC = class {
 
         // Rooms
-        static async adminAddNewRoom(roomName) {
+        static async addNewRoom(roomName) {
             if (typeof (roomName) == typeof ("")) {
-                let ret = await BCC.MakeQuery("INSERT INTO SensorRooms (RoomName) values (?)", [roomName]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("INSERT INTO SensorRooms (RoomName) values (?)", [roomName]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.AddRoom);
+            return RC.parseToRetMSG(RC.successCodes.AddRoom);
         }
 
-        static async adminRemoveRoom(roomID) {
+        static async removeRoom(roomID) {
             if (typeof (roomID) == typeof (0)) {
                 if (roomID == -1)
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("DELETE FROM SensorRooms WHERE RoomID=?", [roomID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("DELETE FROM SensorRooms WHERE RoomID=?", [roomID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveRoom);;
+            return RC.parseToRetMSG(RC.successCodes.RemoveRoom);;
         }
 
-        static async adminUpdateRoom(roomID, roomName) {
+        static async updateRoom(roomID, roomName) {
             if (typeof (roomID) == typeof (0) && typeof (roomName) == typeof ("")) {
                 if (roomID == -1)
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("UPDATE SensorRooms SET RoomName=? WHERE RoomID=?", [roomName, roomID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("UPDATE SensorRooms SET RoomName=? WHERE RoomID=?", [roomName, roomID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.UpdateRoom);;
+            return RC.parseToRetMSG(RC.successCodes.UpdateRoom);;
         }
 
         // Sensors
-        static async adminGetAllSensors() {
+        static async getAllSensors() {
             let returnItem = new ReturnItem([]);
 
-            let ret = await BCC.MakeQuery("SELECT * FROM SensorInfo", []);
-            if (BCC.IsErrorCode(ret))
-                return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+            let ret = await BCC.makeQuery("SELECT * FROM SensorInfo", []);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             await BCC.asyncForEach(ret.recordset, async function (v) {
-                returnItem.Data.push(v);
+                returnItem.data.push(v);
             })
 
-            return RC.ParseToReturnMessage(-1, returnItem);
+            return RC.parseToRetMSG(-1, returnItem);
         }
 
-        static async adminUpdateSensor(sensorID, roomID) {
+        static async updateSensor(sensorID, roomID) {
             if (typeof (sensorID) == typeof (0) && typeof (roomID) == typeof (0)) {
-                let ret = await BCC.MakeQuery( "UPDATE SensorInfo SET RoomID=? WHERE SensorID=?", [roomID, sensorID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery( "UPDATE SensorInfo SET RoomID=? WHERE SensorID=?", [roomID, sensorID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.UpdateSensor);
+            return RC.parseToRetMSG(RC.successCodes.UpdateSensor);
         }
 
-        static async adminAddNewSensor(roomID) {
+        static async addNewSensor(roomID) {
             if (typeof (roomID) == typeof (0)) {
-                let ret = await BCC.MakeQuery("INSERT INTO SensorInfo (RoomID) values (?)",[roomID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("INSERT INTO SensorInfo (RoomID) values (?)",[roomID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.AddSensor);
+            return RC.parseToRetMSG(RC.successCodes.AddSensor);
         }
 
-        static async adminRemoveSensorReference(sensorID) {
+        static async removeSensorReference(sensorID) {
             if (typeof (sensorID) == typeof (0)) {
-                let ret = await BCC.MakeQuery("UPDATE SensorInfo SET RoomID=-1 WHERE SensorID=?", [sensorID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("UPDATE SensorInfo SET RoomID=-1 WHERE SensorID=?", [sensorID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveSensorRef);
+            return RC.parseToRetMSG(RC.successCodes.RemoveSensorRef);
         }
 
-        static async adminRemoveSensor(sensorID) {
+        static async removeSensor(sensorID) {
             if (typeof (sensorID) == typeof (0)) {
                 await removeSensorsFromValueTables(sensorID);
-                let ret = await BCC.MakeQuery("DELETE SensorThresholds WHERE SensorID=?", [sensorID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
-                ret = await BCC.MakeQuery("DELETE FROM SensorInfo WHERE SensorID=?", [sensorID]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("DELETE SensorThresholds WHERE SensorID=?", [sensorID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
+                ret = await BCC.makeQuery("DELETE FROM SensorInfo WHERE SensorID=?", [sensorID]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else 
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveSensor);
+            return RC.parseToRetMSG(RC.successCodes.RemoveSensor);
         }
 
         // Sensor Types
-        static async adminGetAllSensorTypes() {
+        static async getAllSensorTypes() {
             let returnItem = new ReturnItem([]);
 
-            let ret = await BCC.MakeQuery("SELECT * FROM SensorTypes", []);
-            if (BCC.IsErrorCode(ret))
-                return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+            let ret = await BCC.makeQuery("SELECT * FROM SensorTypes", []);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             await BCC.asyncForEach(ret.recordset, async function (v) {
-                returnItem.Data.push(v);
+                returnItem.data.push(v);
             })
 
-            return new BCC.ReturnMessage(200, returnItem);
+            return new BCC.retMSG(200, returnItem);
         }
 
-        static async adminAddNewSensorType(typeName) {
+        static async addNewSensorType(typeName) {
             if (typeof (typeName) == typeof ("")) {
-                let ret = await BCC.MakeQuery("INSERT INTO SensorTypes (TypeName) values (?)", [typeName]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("INSERT INTO SensorTypes (TypeName) values (?)", [typeName]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.AddSensorType);
+            return RC.parseToRetMSG(RC.successCodes.AddSensorType);
         }
 
-        static async adminAddExistingSensorType(sensorType, sensorID, threshold) {
+        static async addExistingSensorType(sensorType, sensorID, threshold) {
             if (typeof (sensorType) == typeof (0) && typeof (sensorID) == typeof (0) && typeof (threshold) == typeof (0)) {
-                let ret = await BCC.MakeQuery(
+                let ret = await BCC.makeQuery(
                     "INSERT INTO SensorThresholds (SensorID, SensorType, ThresholdValue) values (?, ?, ?)",
                     [sensorID, sensorType, threshold]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.AddExistingSensorType);
+            return RC.parseToRetMSG(RC.successCodes.AddExistingSensorType);
         }
 
-        static async adminRemoveSensorType(sensorType) {
+        static async removeSensorType(sensorType) {
             if (typeof (sensorType) == typeof (0)) {
                 if (sensorType == -1)
-                    return RC.ParseToReturnMessage(RC.failCodes.TargetIsDefaultID);
+                    return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.MakeQuery("DELETE FROM SensorTypes WHERE SensorType=?", [sensorType]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("DELETE FROM SensorTypes WHERE SensorType=?", [sensorType]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveSensorType);
+            return RC.parseToRetMSG(RC.successCodes.RemoveSensorType);
         }
 
-        static async adminRemoveSensorTypeReference(sensorType) {
+        static async removeSensorTypeReference(sensorType) {
             if (typeof (sensorType) == typeof (0)) {
-                let ret = await BCC.MakeQuery("DELETE FROM SensorThresholds WHERE SensorType=?", [sensorType]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                let ret = await BCC.makeQuery("DELETE FROM SensorThresholds WHERE SensorType=?", [sensorType]);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else 
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.RemoveSensorTypeRef);
+            return RC.parseToRetMSG(RC.successCodes.RemoveSensorTypeRef);
         }
 
-        static async adminUpdateSensorTypeThreshold(sensorID, sensorType, threshold) {
+        static async updateSensorTypeThreshold(sensorID, sensorType, threshold) {
             if (typeof (sensorID) == typeof (0) && typeof (sensorType) == typeof (0) && typeof (threshold) == typeof (0)) {
-                let ret = await BCC.MakeQuery(
+                let ret = await BCC.makeQuery(
                     "UPDATE SensorThresholds SET ThresholdValue=? WHERE SensorID=? AND SensorType=?",
                     [threshold, sensorID, sensorType]);
-                if (BCC.IsErrorCode(ret))
-                    return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+                if (BCC.isErrorCode(ret))
+                    return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
             else 
-                return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.ParseToReturnMessage(RC.successCodes.UpdateSensorTypeThreshold);
+            return RC.parseToRetMSG(RC.successCodes.UpdateSensorTypeThreshold);
         }
     }
 
-    static async adminInsertSensorValue(sensorID, sensorType, sensorValue) {
+    static async insertSensorValue(sensorID, sensorType, sensorValue) {
         if (typeof (sensorID) == typeof (0) && typeof (sensorType) == typeof (0) && typeof (sensorValue) == typeof (0)) {
-            let ret = await BCC.MakeQuery("SELECT TypeName FROM SensorTypes WHERE SensorType=?", [sensorType]);
-            if (BCC.IsErrorCode(ret))
-                return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
-            ret = await BCC.MakeQuery(
+            let ret = await BCC.makeQuery("SELECT TypeName FROM SensorTypes WHERE SensorType=?", [sensorType]);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
+            ret = await BCC.makeQuery(
                 "INSERT INTO SensorValue_" + ret + " (SensorID, SensorValue) values (?, ?)", [sensorID, sensorValue]);
-            if (BCC.IsErrorCode(ret))
-                return RC.ParseToReturnMessage(RC.failCodes.DatabaseError);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
         }
         else 
-            return RC.ParseToReturnMessage(RC.failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-        return RC.ParseToReturnMessage(RC.successCodes.InsertSensorValue);
+        return RC.parseToRetMSG(RC.successCodes.InsertSensorValue);
     }
 }
 
@@ -399,10 +399,10 @@ module.exports.ACC = class {
 async function getAllWarningsQuery() {
     let result = [];
 
-    let queryTable = await BCC.MakeQuery("SELECT * FROM Warnings", []);
+    let queryTable = await BCC.makeQuery("SELECT * FROM Warnings", []);
     await BCC.asyncForEach(queryTable.recordset, async function (v) {
-        let solutionItems = await getAllSolutionsForAWarning(v.WarningID);
-        let warningItem = new WarningItem(v.WarningID, v.SensorType, v.Message, solutionItems);
+        let solutionItems = await getAllSolutionsForAWarning(v.warningID);
+        let warningItem = new WarningItem(v.warningID, v.sensorType, v.message, solutionItems);
         result.push(warningItem);
     });
 
@@ -412,9 +412,9 @@ async function getAllWarningsQuery() {
 async function getAllSolutionsForAWarning(warningID) {
     let result = [];
 
-    let queryTable = await BCC.MakeQuery("SELECT * FROM Solutions WHERE WarningID=?", [warningID]);
+    let queryTable = await BCC.makeQuery("SELECT * FROM Solutions WHERE WarningID=?", [warningID]);
     await BCC.asyncForEach(queryTable.recordset, async function (v) {
-        let solutionItem = new SolutionItem(v.SolutionID, v.WarningPriority, v.Message);
+        let solutionItem = new SolutionItem(v.solutionID, v.warningPriority, v.message);
         result.push(solutionItem);
     });
 
@@ -422,10 +422,10 @@ async function getAllSolutionsForAWarning(warningID) {
 }
 
 async function removeSensorsFromValueTables(sensorID) {
-    let sensorTypes = await BCC.MakeQuery("SELECT * FROM SensorTypes", []);
+    let sensorTypes = await BCC.makeQuery("SELECT * FROM SensorTypes", []);
     await BCC.asyncForEach(sensorTypes, async function (v) {
         if (v.SensorType != -1) {
-            await BCC.MakeQuery("DELETE FROM SensorValue_" + v.TypeName + " WHERE SensorID=?", [sensorID]);
+            await BCC.makeQuery("DELETE FROM SensorValue_" + v.TypeName + " WHERE SensorID=?", [sensorID]);
         }
     });
 }

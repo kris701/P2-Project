@@ -1,65 +1,65 @@
 //#region Header
 
 // External files
-let prediction = require(__dirname + "/PredictionAlgorithms.js");
-let sensorInfo = require(__dirname + "/SimpleSensorInfo.js");
-let warningAndSolution = require(__dirname + "/WarningAndSolutionSelectionAlgorithm");
-let adminCalls = require(__dirname + "/AdminCalls.js").ACC;
+let PAC = require(__dirname + "/PredictionAlgorithms.js").PAC;
+let SSIC = require(__dirname + "/SimpleSensorInfo.js").SSIC;
+let WASC = require(__dirname + "/WarningAndSolutionSelectionAlgorithm").WASC;
+let ACC = require(__dirname + "/AdminCalls.js").ACC;
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 
 // Resource Class
 class Resource {
-    constructor(Name, Parameters, FunctionCall, SubResources) {
-        this.Name = Name;
-        this.Parameters = Parameters;
-        this.FunctionCall = FunctionCall;
-        this.SubResources = SubResources;
+    constructor(name, parameters, functionCall, subResourcesArray) {
+        this.name = name;
+        this.parameters = parameters;
+        this.functionCall = functionCall;
+        this.subResourcesArray = subResourcesArray;
     }
 }
 // Credentials class
 class Credentials {
-    constructor(Username, Password) {
-        this.Username = Username;
-        this.Password = Password;
+    constructor(username, password) {
+        this.username = username;
+        this.password = password;
     }
 }
 
 // ResourceLib
 const ResourceLibrary = new Resource("/", [], function () { return true }, [
-    new Resource("getsensorinfo", [], sensorInfo.SSIC.getSensorInfoQuery, []),
-    new Resource("getpredictiondata", ["room", "date"], prediction.PAC.getPredictionDatetimeQuery, []),
-    new Resource("getwarningsandsolutions", ["room", "date"], warningAndSolution.WASC.getWarningsAndSolutions, []),
-    new Resource("admin", ["Username", "Password"], CheckCredentials, [
-        new Resource("getallwarningsandsolutions", [], adminCalls.WASC.adminGetAllWarningsAndSolutions, []),
-        new Resource("addnewwarning", ["sensorType", "message"], adminCalls.WASC.adminAddNewWarning, []),
-        new Resource("removewarning", ["warningID"], adminCalls.WASC.adminRemoveWarning, []),
-        new Resource("updatewarning", ["warningID", "message"], adminCalls.WASC.adminUpdateWarning, []),
-        new Resource("addnewsolution", ["warningID", "priority", "message"], adminCalls.WASC.adminAddSolution, []),
-        new Resource("removesolutionreference", ["solutionID"], adminCalls.WASC.adminRemoveSolutionReference, []),
-        new Resource("updatesolution", ["solutionID", "message", "priority"], adminCalls.WASC.adminUpdateSolution, []),
-        new Resource("addexistingsolution", ["solutionID", "warningID"], adminCalls.WASC.adminAddExistingSolution, []),
-        new Resource("removesolution", ["solutionID"], adminCalls.WASC.adminRemoveSolution, []),
-        new Resource("getallsolutions", [], adminCalls.WASC.adminGetAllSolutions, []),
-        new Resource("addnewroom", ["roomName"], adminCalls.WASC.adminAddNewRoom, []),
-        new Resource("removeroom", ["roomID"], adminCalls.WASC.adminRemoveRoom, []),
-        new Resource("updateroom", ["roomID", "roomName"], adminCalls.WASC.adminUpdateRoom, []),
-        new Resource("getallsensortypes", [], adminCalls.WASC.adminGetAllSensorTypes, []),
-        new Resource("addnewsensortype", ["typeName"], adminCalls.WASC.adminAddNewSensorType, []),
-        new Resource("addexistingsensortype", ["sensorType", "sensorID", "threshold"], adminCalls.WASC.adminAddExistingSensorType, []),
-        new Resource("removesensortype", ["sensorType"], adminCalls.WASC.adminRemoveSensorType, []),
-        new Resource("removesensortypereference", ["sensorType"], adminCalls.WASC.adminRemoveSensorTypeReference, []),
-        new Resource("updatesensortypethreshold", ["sensorID", "sensorType", "threshold"], adminCalls.WASC.adminUpdateSensorTypeThreshold, []),
-        new Resource("getallsensors", [], adminCalls.WASC.adminGetAllSensors, []),
-        new Resource("updatesensor", ["sensorID", "roomID"], adminCalls.WASC.adminUpdateSensor, []),
-        new Resource("addnewsensor", ["roomID"], adminCalls.WASC.adminAddNewSensor, []),
-        new Resource("removesensorreference", ["sensorID"], adminCalls.WASC.adminRemoveSensorReference, []),
-        new Resource("removesensor", ["sensorID"], adminCalls.WASC.adminRemoveSensor, []),
-        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], adminCalls.WASC.adminInsertSensorValue, [])
+    new Resource("getsensorinfo", [], SSIC.getSensorInfoQuery, []),
+    new Resource("getpredictiondata", ["room", "date"], PAC.getPredictionDatetimeQuery, []),
+    new Resource("getwarningsandsolutions", ["room", "date"], WASC.getWarningsAndSolutions, []),
+    new Resource("admin", ["Username", "Password"], checkCredentials, [
+        new Resource("getallwarningsandsolutions", [], ACC.WASC.getAllWarningsAndSolutions, []),
+        new Resource("addnewwarning", ["sensorType", "message"], ACC.WASC.addNewWarning, []),
+        new Resource("removewarning", ["warningID"], ACC.WASC.removeWarning, []),
+        new Resource("updatewarning", ["warningID", "message"], ACC.WASC.updateWarning, []),
+        new Resource("addnewsolution", ["warningID", "priority", "message"], ACC.WASC.addSolution, []),
+        new Resource("removesolutionreference", ["solutionID"], ACC.WASC.removeSolutionReference, []),
+        new Resource("updatesolution", ["solutionID", "message", "priority"], ACC.WASC.updateSolution, []),
+        new Resource("addexistingsolution", ["solutionID", "warningID"], ACC.WASC.addExistingSolution, []),
+        new Resource("removesolution", ["solutionID"], ACC.WASC.removeSolution, []),
+        new Resource("getallsolutions", [], ACC.WASC.getAllSolutions, []),
+        new Resource("addnewroom", ["roomName"], ACC.WASC.addNewRoom, []),
+        new Resource("removeroom", ["roomID"], ACC.WASC.removeRoom, []),
+        new Resource("updateroom", ["roomID", "roomName"], ACC.WASC.updateRoom, []),
+        new Resource("getallsensortypes", [], ACC.WASC.getAllSensorTypes, []),
+        new Resource("addnewsensortype", ["typeName"], ACC.WASC.addNewSensorType, []),
+        new Resource("addexistingsensortype", ["sensorType", "sensorID", "threshold"], ACC.WASC.addExistingSensorType, []),
+        new Resource("removesensortype", ["sensorType"], ACC.WASC.removeSensorType, []),
+        new Resource("removesensortypereference", ["sensorType"], ACC.WASC.removeSensorTypeReference, []),
+        new Resource("updatesensortypethreshold", ["sensorID", "sensorType", "threshold"], ACC.WASC.updateSensorTypeThreshold, []),
+        new Resource("getallsensors", [], ACC.WASC.getAllSensors, []),
+        new Resource("updatesensor", ["sensorID", "roomID"], ACC.WASC.updateSensor, []),
+        new Resource("addnewsensor", ["roomID"], ACC.WASC.addNewSensor, []),
+        new Resource("removesensorreference", ["sensorID"], ACC.WASC.removeSensorReference, []),
+        new Resource("removesensor", ["sensorID"], ACC.WASC.removeSensor, []),
+        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.WASC.insertSensorValue, [])
     ])
 ]);
 
 // Admin credentials
-let AdminCredentials = [new Credentials("Admin", "Password"), new Credentials("Sensor", "SensorPassword")]
+let adminCredentials = [new Credentials("Admin", "Password"), new Credentials("Sensor", "SensorPassword")]
 
 //#endregion
 
@@ -67,8 +67,8 @@ let AdminCredentials = [new Credentials("Admin", "Password"), new Credentials("S
 
 // Resource Check Class
 module.exports.RCC = class {
-    static async CheckAllResource(Response, req, QueryURL) {
-        return await InnerCheckAllResource(Response, req, ResourceLibrary, QueryURL);
+    static async checkAllResource(response, req, queryURL) {
+        return await innerCheckAllResource(response, req, ResourceLibrary, queryURL);
     }
 }
 
@@ -76,87 +76,87 @@ module.exports.RCC = class {
 
 //#region Private
 
-async function InnerCheckAllResource(Response, req, Resource, QueryURL) {
-    if (CheckForResource(req, Resource.Name, Resource.Parameters, QueryURL) == true) {
-        if (Resource.SubResources.length != 0) {
-            let ResourceFunctionCallCheck = await ExecuteResource(Resource.FunctionCall, Resource.Parameters, QueryURL);
-            if (ResourceFunctionCallCheck) {
-                for (let i = 0; i < Resource.SubResources.length; i++) {
-                    Response = await InnerCheckAllResource(Response, req, Resource.SubResources[i], QueryURL);
-                    if (Response.ReturnCode != -1)
+async function innerCheckAllResource(response, req, resource, queryURL) {
+    if (checkForResource(req, resource.name, resource.parameters, queryURL) == true) {
+        if (resource.subResourcesArray.length != 0) {
+            let resourceFunctionCallCheck = await executeResource(resource.functionCall, resource.parameters, queryURL);
+            if (resourceFunctionCallCheck) {
+                for (let i = 0; i < resource.subResourcesArray.length; i++) {
+                    response = await innerCheckAllResource(response, req, resource.subResourcesArray[i], queryURL);
+                    if (response.returnCode != -1)
                         break;
                 }
             }
             else
-                Response = new BCC.ReturnMessage(404, "Error in input/credentials");
+                response = new BCC.retMSG(404, "Error in input/credentials");
         }
         else
-            Response = await ExecuteResource(Resource.FunctionCall, Resource.Parameters, QueryURL);
+            response = await executeResource(resource.functionCall, resource.parameters, queryURL);
     }
-    return Response;
+    return response;
 }
 
-function CheckForResource(Request, TargetResource, QueryStringArray, QueryURL) {
-    if (Request.url.includes(TargetResource)) {
-        if (DoesQueryContainAllNeededKeys(QueryStringArray, QueryURL)) {
-            console.error("Client (" + Request.headers.host + ") Attempted to request resource: " + Request.url + ". However input was wrong!");
+function checkForResource(request, targetResource, queryStringArray, queryURL) {
+    if (request.url.includes(targetResource)) {
+        if (doesQueryContainAllNeededKeys(queryStringArray, queryURL)) {
+            console.error("Client (" + request.headers.host + ") Attempted to request resource: " + request.url + ". However input was wrong!");
             return false;
         }
 
-        console.log("Client (" + Request.headers.host + ") requested resource: " + TargetResource);
+        console.log("Client (" + request.headers.host + ") requested resource: " + targetResource);
         return true;
     }
     return false;
 }
 
-function DoesQueryContainAllNeededKeys(QueryStringArray, QueryURL) {
-    let WrongInput = false;
-    for (let i = 0; i < QueryStringArray.length; i++) {
-        WrongInput = true;
-        for (let j = 0; j < Object.keys(QueryURL).length; j++) {
-            if (QueryStringArray[i] == Object.keys(QueryURL)[j]) {
-                WrongInput = false;
+function doesQueryContainAllNeededKeys(queryStringArray, queryURL) {
+    let isInputWrong = false;
+    for (let i = 0; i < queryStringArray.length; i++) {
+        isInputWrong = true;
+        for (let j = 0; j < Object.keys(queryURL).length; j++) {
+            if (queryStringArray[i] == Object.keys(queryURL)[j]) {
+                isInputWrong = false;
                 break;
             }
         }
-        if (WrongInput)
+        if (isInputWrong)
             break;
     }
-    return WrongInput;
+    return isInputWrong;
 }
 
-async function ExecuteResource(FunctionCall, QueryStringArray, QueryURL) {
-    if (QueryStringArray.length == 0)
-        return await FunctionCall();
+async function executeResource(functionCall, queryStringArray, queryURL) {
+    if (queryStringArray.length == 0)
+        return await functionCall();
     else {
-        let AccArr = TranslateQueryToResourceParameters(QueryStringArray, QueryURL);
-        return await FunctionCall(...AccArr)
+        let correctedParametersArray = translateQueryToResourceParameters(queryStringArray, queryURL);
+        return await functionCall(...correctedParametersArray)
     }
 }
 
-function TranslateQueryToResourceParameters(QueryStringArray, QueryURL) {
-    let ReturnArray = new Array(QueryStringArray.length);
-    for (let i = 0; i < QueryStringArray.length; i++) {
-        for (let j = 0; j < Object.keys(QueryURL).length; j++) {
-            if (QueryStringArray[i] == Object.keys(QueryURL)[j]) {
-                ReturnArray.splice(i, 0, QueryURL[Object.keys(QueryURL)[j]]);
+function translateQueryToResourceParameters(queryStringArray, queryURL) {
+    let returnArray = new Array(queryStringArray.length);
+    for (let i = 0; i < queryStringArray.length; i++) {
+        for (let j = 0; j < Object.keys(queryURL).length; j++) {
+            if (queryStringArray[i] == Object.keys(queryURL)[j]) {
+                returnArray.splice(i, 0, queryURL[Object.keys(queryURL)[j]]);
                 break;
             }
         }
     }
-    return ReturnArray;
+    return returnArray;
 }
 
 // Misc resource functions:
 
-function CheckCredentials(Username, Password) {
-    let ReturnValue = false
-    AdminCredentials.forEach(function (v) {
-        if (v.Username == Username && v.Password == Password)
-            ReturnValue = true
+function checkCredentials(username, password) {
+    let returnValue = false
+    adminCredentials.forEach(function (v) {
+        if (v.username == username && v.password == password)
+            returnValue = true
     });
 
-    return ReturnValue;
+    return returnValue;
 }
 
 //#endregion
