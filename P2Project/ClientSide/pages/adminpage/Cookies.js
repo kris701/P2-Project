@@ -1,7 +1,7 @@
 ﻿// Retrived from https://stackoverflow.com/questions/14573223/set-cookie-and-get-cookie-with-javascript
 //#region Public
 // Cookies Class
-export class CC {
+export default class CC {
     static getLogin() {
         return {
             username: getCookie("username"),

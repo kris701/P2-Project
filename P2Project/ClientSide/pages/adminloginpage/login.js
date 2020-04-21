@@ -1,5 +1,5 @@
-﻿import { CC } from './../adminpage/Cookies.js'
-import { CC } from './../clientpage/js/utils.js'
+﻿import CC from './../adminpage/Cookies.js'
+import UC from './../clientpage/js/utils.js'
 
 async function login() {
     let cookie = CC.getLogin();
