@@ -1,4 +1,4 @@
-﻿import UC from './utils.js';
+﻿import { UC } from './utils.js';
 
 try {
 

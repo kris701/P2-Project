@@ -1,4 +1,4 @@
-﻿export default class UC {
+﻿export class UC {
     static async jsonFetch(url) {
         let response = await fetch(url);
         let returnData = await response.json();

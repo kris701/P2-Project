@@ -1,11 +1,11 @@
-﻿import CC from './../adminpage/Cookies.js'
-import UC from './../clientpage/js/utils.js'
+﻿import { CC } from './../adminpage/Cookies.js'
+import { UC } from './../clientpage/js/utils.js'
 
 async function login() {
     let cookie = CC.getLogin();
     let credentials = await CheckCredentials(cookie.username, cookie.password);
     if (credentials) {
-        setLogin(cookie.username, cookie.password);
+        CC.setLogin(cookie.username, cookie.password);
         let nextPage = "/pages/adminpage/admin.html"
         window.location.href = nextPage;
     }
