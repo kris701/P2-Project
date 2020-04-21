@@ -1,6 +1,7 @@
 //#region Header
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
+var successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
 
 class Sensor {
     constructor(sensorID, types) {
@@ -33,7 +34,7 @@ module.exports.SSIC = class {
             sensorInfo.push(newRoomInfo);
         });
 
-        return new BCC.retMSG(200, sensorInfo);;
+        return new BCC.retMSG(successCodes.GotWarningsAndSoluton, sensorInfo);;
     }
 }
 //#endregion

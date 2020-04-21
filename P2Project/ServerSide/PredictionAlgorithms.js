@@ -48,6 +48,8 @@ class ThresholdPassClass {
 
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room, date) {
+        if (room == null || date == null)
+            return RC.parseToRetMSG(failCodes.NoParameters);
         if (typeof (parseInt(room,10)) != typeof(0))
             return RC.parseToRetMSG(failCodes.NoParameters);
         if (typeof (date) != typeof (""))

@@ -5,6 +5,7 @@ var path = require('path');
 var RCC = require(path.join(__dirname, '..', './ResourceCheck.js')).RCC;
 var GTC = require("./GeneralTests.js").GTC;
 var BCC = require(path.join(__dirname, '..', './BasicCalls.js')).BCC;
+let failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 
 var response = new BCC.retMSG(-1, "");
 var req = {};
@@ -28,7 +29,7 @@ parametersURL.Password = "Password";
 //#region Tests
 
 describe('Check all resources test', function () {
-    GTC.expectErrorCodeFromInput("Should fail with wrong credentials", RCC.checkAllResource(response, req, credentialsURL), 404);
+    GTC.expectErrorCodeFromInput("Should fail with wrong credentials", RCC.checkAllResource(response, req, credentialsURL), failCodes.WrongInputCredentials);
     GTC.expectErrorCodeFromInput("Should fail with wrong parameters", RCC.checkAllResource(response, req, parametersURL), -1);
     GTC.expectErrorCodeFromInput("Should fail with wrong request path", RCC.checkAllResource(response, wrongReq, parametersURL), -1);
 });

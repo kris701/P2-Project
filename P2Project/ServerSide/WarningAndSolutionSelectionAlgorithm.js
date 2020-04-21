@@ -2,7 +2,7 @@
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let PAC = require(__dirname + "/PredictionAlgorithms.js").PAC;
-let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 class SolutionInfo {
     constructor(warningPriority, message) {
@@ -46,7 +46,11 @@ const priorityEnum = {
 module.exports.WASC = class {
     static async getWarningsAndSolutions(room, date) {
         if (room == null || date == null)
-            return new BCC.retMSG(failCodes.NoParameters, "");
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
+        if (typeof (parseInt(room, 10)) != typeof (0))
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
+        if (typeof (date) != typeof (""))
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
         let predictionDataArray = await PAC.getPredictionDatetimeQuery(room, date)
 
@@ -58,7 +62,7 @@ module.exports.WASC = class {
         if (returnItem.data.length == 0)
             returnItem.data.push(noWarnMessasge);
 
-        return new BCC.retMSG(200, returnItem);
+        return new BCC.retMSG(RC.successCodes.GotWarningsAndSoluton, returnItem);
     }
 }
 

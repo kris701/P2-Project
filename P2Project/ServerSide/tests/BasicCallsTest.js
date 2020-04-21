@@ -31,7 +31,7 @@ describe('asyncForEach function', function () {
 });
 
 describe('makeQuery function', function () {
-    GTC.shouldFailWithToParametersSimple(BCC.makeQuery(), failCodes.NoParameters);
+    GTC.shouldFailWithnoParametersSimple(BCC.makeQuery());
     GTC.expectErrorCodeFromInputSimple('Should fail if querytext not a string', BCC.makeQuery(-99999, []), failCodes.InputNotAString);
     GTC.expectErrorCodeFromInputSimple('Should fail with no querytext', BCC.makeQuery("", []), failCodes.EmptyString);
     GTC.expectErrorCodeFromInputSimple('Should fail if Input is not an array', BCC.makeQuery("some text", "some text"), failCodes.InputNotAnArray);

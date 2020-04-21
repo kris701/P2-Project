@@ -6,6 +6,7 @@ let SSIC = require(__dirname + "/SimpleSensorInfo.js").SSIC;
 let WASC = require(__dirname + "/WarningAndSolutionSelectionAlgorithm").WASC;
 let ACC = require(__dirname + "/AdminCalls.js").ACC;
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 // Resource Class
 class Resource {
@@ -88,7 +89,7 @@ async function innerCheckAllResource(response, req, resource, queryURL) {
                 }
             }
             else
-                response = new BCC.retMSG(404, "Error in input/credentials");
+                response = new RC.parseToRetMSG(RC.failCodes.WrongInputCredentials);
         }
         else
             response = await executeResource(resource.functionCall, resource.parameters, queryURL);

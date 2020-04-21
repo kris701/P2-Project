@@ -23,59 +23,59 @@ describe('getAllSensorTypes function', function () {
 });
 
 describe('addNewWarning function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.addNewWarning(), failCodes.NoParameters);
-    GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addNewWarning(-99, ""), failCodes.DatabaseError);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addNewWarning(0, []), successCodes.AddWarning);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addNewWarning([], 0), successCodes.AddWarning);
+    GTC.shouldFailWithNoParameters(ACC.WASC.addNewWarning());
+    GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addNewWarning(-99, ""));
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addNewWarning(0, []), successCodes.AddWarning);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addNewWarning([], 0), successCodes.AddWarning);
 });
 
 describe('removeWarning function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.removeWarning(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeWarning(-1), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.removeWarning([]), successCodes.RemoveWarning);
+    GTC.shouldFailWithNoParameters(ACC.WASC.removeWarning());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeWarning(-1), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.removeWarning([]), successCodes.RemoveWarning);
 });
 
 describe('updateWarning function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.updateWarning(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.updateWarning(-1, ""), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateWarning(0, []), successCodes.UpdateWarning);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateWarning([], 0), successCodes.UpdateWarning);
+    GTC.shouldFailWithNoParameters(ACC.WASC.updateWarning());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.updateWarning(-1, ""), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.updateWarning(0, []), successCodes.UpdateWarning);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.updateWarning([], 0), successCodes.UpdateWarning);
 });
 
 describe('addSolution function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.addSolution(), failCodes.NoParameters);
+    GTC.shouldFailWithNoParameters(ACC.WASC.addSolution());
     GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(-1, -1, ""), failCodes.PriorityOutsideRange);
-    GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addSolution(-99, 0, ""), failCodes.DatabaseError);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addSolution(0, [], ""), successCodes.AddSolution);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addSolution(0, 0, []), successCodes.AddSolution);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addSolution([], 0, ""), successCodes.AddSolution);
+    GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addSolution(-99, 0, ""));
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution(0, [], ""), successCodes.AddSolution);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution(0, 0, []), successCodes.AddSolution);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution([], 0, ""), successCodes.AddSolution);
 });
 
 describe('removeSolutionReference function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.removeSolutionReference(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeSolutionReference(-1), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.removeSolutionReference([]), successCodes.RemoveSolutionRef);
+    GTC.shouldFailWithNoParameters(ACC.WASC.removeSolutionReference());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeSolutionReference(-1), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.removeSolutionReference([]), successCodes.RemoveSolutionRef);
 });
 
 describe('updateSolution function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.updateSolution(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.updateSolution(-1, "", 0), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateSolution(-1, [], 0), successCodes.UpdateSolution);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateSolution([], "", 0), successCodes.UpdateSolution);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.updateSolution(-1, "", []), successCodes.UpdateSolution);
+    GTC.shouldFailWithNoParameters(ACC.WASC.updateSolution());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.updateSolution(-1, "", 0), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.updateSolution(-1, [], 0), successCodes.UpdateSolution);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.updateSolution([], "", 0), successCodes.UpdateSolution);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.updateSolution(-1, "", []), successCodes.UpdateSolution);
 });
 
 describe('addExistingSolution function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.addExistingSolution(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.addExistingSolution(-1, 0), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addExistingSolution(0, []), successCodes.AddExistingSolution);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.addExistingSolution([], 0), successCodes.AddExistingSolution);
+    GTC.shouldFailWithNoParameters(ACC.WASC.addExistingSolution());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.addExistingSolution(-1, 0), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addExistingSolution(0, []), successCodes.AddExistingSolution);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.addExistingSolution([], 0), successCodes.AddExistingSolution);
 });
 
 describe('removeSolution function', function () {
-    GTC.shouldFailWithToParameters(ACC.WASC.removeSolution(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeSolution(-1), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.WASC.removeSolution([]), successCodes.RemoveSolution);
+    GTC.shouldFailWithNoParameters(ACC.WASC.removeSolution());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.WASC.removeSolution(-1), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.removeSolution([]), successCodes.RemoveSolution);
 });
 
 describe('getAllSolutions function', function () {
@@ -93,81 +93,81 @@ describe('getAllWarningsAndSolutions function', function () {
 
 
 describe('addNewRoom function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.addNewRoom(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addNewRoom([]), successCodes.AddRoom);
+    GTC.shouldFailWithNoParameters(ACC.SEC.addNewRoom());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.addNewRoom([]), successCodes.AddRoom);
 });
 
 describe('removeRoom function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.removeRoom(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.removeRoom(-1), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeRoom([]), successCodes.RemoveRoom);
+    GTC.shouldFailWithNoParameters(ACC.SEC.removeRoom());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.removeRoom(-1), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.removeRoom([]), successCodes.RemoveRoom);
 });
 
 describe('updateRoom function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.updateRoom(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.updateRoom(-1, ""), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateRoom(0, []), successCodes.UpdateRoom);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateRoom([],0), successCodes.UpdateRoom);
+    GTC.shouldFailWithNoParameters(ACC.SEC.updateRoom());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.updateRoom(-1, ""), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateRoom(0, []), successCodes.UpdateRoom);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateRoom([],0), successCodes.UpdateRoom);
 });
 
 describe('updateSensor function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.updateSensor(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensor(0, []), successCodes.UpdateSensor);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensor([], 0), successCodes.UpdateSensor);
+    GTC.shouldFailWithNoParameters(ACC.SEC.updateSensor());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateSensor(0, []), successCodes.UpdateSensor);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateSensor([], 0), successCodes.UpdateSensor);
 });
 
 describe('addNewSensor function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.addNewSensor(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addNewSensor([]), successCodes.AddSensor);
+    GTC.shouldFailWithNoParameters(ACC.SEC.addNewSensor());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.addNewSensor([]), successCodes.AddSensor);
 });
 
 describe('removeSensorReference function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.removeSensorReference(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensorReference([]), successCodes.RemoveSensorRef);
+    GTC.shouldFailWithNoParameters(ACC.SEC.removeSensorReference());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.removeSensorReference([]), successCodes.RemoveSensorRef);
 });
 
 describe('removeSensor function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.removeSensor(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensor([]), successCodes.RemoveSensor);
+    GTC.shouldFailWithNoParameters(ACC.SEC.removeSensor());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.removeSensor([]), successCodes.RemoveSensor);
 });
 
 describe('addNewSensorType function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.addNewSensorType(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addNewSensorType([]), successCodes.AddSensorType);
+    GTC.shouldFailWithNoParameters(ACC.SEC.addNewSensorType());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.addNewSensorType([]), successCodes.AddSensorType);
 });
 
 describe('addExistingSensorType function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.addExistingSensorType(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addExistingSensorType([],0,0), successCodes.AddExistingSensorType);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addExistingSensorType(0,[],0), successCodes.AddExistingSensorType);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.addExistingSensorType(0,0,[]), successCodes.AddExistingSensorType);
+    GTC.shouldFailWithNoParameters(ACC.SEC.addExistingSensorType());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.addExistingSensorType([],0,0), successCodes.AddExistingSensorType);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.addExistingSensorType(0,[],0), successCodes.AddExistingSensorType);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.addExistingSensorType(0,0,[]), successCodes.AddExistingSensorType);
 });
 
 describe('removeSensorType function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.removeSensorType(), failCodes.NoParameters);
-    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.removeSensorType(-1), -1, failCodes.TargetIsDefaultID);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensorType([]), successCodes.RemoveSensorType);
+    GTC.shouldFailWithNoParameters(ACC.SEC.removeSensorType());
+    GTC.shouldFailIfTargetIDIsDefaultID(ACC.SEC.removeSensorType(-1), -1);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.removeSensorType([]), successCodes.RemoveSensorType);
 });
 
 describe('removeSensorTypeReference function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.removeSensorTypeReference(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.removeSensorTypeReference([]), successCodes.RemoveSensorTypeRef);
+    GTC.shouldFailWithNoParameters(ACC.SEC.removeSensorTypeReference());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.removeSensorTypeReference([]), successCodes.RemoveSensorTypeRef);
 });
 
 describe('updateSensorTypeThreshold function', function () {
-    GTC.shouldFailWithToParameters(ACC.SEC.updateSensorTypeThreshold(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensorTypeThreshold([], 0, 0), successCodes.UpdateSensorTypeThreshold);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensorTypeThreshold(0, [], 0), successCodes.UpdateSensorTypeThreshold);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.SEC.updateSensorTypeThreshold(0, 0, []), successCodes.UpdateSensorTypeThreshold);
+    GTC.shouldFailWithNoParameters(ACC.SEC.updateSensorTypeThreshold());
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateSensorTypeThreshold([], 0, 0), successCodes.UpdateSensorTypeThreshold);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateSensorTypeThreshold(0, [], 0), successCodes.UpdateSensorTypeThreshold);
+    GTC.shouldNotReturnCodeWithInput(ACC.SEC.updateSensorTypeThreshold(0, 0, []), successCodes.UpdateSensorTypeThreshold);
 });
 
 
 
 describe('insertSensorValue function', function () {
-    GTC.shouldFailWithToParameters(ACC.insertSensorValue(), failCodes.NoParameters);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.insertSensorValue([], 0, 0), successCodes.InsertSensorValue);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.insertSensorValue(0, [], 0), successCodes.InsertSensorValue);
-    GTC.shouldNotReturnOKCodeIfInputIsWrong(ACC.insertSensorValue(0, 0, []), successCodes.InsertSensorValue);
+    GTC.shouldFailWithNoParameters(ACC.insertSensorValue());
+    GTC.shouldNotReturnCodeWithInput(ACC.insertSensorValue([], 0, 0), successCodes.InsertSensorValue);
+    GTC.shouldNotReturnCodeWithInput(ACC.insertSensorValue(0, [], 0), successCodes.InsertSensorValue);
+    GTC.shouldNotReturnCodeWithInput(ACC.insertSensorValue(0, 0, []), successCodes.InsertSensorValue);
 });
 
 //#endregion

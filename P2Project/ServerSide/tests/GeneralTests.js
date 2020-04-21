@@ -1,6 +1,8 @@
 //#region Header
 
 var expect = require('chai').expect;
+var path = require('path');
+var failCodes = require(path.join(__dirname, '..', './ReturnCodes.js')).failCodes;
 
 //#endregion
 
@@ -8,17 +10,17 @@ var expect = require('chai').expect;
 
 // General Tests Class
 module.exports.GTC = class {
-    static shouldFailWithToParameters(functionCall, returnCode) {
-        it('Should fail with no paramteres, by returning code ' + returnCode, async function () {
+    static shouldFailWithNoParameters(functionCall) {
+        it('( ' + failCodes.NoParameters + ' ) Should fail with no paramteres', async function () {
             let returnValue = await functionCall;
-            expect(returnValue.returnCode).to.be.equal(returnCode);
+            expect(returnValue.returnCode).to.be.equal(failCodes.NoParameters);
         });
     }
 
-    static shouldFailWithToParametersSimple(functionCall, returnCode) {
-        it('Should fail with no paramteres, by returning code ' + returnCode, async function () {
+    static shouldFailWithnoParametersSimple(functionCall) {
+        it('( ' + failCodes.NoParameters + ' ) Should fail with no paramteres', async function () {
             let returnValue = await functionCall;
-            expect(returnValue).to.be.equal(returnCode);
+            expect(returnValue).to.be.equal(failCodes.NoParameters);
         });
     }
 
@@ -43,36 +45,36 @@ module.exports.GTC = class {
         });
     }
 
-    static shouldFailIfTargetIDIsDefaultID(functionCall, defaultID, returnCode) {
-        it('Should fail if target id is equal to default id: ' + defaultID + ' and return error code ' + returnCode, async function () {
+    static shouldFailIfTargetIDIsDefaultID(functionCall, defaultID) {
+        it('( ' + failCodes.TargetIsDefaultID + ' ) Should fail if target id is equal to default id: ' + defaultID, async function () {
             let returnValue = await functionCall;
-            expect(returnValue.returnCode).to.be.equal(returnCode);
+            expect(returnValue.returnCode).to.be.equal(failCodes.TargetIsDefaultID);
         });
     }
 
     static expectErrorCodeFromInput(expectText, functionCall, returnCode) {
-        it('Expect code(' + returnCode + '): ' + expectText, async function () {
+        it('( ' + returnCode + ' ) ' + expectText, async function () {
             let returnValue = await functionCall;
             expect(returnValue.returnCode).to.be.equal(returnCode);
         });
     }
 
     static expectErrorCodeFromInputSimple(expectText, functionCall, returnCode) {
-        it('Expect code(' + returnCode + '): ' + expectText, async function () {
+        it('( ' + returnCode + ' ) ' + expectText, async function () {
             let returnValue = await functionCall;
             expect(returnValue).to.be.equal(returnCode);
         });
     }
 
-    static shouldReturnDatabaseErrorWithInput(functionCall, returnCode) {
-        it('Should return DB error with wrong input', async function () {
+    static shouldReturnDatabaseErrorWithInput(functionCall) {
+        it('( ' + failCodes.DatabaseError + ' ) Should return DB error with wrong input', async function () {
             let returnValue = await functionCall;
-            expect(returnValue.returnCode).to.be.equal(returnCode);
+            expect(returnValue.returnCode).to.be.equal(failCodes.DatabaseError);
         });
     }
 
-    static shouldNotReturnOKCodeIfInputIsWrong(functionCall, returnCode) {
-        it('Should not return OK code if input is wrong', async function () {
+    static shouldNotReturnCodeWithInput(functionCall, returnCode) {
+        it('( ' + returnCode + ' ) Should not return OK code if input is wrong', async function () {
             let returnValue = await functionCall;
             expect(returnValue.returnCode).not.to.be.equal(returnCode);
         });

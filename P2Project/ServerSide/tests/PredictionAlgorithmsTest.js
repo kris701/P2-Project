@@ -15,7 +15,7 @@ describe('getPredictionDatetimeQuery function', function () {
     this.timeout(10000);
     this.retries(3);
 
-    GTC.shouldFailWithToParameters(PAC.getPredictionDatetimeQuery(), failCodes.NoParameters);
+    GTC.shouldFailWithNoParameters(PAC.getPredictionDatetimeQuery());
     GTC.shouldReturnArrayDotData(PAC.getPredictionDatetimeQuery(0, "2020-04-20T00:00:00"));
 });
 
