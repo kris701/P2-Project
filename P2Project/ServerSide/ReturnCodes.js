@@ -21,7 +21,11 @@ module.exports.successCodes = {
     RemoveSensorType: 218,
     RemoveSensorTypeRef: 219,
     UpdateSensorTypeThreshold: 220,
-    InsertSensorValue: 221
+    InsertSensorValue: 221,
+    GotWarningsAndSoluton: 222,
+    GotSimpleSensorInfo: 223,
+    GotPredictions: 224,
+    CredentialsCorrect: 225
 }
 
 module.exports.failCodes = {
@@ -34,7 +38,9 @@ module.exports.failCodes = {
     IDDoesNotExist: 407,
     DatabaseError: 408,
     InputNotAString: 409,
-    EmptyString: 410
+    EmptyString: 410,
+    WrongInputCredentials: 411,
+    ResourceNotFound: 412
 }
 //#endregion
 
@@ -42,17 +48,21 @@ module.exports.failCodes = {
 
 module.exports.parseCode = function(code)
 {
-    if (code == module.exports.failCodes.NoParameters) return "Error: No, missing or wrong parameters!";
-    if (code == module.exports.failCodes.TargetIsDefaultID) return "Error: Target ID is default ID";
-    if (code == module.exports.failCodes.PriorityOutsideRange) return "Error: Priority out of range!";
-    if (code == module.exports.failCodes.OutputNotAnArray) return "Error: Output not an array!";
-    if (code == module.exports.failCodes.InputNotAnArray) return "Error: Input not an array!";
-    if (code == module.exports.failCodes.NoSensorTypes) return "Error: No sensor types!";
-    if (code == module.exports.failCodes.IDDoesNotExist) return "Error: ID Does not exist!";
-    if (code == module.exports.failCodes.DatabaseError) return "Error: Database error!";
-    if (code == module.exports.failCodes.InputNotAString) return "Error: Input not a string!";
-    if (code == module.exports.failCodes.EmptyString) return "Error: String is empty";
-    return "Unknown code!"
+    switch (code) {
+        case module.exports.failCodes.NoParameters: return "Error: No, missing or wrong parameters!";
+        case module.exports.failCodes.TargetIsDefaultID: return "Error: Target ID is default ID";
+        case module.exports.failCodes.PriorityOutsideRange: return "Error: Priority out of range!";
+        case module.exports.failCodes.OutputNotAnArray: return "Error: Output not an array!";
+        case module.exports.failCodes.InputNotAnArray: return "Error: Input not an array!";
+        case module.exports.failCodes.NoSensorTypes: return "Error: No sensor types!";
+        case module.exports.failCodes.IDDoesNotExist: return "Error: ID Does not exist!";
+        case module.exports.failCodes.DatabaseError: return "Error: Database error!";
+        case module.exports.failCodes.InputNotAString: return "Error: Input not a string!";
+        case module.exports.failCodes.EmptyString: return "Error: String is empty!";
+        case module.exports.failCodes.WrongInputCredentials: return "Error: Wrong credentials!";
+        case module.exports.failCodes.ResourceNotFound: return "Error: Resource not found!";
+        default: return "Unknown code!";
+    }
 }
 
 module.exports.parseToRetMSG = function(code)

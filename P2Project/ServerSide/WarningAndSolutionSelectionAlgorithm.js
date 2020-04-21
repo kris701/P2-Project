@@ -2,7 +2,7 @@
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let PAC = require(__dirname + "/PredictionAlgorithms.js").PAC;
-let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 class SolutionInfo {
     constructor(warningPriority, message) {
@@ -19,7 +19,8 @@ class WarningInfo {
     }
 }
 class ReturnClass {
-    constructor(data) {
+    constructor(data, interval) {
+        this.interval = interval;
         this.data = data;
     }
 }
@@ -46,19 +47,23 @@ const priorityEnum = {
 module.exports.WASC = class {
     static async getWarningsAndSolutions(room, date) {
         if (room == null || date == null)
-            return new BCC.retMSG(failCodes.NoParameters, "");
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
+        if (typeof (parseInt(room, 10)) != typeof (0))
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
+        if (typeof (date) != typeof (""))
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
         let predictionDataArray = await PAC.getPredictionDatetimeQuery(room, date)
 
-        let returnItem = new ReturnClass([]);
+        let returnItem = new ReturnClass([], predictionDataArray.message.interval);
 
         await BCC.asyncForEach(predictionDataArray.message.data, async function (v) {
-            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.interval, returnItem);
+            returnItem = await getWASForEachThesholdPass(v, predictionDataArray.message.interval, returnItem);
         });
         if (returnItem.data.length == 0)
             returnItem.data.push(noWarnMessasge);
 
-        return new BCC.retMSG(200, returnItem);
+        return new BCC.retMSG(RC.successCodes.GotWarningsAndSoluton, returnItem);
     }
 }
 
@@ -118,7 +123,7 @@ function getPriority(timeUntilBadIAQ, interval) {
 async function getWarningInfoQuery(sensorType, priority) {
     let result = new WarningInfo(-1, sensorType, "", new SolutionInfo(priority, ""));
 
-    let ret = await BCC.makeQuery("SELECT * FROM Warnings WHERE SensorType=?", [sensorType]);
+    let ret = await BCC.makeQuery("SELECT * FROM Warnings WHERE sensorType=?", [sensorType]);
     if (BCC.isErrorCode(ret))
         return result;
 
@@ -135,7 +140,7 @@ async function getSolutionQuery(warningID, priority) {
     let result = new SolutionInfo(priority, "");
 
     let ret = await BCC.makeQuery(
-        "SELECT * FROM Solutions WHERE WarningID=? AND WarningPriority=?", [warningID, priority.priority]
+        "SELECT * FROM Solutions WHERE warningID=? AND warningPriority=?", [warningID, priority.priority]
     );
     if (BCC.isErrorCode(ret))
         return result;

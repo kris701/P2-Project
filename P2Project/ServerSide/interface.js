@@ -3,6 +3,7 @@ try {
 
     let BCC = require(__dirname + "/BasicCalls.js").BCC;
     let RCC = require(__dirname + "/ResourceCheck.js").RCC;
+    let RC = require(__dirname + "/ReturnCodes.js");
 
     // Include modules
     let http = require("http");
@@ -21,12 +22,12 @@ try {
 
             if (response.returnCode == -1) {
                 console.error("Resource not found!");
-                response = new BCC.retMSG(404, "Resource not found!");
+                response = new RC.parseToRetMSG(RC.failCodes.ResourceNotFound);
             }
 
         } catch (err) {
             console.error(err);
-            response = new BCC.retMSG(404, "An error occured on the server!");
+            response = new BCC.retMSG(499, "An error occured on the server!");
         }
 
         res.writeHead(response.returnCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });

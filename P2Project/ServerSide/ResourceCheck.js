@@ -6,6 +6,7 @@ let SSIC = require(__dirname + "/SimpleSensorInfo.js").SSIC;
 let WASC = require(__dirname + "/WarningAndSolutionSelectionAlgorithm").WASC;
 let ACC = require(__dirname + "/AdminCalls.js").ACC;
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 // Resource Class
 class Resource {
@@ -29,7 +30,8 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
     new Resource("getsensorinfo", [], SSIC.getSensorInfoQuery, []),
     new Resource("getpredictiondata", ["room", "date"], PAC.getPredictionDatetimeQuery, []),
     new Resource("getwarningsandsolutions", ["room", "date"], WASC.getWarningsAndSolutions, []),
-    new Resource("admin", ["Username", "Password"], checkCredentials, [
+    new Resource("admin", ["username", "password"], checkCredentials, [
+        new Resource("login", [], function () { return new BCC.retMSG(RC.successCodes.CredentialsCorrect, "Credentials correct!") }, []),
         new Resource("getallwarningsandsolutions", [], ACC.WASC.getAllWarningsAndSolutions, []),
         new Resource("addnewwarning", ["sensorType", "message"], ACC.WASC.addNewWarning, []),
         new Resource("removewarning", ["warningID"], ACC.WASC.removeWarning, []),
@@ -88,7 +90,7 @@ async function innerCheckAllResource(response, req, resource, queryURL) {
                 }
             }
             else
-                response = new BCC.retMSG(404, "Error in input/credentials");
+                response = new RC.parseToRetMSG(RC.failCodes.WrongInputCredentials);
         }
         else
             response = await executeResource(resource.functionCall, resource.parameters, queryURL);
