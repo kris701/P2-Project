@@ -46,7 +46,7 @@ module.exports.ACC = class {
 
         static async addNewWarning(sensorType, message) {
             if (typeof (sensorType) == typeof (0) && typeof (message) == typeof ("")) {
-                let ret = await BCC.makeQuery("INSERT INTO Warnings (SensorType, Message) values (?, ?)", [sensorType,message]);
+                let ret = await BCC.makeQuery("INSERT INTO Warnings (sensorType, message) values (?, ?)", [sensorType,message]);
                 if (BCC.isErrorCode(ret))
                     return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
