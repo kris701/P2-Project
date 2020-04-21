@@ -1,5 +1,5 @@
-﻿import { CC } from './../adminpage/Cookies.js'
-import { UC } from './../clientpage/js/utils.js'
+﻿import { CC } from './../adminpage/Cookies.js';
+import { UC } from './../clientpage/js/utils.js';
 
 async function login() {
     let cookie = CC.getLogin();
@@ -14,7 +14,7 @@ async function login() {
         let password = document.getElementById("input_password").value;
         credentials = await CheckCredentials(username, password);
         if (credentials) {
-            setLogin(username, password);
+            CC.setLogin(username, password);
             let nextPage = "/pages/adminpage/admin.html"
             window.location.href = nextPage;
         }
