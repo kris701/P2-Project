@@ -2,6 +2,7 @@
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+let successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
 let RC = require(__dirname + "/ReturnCodes.js");
 
 // Time interval in minutes
@@ -65,7 +66,7 @@ module.exports.PAC = class {
         });
         await ROOBVC.checkAndRemoveOutOfBounds(returnItem.data);
 
-        return new BCC.retMSG(200, returnItem);
+        return new BCC.retMSG(successCodes.GotPredictions, returnItem);
     }
 }
 
@@ -257,7 +258,7 @@ class QCC {
 
     static async getOldestEntry(sensorType, sensorID) {
         let ret = await BCC.makeQuery(
-            "SELECT MIN(timestamp) as timestamp FROM SensorValue_" + sensorType + " WHERE tensorID=?", [sensorID]);
+            "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? ORDER By timestamp ASC LIMIT 1", [sensorID]);
         if (BCC.isErrorCode(ret))
             return new Date();
 

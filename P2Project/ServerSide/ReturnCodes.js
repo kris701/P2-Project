@@ -23,7 +23,8 @@ module.exports.successCodes = {
     UpdateSensorTypeThreshold: 220,
     InsertSensorValue: 221,
     GotWarningsAndSoluton: 222,
-    GotSimpleSensorInfo: 223
+    GotSimpleSensorInfo: 223,
+    GotPredictions: 224
 }
 
 module.exports.failCodes = {
