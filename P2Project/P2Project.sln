@@ -9,11 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSide", "ClientSide\Cl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SensorCode", "SensorCode\SensorCode.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E0CFD53-086D-4543-A6B1-F91D6157EB12}"
-	ProjectSection(SolutionItems) = preProject
-		GeneralReadmes.txt = GeneralReadmes.txt
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MySQL Database", "MySQL Database", "{3B5BA967-434C-4A1A-8D13-ECA9487C71B4}"
 	ProjectSection(SolutionItems) = preProject
 		MySQLDB.sql = MySQLDB.sql

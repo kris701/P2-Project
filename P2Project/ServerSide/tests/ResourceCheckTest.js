@@ -11,12 +11,12 @@ var BCC = require(path.join(__dirname, '..', './BasicCalls.js')).BCC;
 
 var Response = new BCC.ReturnMessage(-1, "");
 var Req = {};
-Req.header = {};
-Req.header.host = "UnitTest";
+Req.headers = {};
+Req.headers.host = "UnitTest";
 Req.url = "/admin/addnewroom";
 var WrongReq = {};
-WrongReq.header = {};
-WrongReq.header.host = "UnitTest";
+WrongReq.headers = {};
+WrongReq.headers.host = "UnitTest";
 WrongReq.url = "/unittest";
 var credentialsURL = {};
 credentialsURL.Username = "User";

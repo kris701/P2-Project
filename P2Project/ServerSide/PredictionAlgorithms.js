@@ -2,6 +2,7 @@
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 // Time interval in minutes
 const Interval = 15;
@@ -47,10 +48,10 @@ class ThresholdPass {
 
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room, date) {
-        if (room == null)
-            return new BCC.ParseToReturnMessage(failCodes.NoParameters);
-        if (date == null)
-            return new BCC.ParseToReturnMessage(failCodes.NoParameters);
+        if (typeof(room) != typeof(0))
+            return RC.ParseToReturnMessage(failCodes.NoParameters);
+        if (typeof (date) != typeof (""))
+            return RC.ParseToReturnMessage(failCodes.NoParameters);
 
         let ReturnItem = new ReturnClass(Interval, []);
 

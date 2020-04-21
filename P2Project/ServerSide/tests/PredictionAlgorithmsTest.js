@@ -17,7 +17,7 @@ describe('getPredictionDatetimeQuery function', function () {
     this.retries(3);
 
     generalTests.ShouldFailWithToParameters(PredictionCalls.PAC.getPredictionDatetimeQuery(), failCodes.NoParameters);
-    generalTests.ShouldReturnArrayDotData(PredictionCalls.PAC.getPredictionDatetimeQuery(0, new Date()));
+    generalTests.ShouldReturnArrayDotData(PredictionCalls.PAC.getPredictionDatetimeQuery(0, "2020-04-20T00:00:00"));
 });
 
 //#endregion
