@@ -220,7 +220,7 @@ class QCC {
     static async getPredictionSensorsInRoom(room) {
         let result = [];
 
-        let ret = await BCC.makeQuery("SELECT * FROM SensorInfo WHERE RoomID=?", [room]);
+        let ret = await BCC.makeQuery("SELECT * FROM SensorInfo WHERE roomID=?", [room]);
         if (BCC.isErrorCode(ret))
             return result;
         await BCC.asyncForEach(ret.recordset, async function (v) {
@@ -233,7 +233,7 @@ class QCC {
     static async getSensorTypeName(sensorTypeID) {
         let result;
 
-        let ret = await BCC.makeQuery("SELECT * FROM SensorTypes WHERE SensorType=?", [sensorTypeID]);
+        let ret = await BCC.makeQuery("SELECT * FROM SensorTypes WHERE sensorType=?", [sensorTypeID]);
         if (BCC.isErrorCode(ret))
             return result;
         result = ret.recordset[0].typeName;
@@ -244,7 +244,7 @@ class QCC {
     static async getSensorTypesForSensor(sensorID) {
         let result = [];
 
-        let ret = await BCC.makeQuery("SELECT * FROM SensorThresholds WHERE SensorID=?", [sensorID]);
+        let ret = await BCC.makeQuery("SELECT * FROM SensorThresholds WHERE sensorID=?", [sensorID]);
         if (BCC.isErrorCode(ret))
             return result;
         await BCC.asyncForEach(ret.recordset, async function (v) {
@@ -257,7 +257,7 @@ class QCC {
 
     static async getOldestEntry(sensorType, sensorID) {
         let ret = await BCC.makeQuery(
-            "SELECT MIN(Timestamp) as Timestamp FROM SensorValue_" + sensorType + " WHERE SensorID=?", [sensorID]);
+            "SELECT MIN(timestamp) as timestamp FROM SensorValue_" + sensorType + " WHERE tensorID=?", [sensorID]);
         if (BCC.isErrorCode(ret))
             return new Date();
 
@@ -270,7 +270,7 @@ class QCC {
 
     static async getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, thresholdValue) {
         let ret = await BCC.makeQuery(
-            "SELECT * FROM SensorValue_" + sensorType + " WHERE SensorID=? AND Timestamp BETWEEN ? AND ? AND SensorValue>=?", [
+            "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? AND timestamp BETWEEN ? AND ? AND sensorValue>=?", [
             sensorID,
             dateMin,
             dateMax,

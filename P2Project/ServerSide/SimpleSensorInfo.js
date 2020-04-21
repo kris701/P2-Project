@@ -34,7 +34,7 @@ module.exports.SSIC = class {
             sensorInfo.push(newRoomInfo);
         });
 
-        return new BCC.retMSG(successCodes.GotWarningsAndSoluton, sensorInfo);;
+        return new BCC.retMSG(successCodes.GotSimpleSensorInfo, sensorInfo);;
     }
 }
 //#endregion
@@ -53,7 +53,7 @@ async function getAllRooms() {
 async function getSensorsInRoom(room) {
     let sensors = [];
 
-    let queryTable = await BCC.makeQuery("SELECT SensorID FROM SensorInfo WHERE RoomID=?", [room]);
+    let queryTable = await BCC.makeQuery("SELECT sensorID FROM SensorInfo WHERE roomID=?", [room]);
     await BCC.asyncForEach(queryTable.recordset, async function (v) {
         let sensorTypes = await getSensorTypes(v.sensorID);
         sensors.push(new Sensor(v.sensorID, sensorTypes))
@@ -66,7 +66,7 @@ async function getSensorTypes(sensorID) {
     let sensorTypes = [];
     let sensorTypeNames = [];
 
-    let queryTable = await BCC.makeQuery("SELECT * FROM SensorThresholds WHERE SensorID=?", [sensorID]);
+    let queryTable = await BCC.makeQuery("SELECT * FROM SensorThresholds WHERE sensorID=?", [sensorID]);
 
     queryTable.recordset.forEach(v => sensorTypes.push(v.SensorType));
 
@@ -80,7 +80,7 @@ async function getSensorTypes(sensorID) {
 async function getSensorTypeName(sensorType) {
     let sensorTypeName = [];
 
-    let queryTable = await BCC.makeQuery("SELECT TypeName FROM SensorTypes WHERE SensorType=?", [sensorType]);
+    let queryTable = await BCC.makeQuery("SELECT typeName FROM SensorTypes WHERE sensorType=?", [sensorType]);
     queryTable.recordset.forEach(v => sensorTypeName.push(v.typeName));
 
     return sensorTypeName;
