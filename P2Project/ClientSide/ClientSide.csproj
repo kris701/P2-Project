@@ -73,7 +73,7 @@
     <Content Include="pages\adminpage\admin.css" />
     <Content Include="pages\adminpage\admin.html" />
     <Content Include="pages\adminpage\admin.js" />
-    <Content Include="pages\adminpage\CommonCalls.js" />
+    <Content Include="pages\adminpage\Cookies.js" />
     <Content Include="pages\clientpage\app.css" />
     <Content Include="pages\clientpage\js\main.js" />
     <Content Include="pages\clientpage\js\utils.js" />

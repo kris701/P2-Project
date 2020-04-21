@@ -1,14 +1,14 @@
-﻿import { jsonFetch } from "./utils.js";
+﻿let UC = require('utils.js').UC;
 
 try {
 
     // Use this to get resource data:
-    //      let fetchedData = await jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
+    //      let fetchedData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
 
     let RoomData = [];
 
     async function GetInformation() {
-        RoomData = await jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
+        RoomData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
         await importDataToSelect();
     }
     window.onload = GetInformation;

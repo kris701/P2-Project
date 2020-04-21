@@ -1,7 +1,9 @@
-﻿try {
+﻿let UC = require('utils.js').UC;
+
+try {
 
     async function GetInformation() {
-        RoomData2 = await jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
+        RoomData2 = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
         console.log("Test test: " + RoomData2);
     }
 
