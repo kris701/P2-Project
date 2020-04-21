@@ -75,7 +75,9 @@
     <Content Include="pages\adminpage\admin.js" />
     <Content Include="pages\adminpage\CommonCalls.js" />
     <Content Include="pages\clientpage\app.css" />
-    <Content Include="pages\clientpage\app.js" />
+    <Content Include="pages\clientpage\js\main.js" />
+    <Content Include="pages\clientpage\js\utils.js" />
+    <Content Include="pages\clientpage\js\graphing.js" />
     <Content Include="pages\clientpage\index.html" />
     <Content Include="Web.config" />
   </ItemGroup>

@@ -1,4 +1,6 @@
-﻿try {
+﻿import { jsonFetch } from "./utils.js";
+
+try {
 
     // Use this to get resource data:
     //      let fetchedData = await jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
@@ -10,14 +12,6 @@
         await importDataToSelect();
     }
     window.onload = GetInformation;
-
-    async function jsonFetch(url) {
-        let response = await fetch(url);
-        let returnData = await response.json();
-
-        console.log(returnData);
-        return returnData;
-    }
 
     //Adds more elements to the select in the html for room selection
     async function importDataToSelect() {
@@ -64,3 +58,4 @@
     }
 
 } catch (err) { console.log(err) }
+
