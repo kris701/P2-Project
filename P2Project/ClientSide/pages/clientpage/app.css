@@ -15,7 +15,6 @@ body {
     font-family: "Montserrat", sans-serif;
     font-weight: 300;
     min-height: 100vh;
-    background-image: url("../../background/3.jpg");
 }
 
 /* --- Header Section begins here --- */
@@ -138,20 +137,37 @@ header{
 }
 
 .container .box:nth-child(1){
-    grid-column: span 2;
-    grid-row: span 2;
-}
-
-.container .box:nth-child(2){
     grid-column: span 1;
     grid-row: span 2;
 }
 
-.container .box:nth-child(6){
-    grid-column: span 3;
-    grid-row: span 1;
+.container .box:nth-child(2){
+    grid-column: span 2;
+    grid-row: span 2;
 }
 
+.container .box:nth-child(3){
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+/* --- Warning Section begins here --- */
+
+.warningContainer{
+    width: 800px;
+    max-height: 600px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+}
+
+.warningBox {
+    padding: 10px;
+    margin: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    background-color: orange; /*Background-color may be decided in html through js*/
+}
 
 /* --- Footer Section begins here --- */
 
