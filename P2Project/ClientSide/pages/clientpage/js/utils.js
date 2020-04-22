@@ -1,4 +1,4 @@
-﻿//This document contains functions regarding basic functions such as communication with the server
+//This document contains functions regarding basic functions such as communication with the server
 
 export class UC {
     static async jsonFetch(url) {

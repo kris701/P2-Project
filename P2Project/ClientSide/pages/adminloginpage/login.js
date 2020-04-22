@@ -1,7 +1,9 @@
-﻿async function login() {
-    let CC = new CookieClass;
-    CC.deleteCookie("username");
-    CC.deleteCookie("password");
+﻿import { CC } from './../adminpage/Cookies.js';
+import { UC } from './../clientpage/js/utils.js';
+
+async function login() {
+    CC.deleteLogin("username");
+    CC.deleteLogin("password");
     let cookie = CC.getLogin();
     let credentials = await CheckCredentials(cookie.username, cookie.password);
     console.log(credentials);
@@ -29,7 +31,6 @@ document.getElementById("login_submit").onclick = login;
 
 async function CheckCredentials(username, password) {
     let returnValue = false;
-    let UC = new UtilsClass;
     //let code = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login?username=" + username + "&password=" + password).catch(e => console.log(e));
     //if (code == "Credentials correct!")
     //    returnValue = true;
@@ -48,3 +49,9 @@ async function CheckCredentials(username, password) {
 //    }
 //    return url;
 //}
+
+function unloadPage() {
+    CC.deleteLogin("username");
+    CC.deleteLogin("password");
+}
+document.addEventListener("unload", unloadPage);

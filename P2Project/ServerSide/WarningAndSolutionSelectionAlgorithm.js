@@ -128,9 +128,11 @@ async function getWarningInfoQuery(sensorType, priority) {
         return result;
 
     if (ret.recordset.length != 0) {
-        result.message = ret.recordset[0].message;
-        result.warningID = ret.recordset[0].warningID;
-        result.solutionInfo = await getSolutionQuery(ret.recordset[0].warningID, priority);
+        if (ret.recordset[0].warningID != -1) {
+            result.message = ret.recordset[0].message;
+            result.warningID = ret.recordset[0].warningID;
+            result.solutionInfo = await getSolutionQuery(ret.recordset[0].warningID, priority);
+        }
     }
 
     return result;
