@@ -1,14 +1,16 @@
-﻿import { UC } from './utils.js';
+﻿import { UtilsClass } from './utils.js';
+
+import { Graphing } from './graphing.js';
 
 try {
 
     // Use this to get resource data:
-    //      let fetchedData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
+    //      let fetchedData = await UtilsClass.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
 
-    let RoomData = [];
+    let roomData = [];
 
     async function GetInformation() {
-        RoomData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
+        roomData = await UtilsClass.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
         await importDataToSelect();
     }
     window.onload = GetInformation;
@@ -17,33 +19,41 @@ try {
     async function importDataToSelect() {
         let roomSelect = document.getElementById("selectedRoom");
 
-        for (let i = 0; i < RoomData.length; i++) {
+        for (let i = 0; i < roomData.length; i++) {
             let option = document.createElement("option");
-            option.text = RoomData[i].RoomName;
+            option.text = roomData[i].roomName;
             roomSelect.add(option);
         }
     }
 
     //Activates once a new room has been selected
+    const currentRoom = document.getElementById("selectedRoom");
+    currentRoom.addEventListener("change", (evt) =>
+            roomChangeFunction()
+        );
+
     function roomChangeFunction() {
-        let roomSelect = document.getElementById("selectedRoom");
-        let roomData = RoomData[roomSelect.selectedIndex];
+        console.log("RoomChangeFunction activated."); ///////////////////////////
+        if (roomData.length != 0) {
+            console.log("roomdata.length != 0"); ///////////////////////////
+            let roomSelect = document.getElementById("selectedRoom");
 
-        //Resets the data display section
-        document.getElementById("data").innerHTML = "";
+            //Resets the data display section
+            document.getElementById("data").innerHTML = "";
 
-        displayRoomData(roomData);
+
+            displayRoomData(roomData[roomSelect.selectedIndex]);
+        }
     }
 
-    function displayRoomData(roomData) {
+    function displayRoomData(currentRoomData) {
         let dataDisplay = document.getElementById("data");
-
-        for (let i = 0; i < roomData.Sensors.length; i++) {
-            dataDisplay.innerHTML += "<br>Sensor ID: " + roomData.Sensors[i].SensorID + "<br>";
+        console.log("Im also here"); ///////////////////////////
+        for (let i = 0; i < currentRoomData.sensors.length; i++) {
+            dataDisplay.innerHTML += "<br>Sensor ID: " + currentRoomData.sensors[i].sensorID + "<br>";
             dataDisplay.innerHTML += "<br>Sensor measurements: <br>";
-            console.log("1   " + roomData.Sensors);
 
-            DRD_SearchMeasurements(dataDisplay, roomData, i);
+            DRD_SearchMeasurements(dataDisplay, currentRoomData, i);
 
             dataDisplay.innerHTML += "<br><hr>";
         }
@@ -52,10 +62,12 @@ try {
     //Searches the array roomData for which kind of sensors the unit has. For example
     //one unit may have both a CO2 and oxygen sensor.
     function DRD_SearchMeasurements(dataDisplay, roomData, i) {
-        for (let y = 0; y < roomData.Sensors[i].Types.length; y++) {
-            dataDisplay.innerHTML += "&emsp;" + roomData.Sensors[i].Types[y] + "<br>";
+        for (let y = 0; y < roomData.sensors[i].types.length; y++) {
+            dataDisplay.innerHTML += "&emsp;" + roomData.sensors[i].types[y] + "<br>";
         }
     }
+
+
 
 } catch (err) { console.log(err) }
 
