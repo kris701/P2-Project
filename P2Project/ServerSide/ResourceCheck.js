@@ -81,20 +81,25 @@ module.exports.RCC = class {
 async function innerCheckAllResource(response, req, resource, queryURL) {
     if (checkForResource(req, resource.name, resource.parameters, queryURL) == true) {
         if (resource.subResourcesArray.length != 0) {
-            let resourceFunctionCallCheck = await executeResource(resource.functionCall, resource.parameters, queryURL);
-            if (resourceFunctionCallCheck) {
-                for (let i = 0; i < resource.subResourcesArray.length; i++) {
-                    response = await innerCheckAllResource(response, req, resource.subResourcesArray[i], queryURL);
-                    if (response.returnCode != -1)
-                        break;
-                }
-            }
-            else
-                response = new RC.parseToRetMSG(RC.failCodes.WrongInputCredentials);
+            response = await checkInnerResources(response, req, resource, queryURL);
         }
         else
             response = await executeResource(resource.functionCall, resource.parameters, queryURL);
     }
+    return response;
+}
+
+async function checkInnerResources(response, req, resource, queryURL) {
+    let resourceFunctionCallCheck = await executeResource(resource.functionCall, resource.parameters, queryURL);
+    if (resourceFunctionCallCheck) {
+        for (let i = 0; i < resource.subResourcesArray.length; i++) {
+            response = await innerCheckAllResource(response, req, resource.subResourcesArray[i], queryURL);
+            if (response.returnCode != -1)
+                break;
+        }
+    }
+    else
+        response = new RC.parseToRetMSG(RC.failCodes.WrongInputCredentials);
     return response;
 }
 

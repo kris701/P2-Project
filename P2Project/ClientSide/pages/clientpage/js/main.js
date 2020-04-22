@@ -1,6 +1,6 @@
-﻿import { UtilsClass } from './utils.js';
+﻿import { UC } from './utils.js';
 
-import { Graphing } from './graphing.js';
+import { Graph } from './graphing.js';
 
 try {
 
@@ -8,11 +8,17 @@ try {
     //      let fetchedData = await UtilsClass.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/resource").catch(e => console.log(e));
 
     let roomData = [];
+    let prediction = [];
 
     async function GetInformation() {
-        roomData = await UtilsClass.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
+        roomData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
         await importDataToSelect();
     }
+
+    async function getPredictions(ID, date) {
+        prediction = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getpredictiondata?room=" + ID + "&date=" + date);
+    }
+
     window.onload = GetInformation;
 
     //Adds more elements to the select in the html for room selection
@@ -28,19 +34,22 @@ try {
 
     //Activates once a new room has been selected
     const currentRoom = document.getElementById("selectedRoom");
-    currentRoom.addEventListener("change", (evt) =>
-            roomChangeFunction()
-        );
+    currentRoom.addEventListener("change", (evt) => roomChangeFunction());
 
-    function roomChangeFunction() {
-        console.log("RoomChangeFunction activated."); ///////////////////////////
+    async function roomChangeFunction() {
         if (roomData.length != 0) {
-            console.log("roomdata.length != 0"); ///////////////////////////
             let roomSelect = document.getElementById("selectedRoom");
+            
+            await getPredictions(roomData[roomSelect.selectedIndex], "2020-04-20T12:00:00");
+
+            //This for loop is where the createGraph function is called. i is passed along also so that 
+            //it is clear which iteration of graph is the current and the total number of graps also
+            for (let i = 0; i < prediction.data.length; i++) {
+                Graph.createGraph(prediction[i], i);
+            }
 
             //Resets the data display section
             document.getElementById("data").innerHTML = "";
-
 
             displayRoomData(roomData[roomSelect.selectedIndex]);
         }
@@ -48,7 +57,7 @@ try {
 
     function displayRoomData(currentRoomData) {
         let dataDisplay = document.getElementById("data");
-        console.log("Im also here"); ///////////////////////////
+
         for (let i = 0; i < currentRoomData.sensors.length; i++) {
             dataDisplay.innerHTML += "<br>Sensor ID: " + currentRoomData.sensors[i].sensorID + "<br>";
             dataDisplay.innerHTML += "<br>Sensor measurements: <br>";

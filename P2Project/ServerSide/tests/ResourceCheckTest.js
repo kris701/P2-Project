@@ -29,7 +29,7 @@ parametersURL.Password = "Password";
 //#region Tests
 
 describe('Check all resources test', function () {
-    GTC.expectErrorCodeFromInput("Should fail with wrong credentials", RCC.checkAllResource(response, req, credentialsURL), failCodes.WrongInputCredentials);
+    GTC.expectErrorCodeFromInput("Should fail with wrong credentials", RCC.checkAllResource(response, req, credentialsURL), -1);
     GTC.expectErrorCodeFromInput("Should fail with wrong parameters", RCC.checkAllResource(response, req, parametersURL), -1);
     GTC.expectErrorCodeFromInput("Should fail with wrong request path", RCC.checkAllResource(response, wrongReq, parametersURL), -1);
 });
