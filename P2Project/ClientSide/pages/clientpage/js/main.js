@@ -1,6 +1,6 @@
 ﻿import { UC } from './utils.js';
 
-import { Graph } from './graphing.js';
+import { GRPH } from './graphing.js';
 
 try {
 
@@ -45,7 +45,7 @@ try {
             //This for loop is where the createGraph function is called. i is passed along also so that 
             //it is clear which iteration of graph is the current and the total number of graps also
             for (let i = 0; i < prediction.data.length; i++) {
-                Graph.createGraph(prediction[i], i);
+                GRPH.createGraph(prediction[i], i);
             }
 
             //Resets the data display section
