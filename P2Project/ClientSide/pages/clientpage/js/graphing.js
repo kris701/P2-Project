@@ -1,30 +1,5 @@
-﻿import { UC } from './utils.js';
+﻿//This document contains the functions regarding the creation of graphs
 
-try {
+export class Graphing {
 
-    async function GetInformation() {
-        RoomData2 = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
-        console.log("Test test: " + RoomData2);
-    }
-
-} catch (err) { console.log(err) }
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45]
-        }]
-    },
-
-    // Configuration options go here
-    options: {}
-});
+}
