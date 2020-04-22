@@ -54,4 +54,4 @@ function unloadPage() {
     CC.deleteLogin("username");
     CC.deleteLogin("password");
 }
-document.addEventListener("unload", unloadPage);
+document.addEventListener("beforeunload", unloadPage);
