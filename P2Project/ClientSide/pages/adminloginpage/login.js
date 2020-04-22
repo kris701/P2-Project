@@ -31,10 +31,8 @@ document.getElementById("login_submit").onclick = login;
 
 async function CheckCredentials(username, password) {
     let returnValue = false;
-    //let code = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login?username=" + username + "&password=" + password).catch(e => console.log(e));
-    //if (code == "Credentials correct!")
-    //    returnValue = true;
-    if (username == "Admin" && password == "Password")
+    let code = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login?username=" + username + "&password=" + password).catch(e => console.log(e));
+    if (code == "Credentials correct!")
         returnValue = true;
 
     return returnValue;
@@ -54,4 +52,4 @@ function unloadPage() {
     CC.deleteLogin("username");
     CC.deleteLogin("password");
 }
-document.addEventListener("unload", unloadPage);
+document.addEventListener("beforeunload", unloadPage);
