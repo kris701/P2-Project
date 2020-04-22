@@ -15,7 +15,7 @@ body {
     font-family: "Montserrat", sans-serif;
     font-weight: 300;
     min-height: 100vh;
-    background-image: url("background/3.jpg");
+    background-image: url("../../background/3.jpg");
 }
 
 /* --- Header Section begins here --- */

@@ -36,7 +36,7 @@ export class GRPH {
                 labels: time,
                 datasets: [{
                     label: predictionData.name,
-                    backgroundColor: "rgb(255, 99, 132)",
+                    backgroundColor: "rgba(255, 99, 132, 0.2",
                     borderColor: "rgb(255, 99, 132)",
                     data: dataSet
                 }]
@@ -65,7 +65,7 @@ function createCanvas(graphNum) {
 // Disects the data into smaller more easy to understand bits
 function disectData(predictionData, time, dataSet) {
     for (let i = 0; i < predictionData.thresholdPasses.length; i++) {
-        time.push(predictionData.thresholdPasses[i].timeUntil * interval);
+        time.push(predictionData.thresholdPasses[i].timeUntil * interval + " min");
         dataSet.push(predictionData.thresholdPasses[i].timesExceeded);
     }
 }
