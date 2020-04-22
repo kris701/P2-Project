@@ -401,9 +401,11 @@ async function getAllWarningsQuery() {
 
     let queryTable = await BCC.makeQuery("SELECT * FROM Warnings", []);
     await BCC.asyncForEach(queryTable.recordset, async function (v) {
-        let solutionItems = await getAllSolutionsForAWarning(v.warningID);
-        let warningItem = new WarningItem(v.warningID, v.sensorType, v.message, solutionItems);
-        result.push(warningItem);
+        if (v.warningID != -1) {
+            let solutionItems = await getAllSolutionsForAWarning(v.warningID);
+            let warningItem = new WarningItem(v.warningID, v.sensorType, v.message, solutionItems);
+            result.push(warningItem);
+        }
     });
 
     return result;
