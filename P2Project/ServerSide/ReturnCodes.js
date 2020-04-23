@@ -26,7 +26,9 @@ module.exports.successCodes = {
     GotSimpleSensorInfo: 223,
     GotPredictions: 224,
     CredentialsCorrect: 225,
-    ReadOpenAPIFile: 226
+    ReadOpenAPIFile: 226,
+    GotAllSensorTypes: 227,
+    GotAllSolutions: 228
 }
 
 module.exports.failCodes = {
