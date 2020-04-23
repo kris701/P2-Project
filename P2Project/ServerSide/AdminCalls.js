@@ -391,6 +391,21 @@ module.exports.ACC = class {
 
         return RC.parseToRetMSG(RC.successCodes.InsertSensorValue);
     }
+
+    static async checkCredentials(username, password) {
+        if (typeof (username) == typeof (" ") && typeof (password) == typeof (" ")) {
+            let ret = await BCC.makeQuery("SELECT * FROM AdminCredentials WHERE username=? AND password=?", [username, password]);
+            if (BCC.isErrorCode(ret))
+                return false;
+
+            if (ret.recordset.length != 0)
+                return true;
+        }
+        else
+            return false;
+
+        return false;
+    }
 }
 
 //#endregion

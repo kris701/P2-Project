@@ -35,6 +35,9 @@
     <Content Include="AdminCalls.js" />
     <Content Include="BasicCalls.js" />
     <Content Include="interface.js" />
+    <Content Include="LiveData.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="package.json" />
     <Content Include="PredictionAlgorithms.js" />
     <Content Include="README.md" />
@@ -63,6 +66,10 @@
       <TestFramework>Mocha</TestFramework>
     </Compile>
     <Content Include="openAPI\openapi.json" />
+    <Compile Include="tests\LiveDataTest.js">
+      <Publish>True</Publish>
+      <TestFramework>mocha</TestFramework>
+    </Compile>
     <Content Include="tests\ResourceCheckTest.js">
       <SubType>Code</SubType>
     </Content>
