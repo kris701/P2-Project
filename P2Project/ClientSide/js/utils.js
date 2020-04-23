@@ -11,7 +11,7 @@ export class UC {
     static dateToISOString(date) {
         let out = "";
         out += date.getFullYear() + "-";
-        out += AddZeroIfTooSmall(date.getMonth(), "-");
+        out += AddZeroIfTooSmall(date.getMonth() + 1, "-");
         out += AddZeroIfTooSmall(date.getDate(), "T");
         out += AddZeroIfTooSmall(date.getHours(), ":");
         out += AddZeroIfTooSmall(date.getMinutes(), ":");
