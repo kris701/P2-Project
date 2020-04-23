@@ -173,6 +173,71 @@
         }
       }
     },
+    "/getlivedata": {
+      "get": {
+        "tags": [ "UserLevel" ],
+        "description": "Returns live data from sensors, split into intervals",
+        "parameters": [
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "the ID of the sensor that you want info on",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "The time where you want the prediction algorithm to run from, in string format \"2020-04-20T12:00:00\"\"",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "231": {
+            "description": "Live data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_231"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/login": {
       "get": {
         "tags": [ "AdminLevel_GET" ],
@@ -2490,6 +2555,20 @@
   },
   "components": {
     "schemas": {
+      "inline_response_231_data_liveDataArray": {
+        "type": "object",
+        "properties": {
+          "timeStamp": {
+            "type": "number",
+            "example": 2
+          },
+          "sensorValue": {
+            "minimum": 0,
+            "type": "number",
+            "example": 540
+          }
+        }
+      },
       "inline_response_229": {
         "type": "object",
         "properties": {
@@ -2714,6 +2793,38 @@
           },
           "typeName": {
             "type": "string"
+          }
+        }
+      },
+      "inline_response_231": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "type": "number",
+            "example": 5
+          },
+          "sensorID": {
+            "minimum": 0,
+            "type": "number",
+            "example": 1
+          },
+          "data": {
+            "$ref": "#/components/schemas/inline_response_231_data"
+          }
+        }
+      },
+      "inline_response_231_data": {
+        "type": "object",
+        "properties": {
+          "sensorType": {
+            "type": "string",
+            "example": "CO2"
+          },
+          "liveDataArray": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_231_data_liveDataArray"
+            }
           }
         }
       },

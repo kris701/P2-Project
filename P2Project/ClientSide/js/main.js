@@ -4,6 +4,7 @@
 
 import { UC } from './utils.js';
 import { GRPH } from './graphing.js';
+import { WARN } from './warnings.js'
 
 
 try {
@@ -14,6 +15,7 @@ try {
     async function GetInformation() {
         roomData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
         await importDataToSelect();
+        await roomChangeFunction();
     }
 
 
@@ -22,7 +24,7 @@ try {
     }
 
 
-    window.onload = GetInformation;
+    window.onload = GetInformation()();
 
 
     // Adds more elements to the select in the html for room selection
