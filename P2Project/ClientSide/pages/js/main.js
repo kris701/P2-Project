@@ -43,6 +43,7 @@ try {
 
     async function roomChangeFunction() {
         if (roomData.length != 0) {
+
             let roomSelect = document.getElementById("selectedRoom");
             
             await getPredictions(roomData[roomSelect.selectedIndex].roomID, "2020-04-20T12:00:00");
@@ -50,10 +51,16 @@ try {
             // Clears graph area.
             GRPH.clearGraphArea();
 
+            // Gets the length of the x axis
+            let xLength = GRPH.getHighestTimestamp(prediction);
+
+            // Generate a graph of all the sensortypes, in one
+            GRPH.createTotalGraph(prediction, "A", xLength);
+
             // This for loop is where the createGraph function is called. i is passed along also so that 
             // it is clear which iteration of graph is the current and the total number of graps also
             for (let i = 0; i < prediction.data.length; i++) {
-                GRPH.createGraph(prediction.data[i], i);
+                GRPH.createGraph(prediction.data[i], i, xLength, prediction.interval);
             }
 
             // Resets the data display section

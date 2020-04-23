@@ -46,18 +46,18 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("addnewroom", ["roomName"], ACC.WASC.addNewRoom, []),
         new Resource("removeroom", ["roomID"], ACC.WASC.removeRoom, []),
         new Resource("updateroom", ["roomID", "roomName"], ACC.WASC.updateRoom, []),
-        new Resource("getallsensortypes", [], ACC.WASC.getAllSensorTypes, []),
-        new Resource("addnewsensortype", ["typeName"], ACC.WASC.addNewSensorType, []),
-        new Resource("addexistingsensortype", ["sensorType", "sensorID", "threshold"], ACC.WASC.addExistingSensorType, []),
-        new Resource("removesensortype", ["sensorType"], ACC.WASC.removeSensorType, []),
-        new Resource("removesensortypereference", ["sensorType"], ACC.WASC.removeSensorTypeReference, []),
-        new Resource("updatesensortypethreshold", ["sensorID", "sensorType", "threshold"], ACC.WASC.updateSensorTypeThreshold, []),
-        new Resource("getallsensors", [], ACC.WASC.getAllSensors, []),
-        new Resource("updatesensor", ["sensorID", "roomID"], ACC.WASC.updateSensor, []),
-        new Resource("addnewsensor", ["roomID"], ACC.WASC.addNewSensor, []),
-        new Resource("removesensorreference", ["sensorID"], ACC.WASC.removeSensorReference, []),
-        new Resource("removesensor", ["sensorID"], ACC.WASC.removeSensor, []),
-        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.WASC.insertSensorValue, [])
+        new Resource("getallsensortypes", [], ACC.SEC.getAllSensorTypes, []),
+        new Resource("addnewsensortype", ["typeName"], ACC.SEC.addNewSensorType, []),
+        new Resource("addexistingsensortype", ["sensorType", "sensorID", "threshold"], ACC.SEC.addExistingSensorType, []),
+        new Resource("removesensortype", ["sensorType"], ACC.SEC.removeSensorType, []),
+        new Resource("removesensortypereference", ["sensorType"], ACC.SEC.removeSensorTypeReference, []),
+        new Resource("updatesensortypethreshold", ["sensorID", "sensorType", "threshold"], ACC.SEC.updateSensorTypeThreshold, []),
+        new Resource("getallsensors", [], ACC.SEC.getAllSensors, []),
+        new Resource("updatesensor", ["sensorID", "roomID"], ACC.SEC.updateSensor, []),
+        new Resource("addnewsensor", ["roomID"], ACC.SEC.addNewSensor, []),
+        new Resource("removesensorreference", ["sensorID"], ACC.SEC.removeSensorReference, []),
+        new Resource("removesensor", ["sensorID"], ACC.SEC.removeSensor, []),
+        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.insertSensorValue, [])
     ])
 ]);
 

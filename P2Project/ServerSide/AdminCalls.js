@@ -177,7 +177,7 @@ module.exports.ACC = class {
                 returnItem.data.push(v);
             });
 
-            return new BCC.retMSG(200, returnItem);
+            return new BCC.retMSG(RC.successCodes.GotAllSolutions, returnItem);
         }
     }
 
@@ -301,10 +301,11 @@ module.exports.ACC = class {
             if (BCC.isErrorCode(ret))
                 return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             await BCC.asyncForEach(ret.recordset, async function (v) {
-                returnItem.data.push(v);
+                if (v.sensorType != -1)
+                    returnItem.data.push(v);
             })
 
-            return new BCC.retMSG(200, returnItem);
+            return new BCC.retMSG(RC.successCodes.GotAllSensorTypes, returnItem);
         }
 
         static async addNewSensorType(typeName) {
