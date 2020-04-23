@@ -95,6 +95,7 @@
     <Content Include="js\graphing.js" />
     <Content Include="js\main.js" />
     <Content Include="js\utils.js" />
+    <Content Include="js\warnings.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

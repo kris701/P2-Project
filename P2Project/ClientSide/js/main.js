@@ -9,7 +9,8 @@ import { WARN } from './warnings.js'
 
 try {
     let roomData = [];
-    let prediction = [];
+    let predictionData = [];
+    let warningData = [];
 
 
     async function GetInformation() {
@@ -19,8 +20,9 @@ try {
     }
 
 
-    async function getPredictions(ID, date) {
-        prediction = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getpredictiondata?room=" + ID + "&date=" + date);
+    async function getPredictionsAndWarnings(ID, date) {
+        predictionData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getpredictiondata?room=" + ID + "&date=" + date);
+        warningData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getwarningsandsolutions?room=" + ID + "&date=" + date);
     }
 
 
@@ -48,22 +50,25 @@ try {
 
             let roomSelect = document.getElementById("selectedRoom");
 
-            await getPredictions(roomData[roomSelect.selectedIndex].roomID, UC.dateToISOString(new Date()));
+            await getPredictionsAndWarnings(roomData[roomSelect.selectedIndex].roomID, UC.dateToISOString(new Date()));
 
-            // Clears graph area.
+            // Clears graph area
             GRPH.clearGraphArea();
-
             // Gets the length of the x axis
-            let xLength = GRPH.getHighestTimestamp(prediction);
-
+            let xLength = GRPH.getHighestTimestamp(predictionData);
             // Generate a graph of all the sensortypes, in one
-            GRPH.createTotalGraph(prediction, "A", xLength);
+            GRPH.createTotalGraph(predictionData, "A", xLength);
 
             // This for loop is where the createGraph function is called. i is passed along also so that 
             // it is clear which iteration of graph is the current and the total number of graps also
-            for (let i = 0; i < prediction.data.length; i++) {
-                GRPH.createGraph(prediction.data[i], i, xLength, prediction.interval);
+            for (let i = 0; i < predictionData.data.length; i++) {
+                GRPH.createGraph(predictionData.data[i], i, xLength, predictionData.interval);
             }
+
+            // Clears warning area
+            WARN.clearWarningArea();
+            // Displays the warnings of the selected room
+            WARN.displayWarnings(warningData);
 
             // Resets the data display section
             document.getElementById("data").innerHTML = "";
