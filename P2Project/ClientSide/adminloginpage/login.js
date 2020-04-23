@@ -19,7 +19,7 @@ passwordInput.addEventListener("keyup", function (event) {
 
 async function login() {
     if (getLoggedIn()) {
-        let nextPage = "/pages/adminpage/admin.html"
+        let nextPage = "/adminpage/admin.html"
         window.location.href = nextPage;
     }
     else {
