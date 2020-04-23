@@ -104,7 +104,9 @@ header{
 }
 
 .masterContainer{
-
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1250px;
 }
 
 .container{
@@ -142,13 +144,18 @@ header{
 }
 
 .container .box:nth-child(2){
-    grid-column: span 2;
-    grid-row: span 2;
+    grid-column: span 1;
+    grid-row: span 1;
 }
 
 .container .box:nth-child(3){
     grid-column: span 1;
-    grid-row: span 2;
+    grid-row: span 1;
+}
+
+.container .box:nth-child(4){
+    grid-column: span 1;
+    grid-row: span 1;
 }
 
 /* --- Warning Section begins here --- */
