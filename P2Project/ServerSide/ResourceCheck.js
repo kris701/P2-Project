@@ -7,6 +7,7 @@ let WASC = require(__dirname + "/WarningAndSolutionSelectionAlgorithm").WASC;
 let ACC = require(__dirname + "/AdminCalls.js").ACC;
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let RC = require(__dirname + "/ReturnCodes.js");
+let LDC = require(__dirname + "/LiveData.js").LDC;
 
 // Resource Class
 class Resource {
@@ -17,21 +18,15 @@ class Resource {
         this.subResourcesArray = subResourcesArray;
     }
 }
-// Credentials class
-class Credentials {
-    constructor(username, password) {
-        this.username = username;
-        this.password = password;
-    }
-}
 
 // ResourceLib
 const ResourceLibrary = new Resource("/", [], function () { return true }, [
     new Resource("api-doc", [], getOpenAPI, []),
+    new Resource("getlivedata", ["sensorID", "date"], LDC.getLiveData, []),
     new Resource("getsensorinfo", [], SSIC.getSensorInfoQuery, []),
     new Resource("getpredictiondata", ["room", "date"], PAC.getPredictionDatetimeQuery, []),
     new Resource("getwarningsandsolutions", ["room", "date"], WASC.getWarningsAndSolutions, []),
-    new Resource("admin", ["username", "password"], checkCredentials, [
+    new Resource("admin", ["username", "password"], ACC.checkCredentials, [
         new Resource("login", [], function () { return new BCC.retMSG(RC.successCodes.CredentialsCorrect, "Credentials correct!") }, []),
         new Resource("getallwarningsandsolutions", [], ACC.WASC.getAllWarningsAndSolutions, []),
         new Resource("addnewwarning", ["sensorType", "message"], ACC.WASC.addNewWarning, []),
@@ -60,9 +55,6 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.insertSensorValue, [])
     ])
 ]);
-
-// Admin credentials
-let adminCredentials = [new Credentials("Admin", "Password"), new Credentials("Sensor", "SensorPassword")]
 
 //#endregion
 
@@ -158,16 +150,6 @@ function translateQueryToResourceParameters(queryStringArray, queryURL) {
 }
 
 // Misc resource functions:
-
-function checkCredentials(username, password) {
-    let returnValue = false
-    adminCredentials.forEach(function (v) {
-        if (v.username == username && v.password == password)
-            returnValue = true
-    });
-
-    return returnValue;
-}
 
 function getOpenAPI() {
     const fs = require('fs');
