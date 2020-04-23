@@ -1,26 +1,35 @@
-﻿import { CC } from './../adminpage/Cookies.js';
-import { UC } from '../js/utils.js';
+﻿import { UC } from '../js/utils.js';
+
+let usernameInput = document.getElementById("input_username");
+let passwordInput = document.getElementById("input_password");
+
+usernameInput.addEventListener("keyup", function (event) {
+    if (event.keyCode == 13) {
+        event.preventDefault;
+        document.getElementById("login_submit").click();
+    }
+});
+
+passwordInput.addEventListener("keyup", function (event) {
+    if (event.keyCode == 13) {
+        event.preventDefault;
+        document.getElementById("login_submit").click();
+    }
+});
 
 async function login() {
-    CC.deleteLogin("username");
-    CC.deleteLogin("password");
-    let cookie = CC.getLogin();
-    let credentials = await CheckCredentials(cookie.username, cookie.password);
-    console.log(credentials);
+    let credentials = await CheckCredentials(sessionStorage.getItem("username"), sessionStorage.getItem("password"));
     if (credentials) {
-        CC.setLogin(cookie.username, cookie.password);
         let nextPage = "/pages/adminpage/admin.html"
         window.location.href = nextPage;
     }
     else {
         let username = document.getElementById("input_username").value;
         let password = document.getElementById("input_password").value;
-        console.log(username);
-        console.log(password);
         credentials = await CheckCredentials(username, password);
-        console.log(credentials)
         if (credentials) {
-            CC.setLogin(username, password);
+            sessionStorage.setItem("username", username);
+            sessionStorage.setItem("password", password);
             let nextPage = "/pages/adminpage/admin.html"
             window.location.href = nextPage;
         }
@@ -38,6 +47,11 @@ async function CheckCredentials(username, password) {
     return returnValue;
 }
 
+function unloadPage() {
+    sessionStorage.clear();
+}
+document.addEventListener("beforeunload", unloadPage);
+
 //function appendProperties(url, properties) {
 //    for (let key in properties) {
 //        if (!url.contains("?")) url += "?";
@@ -47,9 +61,3 @@ async function CheckCredentials(username, password) {
 //    }
 //    return url;
 //}
-
-function unloadPage() {
-    CC.deleteLogin("username");
-    CC.deleteLogin("password");
-}
-document.addEventListener("beforeunload", unloadPage);
