@@ -22,7 +22,7 @@ body {
 header{
     width: 100%;
     overflow: hidden;
-    background-color: #261727;
+    background-color: #575757;
     color: white;
 }
 
@@ -177,10 +177,3 @@ header{
 }
 
 /* --- Footer Section begins here --- */
-
-footer{
-    width: 100%;
-    color: white;
-    background: #261727;
-    padding: 5px;
-}

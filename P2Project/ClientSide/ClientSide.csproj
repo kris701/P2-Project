@@ -80,6 +80,7 @@
     <Content Include="pages\js\graphing.js" />
     <Content Include="pages\js\main.js" />
     <Content Include="pages\js\utils.js" />
+    <Content Include="pages\js\warnings.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
