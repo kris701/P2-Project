@@ -28,7 +28,9 @@ module.exports.successCodes = {
     CredentialsCorrect: 225,
     ReadOpenAPIFile: 226,
     GotAllSensorTypes: 227,
-    GotAllSolutions: 228
+    GotAllSolutions: 228,
+    GotAllSensors: 229,
+    UpdateSensor: 230
 }
 
 module.exports.failCodes = {

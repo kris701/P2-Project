@@ -50,7 +50,7 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("addnewsensortype", ["typeName"], ACC.SEC.addNewSensorType, []),
         new Resource("addexistingsensortype", ["sensorType", "sensorID", "threshold"], ACC.SEC.addExistingSensorType, []),
         new Resource("removesensortype", ["sensorType"], ACC.SEC.removeSensorType, []),
-        new Resource("removesensortypereference", ["sensorType"], ACC.SEC.removeSensorTypeReference, []),
+        new Resource("removesensortypereference", ["sensorType", "sensorID"], ACC.SEC.removeSensorTypeReference, []),
         new Resource("updatesensortypethreshold", ["sensorID", "sensorType", "threshold"], ACC.SEC.updateSensorTypeThreshold, []),
         new Resource("getallsensors", [], ACC.SEC.getAllSensors, []),
         new Resource("updatesensor", ["sensorID", "roomID"], ACC.SEC.updateSensor, []),
@@ -70,8 +70,8 @@ let adminCredentials = [new Credentials("Admin", "Password"), new Credentials("S
 
 // Resource Check Class
 module.exports.RCC = class {
-    static async checkAllResource(response, req, queryURL) {
-        return await innerCheckAllResource(response, req, ResourceLibrary, queryURL);
+    static async checkAllResource(response, req, queryURL, enableDebuging) {
+        return await innerCheckAllResource(response, req, ResourceLibrary, queryURL, enableDebuging);
     }
 }
 
@@ -79,10 +79,10 @@ module.exports.RCC = class {
 
 //#region Private
 
-async function innerCheckAllResource(response, req, resource, queryURL) {
-    if (checkForResource(req, resource.name, resource.parameters, queryURL) == true) {
+async function innerCheckAllResource(response, req, resource, queryURL, enableDebuging) {
+    if (checkForResource(req, resource.name, resource.parameters, queryURL, enableDebuging) == true) {
         if (resource.subResourcesArray.length != 0) {
-            response = await checkInnerResources(response, req, resource, queryURL);
+            response = await checkInnerResources(response, req, resource, queryURL, enableDebuging);
         }
         else
             response = await executeResource(resource.functionCall, resource.parameters, queryURL);
@@ -90,11 +90,11 @@ async function innerCheckAllResource(response, req, resource, queryURL) {
     return response;
 }
 
-async function checkInnerResources(response, req, resource, queryURL) {
+async function checkInnerResources(response, req, resource, queryURL, enableDebuging) {
     let resourceFunctionCallCheck = await executeResource(resource.functionCall, resource.parameters, queryURL);
     if (resourceFunctionCallCheck) {
         for (let i = 0; i < resource.subResourcesArray.length; i++) {
-            response = await innerCheckAllResource(response, req, resource.subResourcesArray[i], queryURL);
+            response = await innerCheckAllResource(response, req, resource.subResourcesArray[i], queryURL, enableDebuging);
             if (response.returnCode != -1)
                 break;
         }
@@ -104,14 +104,16 @@ async function checkInnerResources(response, req, resource, queryURL) {
     return response;
 }
 
-function checkForResource(request, targetResource, queryStringArray, queryURL) {
+function checkForResource(request, targetResource, queryStringArray, queryURL, enableDebuging) {
     if (request.url.includes(targetResource)) {
         if (doesQueryContainAllNeededKeys(queryStringArray, queryURL)) {
             console.error("Client (" + request.headers.host + ") Attempted to request resource: " + request.url + ". However input was wrong!");
             return false;
         }
 
-        console.log("Client (" + request.headers.host + ") requested resource: " + targetResource);
+        if (enableDebuging)
+            if (targetResource != "/")
+                console.log("Client requested resource: " + targetResource);
         return true;
     }
     return false;

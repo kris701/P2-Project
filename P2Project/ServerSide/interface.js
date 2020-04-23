@@ -1,4 +1,6 @@
 try {
+    let enableDebuging = true;
+
     //#region Header
 
     let BCC = require(__dirname + "/BasicCalls.js").BCC;
@@ -18,7 +20,7 @@ try {
         let response = new BCC.retMSG(-1,"");
         try {
             let queryUrl = queryStringParse(req.url);
-            response = await RCC.checkAllResource(response, req, queryUrl);
+            response = await RCC.checkAllResource(response, req, queryUrl, enableDebuging);
 
             if (response.returnCode == -1) {
                 console.error("Resource not found!");

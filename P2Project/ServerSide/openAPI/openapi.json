@@ -1,39 +1,41 @@
 {
-  "openapi" : "3.0.0",
-  "info" : {
-    "title" : "iaq_mon_plat_api",
-    "description" : "The API for IAQ Monitoring Platform",
-    "version" : "1.0.0-oas3"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "iaq_mon_plat_api",
+    "description": "The API for IAQ Monitoring Platform",
+    "version": "1.0.0-oas3"
   },
-  "servers" : [ {
-    "url" : "https://dat2c1-3.p2datsw.cs.aau.dk/node0/"
-  } ],
-  "paths" : {
-    "/getsensorinfo" : {
-      "get" : {
-        "tags" : [ "UserLevel" ],
-        "description" : "Returns information regarding sensors, rooms and sensor types",
-        "responses" : {
-          "223" : {
-            "description" : "Rooms with sensors and their sensor types",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/inline_response_223"
+  "servers": [
+    {
+      "url": "https://dat2c1-3.p2datsw.cs.aau.dk/node0/"
+    }
+  ],
+  "paths": {
+    "/getsensorinfo": {
+      "get": {
+        "tags": [ "UserLevel" ],
+        "description": "Returns information regarding sensors, rooms and sensor types",
+        "responses": {
+          "223": {
+            "description": "Rooms with sensors and their sensor types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_223"
                   }
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -41,61 +43,64 @@
         }
       }
     },
-    "/getpredictiondata" : {
-      "get" : {
-        "tags" : [ "UserLevel" ],
-        "description" : "Returns an array of future IAQ predictions",
-        "parameters" : [ {
-          "name" : "room",
-          "in" : "query",
-          "description" : "the ID of the room that you want info on",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "minimum" : 0,
-            "type" : "integer"
+    "/getpredictiondata": {
+      "get": {
+        "tags": [ "UserLevel" ],
+        "description": "Returns an array of future IAQ predictions",
+        "parameters": [
+          {
+            "name": "room",
+            "in": "query",
+            "description": "the ID of the room that you want info on",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "The time where you want the prediction algorithm to run from, in string format \"2020-04-20T12:00:00\"\"",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "date",
-          "in" : "query",
-          "description" : "The time where you want the prediction algorithm to run from, in string format \"2020-04-20T12:00:00\"\"",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "224" : {
-            "description" : "Prediction data",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_224"
+        ],
+        "responses": {
+          "224": {
+            "description": "Prediction data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_224"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -103,61 +108,64 @@
         }
       }
     },
-    "/getwarningsandsolutions" : {
-      "get" : {
-        "tags" : [ "UserLevel" ],
-        "description" : "Returns warnings based on the prediction algorithm",
-        "parameters" : [ {
-          "name" : "room",
-          "in" : "query",
-          "description" : "the ID of the room that you want info on",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "minimum" : 0,
-            "type" : "integer"
+    "/getwarningsandsolutions": {
+      "get": {
+        "tags": [ "UserLevel" ],
+        "description": "Returns warnings based on the prediction algorithm",
+        "parameters": [
+          {
+            "name": "room",
+            "in": "query",
+            "description": "the ID of the room that you want info on",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "The time where you want the prediction algorithm to run from, in string format \"2020-04-20T12:00:00\"\"",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "date",
-          "in" : "query",
-          "description" : "The time where you want the prediction algorithm to run from, in string format \"2020-04-20T12:00:00\"\"",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "222" : {
-            "description" : "Warnings and Solutions",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_222"
+        ],
+        "responses": {
+          "222": {
+            "description": "Warnings and Solutions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_222"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -165,72 +173,75 @@
         }
       }
     },
-    "/admin/login" : {
-      "get" : {
-        "tags" : [ "AdminLevel_GET" ],
-        "description" : "Checks if admin credentials are ok",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/login": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Checks if admin credentials are ok",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "225" : {
-            "description" : "Correct credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Credentials correct!"
+        ],
+        "responses": {
+          "225": {
+            "description": "Correct credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Credentials correct!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -238,71 +249,74 @@
         }
       }
     },
-    "/admin/getallwarningsandsolutions" : {
-      "get" : {
-        "tags" : [ "AdminLevel_GET" ],
-        "description" : "Returns all warnings and solutions from DB",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/getallwarningsandsolutions": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Returns all warnings and solutions from DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "222" : {
-            "description" : "Rooms with sensors and their sensor types",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_222_1"
+        ],
+        "responses": {
+          "222": {
+            "description": "Rooms with sensors and their sensor types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_222_1"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -310,92 +324,97 @@
         }
       }
     },
-    "/admin/addnewwarning" : {
-      "put" : {
-        "tags" : [ "AdminLevel_PUT" ],
-        "description" : "Adds a new warning to the DB",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/addnewwarning": {
+      "put": {
+        "tags": [ "AdminLevel_PUT" ],
+        "description": "Adds a new warning to the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorType",
+            "in": "query",
+            "description": "The index of the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "description": "The message assosiated with the warning",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "sensorType",
-          "in" : "query",
-          "description" : "The index of the sensor type",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "number"
-          }
-        }, {
-          "name" : "message",
-          "in" : "query",
-          "description" : "The message assosiated with the warning",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "201" : {
-            "description" : "Warning added succesfully",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Warning added succesfully!"
+        ],
+        "responses": {
+          "201": {
+            "description": "Warning added succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Warning added succesfully!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -403,82 +422,86 @@
         }
       }
     },
-    "/admin/removewarning" : {
-      "delete" : {
-        "tags" : [ "AdminLevel_DELETE" ],
-        "description" : "Removes a warning from the DB",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/removewarning": {
+      "delete": {
+        "tags": [ "AdminLevel_DELETE" ],
+        "description": "Removes a warning from the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "warningID",
+            "in": "query",
+            "description": "The ID of the warning to be removed",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "warningID",
-          "in" : "query",
-          "description" : "The ID of the warning to be removed",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "number"
-          }
-        } ],
-        "responses" : {
-          "202" : {
-            "description" : "Warning removed succesfully",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Warning removed succesfully!"
+        ],
+        "responses": {
+          "202": {
+            "description": "Warning removed succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Warning removed succesfully!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -486,93 +509,98 @@
         }
       }
     },
-    "/admin/updatewarning" : {
-      "patch" : {
-        "tags" : [ "AdminLevel_PATCH" ],
-        "description" : "Updates a warning from the DB",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/updatewarning": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Updates a warning from the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "warningID",
+            "in": "query",
+            "description": "The ID of the warning to be updated",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "description": "The updated message of the warning",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "warningID",
-          "in" : "query",
-          "description" : "The ID of the warning to be updated",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "minimum" : 0,
-            "type" : "number"
-          }
-        }, {
-          "name" : "message",
-          "in" : "query",
-          "description" : "The updated message of the warning",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "203" : {
-            "description" : "Warning updated succesfully",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Warning updated succesfully!"
+        ],
+        "responses": {
+          "203": {
+            "description": "Warning updated succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Warning updated succesfully!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -580,105 +608,111 @@
         }
       }
     },
-    "/admin/addnewsolution" : {
-      "put" : {
-        "tags" : [ "AdminLevel_PUT" ],
-        "description" : "Adds a new solution to the DB",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/addnewsolution": {
+      "put": {
+        "tags": [ "AdminLevel_PUT" ],
+        "description": "Adds a new solution to the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "warningID",
+            "in": "query",
+            "description": "The ID of the warning the new solution should be attached to",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "The priority of the solution, numbers from 1-3 where 1 is low, 2 is medium and 3 is high",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "description": "The message of the solution",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "warningID",
-          "in" : "query",
-          "description" : "The ID of the warning the new solution should be attached to",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "minimum" : 0,
-            "type" : "number"
-          }
-        }, {
-          "name" : "priority",
-          "in" : "query",
-          "description" : "The priority of the solution, numbers from 1-3 where 1 is low, 2 is medium and 3 is high",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "maximum" : 3,
-            "minimum" : 1,
-            "type" : "number"
-          }
-        }, {
-          "name" : "message",
-          "in" : "query",
-          "description" : "The message of the solution",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "Solution added succesfully",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Solution added succesfully!"
+        ],
+        "responses": {
+          "204": {
+            "description": "Solution added succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Solution added succesfully!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -686,82 +720,86 @@
         }
       }
     },
-    "/admin/removesolutionreference" : {
-      "patch" : {
-        "tags" : [ "AdminLevel_PATCH" ],
-        "description" : "Detaches a solution from a warning",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/removesolutionreference": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Detaches a solution from a warning",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "solutionID",
+            "in": "query",
+            "description": "The ID of the solution, whos attachment to a warning should be cut",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "solutionID",
-          "in" : "query",
-          "description" : "The ID of the solution, whos attachment to a warning should be cut",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "number"
-          }
-        } ],
-        "responses" : {
-          "208" : {
-            "description" : "Solution reference removed succesfully",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Solution reference removed succesfully!"
+        ],
+        "responses": {
+          "208": {
+            "description": "Solution reference removed succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Solution reference removed succesfully!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -769,105 +807,1679 @@
         }
       }
     },
-    "/admin/updatesolution" : {
-      "patch" : {
-        "tags" : [ "AdminLevel_PATCH" ],
-        "description" : "Updates a solutions message and/or priority",
-        "parameters" : [ {
-          "name" : "username",
-          "in" : "query",
-          "description" : "The username of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
+    "/admin/updatesolution": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Updates a solutions message and/or priority",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "solutionID",
+            "in": "query",
+            "description": "The ID of the target solution",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "description": "The new message of the solution",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "New priority of the soluton, number from 1-3",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 3,
+              "minimum": 1,
+              "type": "number"
+            }
           }
-        }, {
-          "name" : "password",
-          "in" : "query",
-          "description" : "The password of an admin",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "solutionID",
-          "in" : "query",
-          "description" : "The ID of the target solution",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "minimum" : 0,
-            "type" : "number"
-          }
-        }, {
-          "name" : "message",
-          "in" : "query",
-          "description" : "The new message of the solution",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "priority",
-          "in" : "query",
-          "description" : "New priority of the soluton, number from 1-3",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "maximum" : 3,
-            "minimum" : 1,
-            "type" : "number"
-          }
-        } ],
-        "responses" : {
-          "206" : {
-            "description" : "Solution updated succesfully",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Solution updated succesfully!"
+        ],
+        "responses": {
+          "206": {
+            "description": "Solution updated succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Solution updated succesfully!"
                 }
               }
             }
           },
-          "401" : {
-            "description" : "Wrong, missing or wrong parameters!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong, missing or wrong parameters!"
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
                 }
               }
             }
           },
-          "411" : {
-            "description" : "Wrong credentials",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "Wrong credentials!"
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
                 }
               }
             }
           },
-          "499" : {
-            "description" : "Unknown server error!",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "example" : "An error occured on the server!"
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addexistingsolution": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Attaches an existing solution to a warning",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "solutionID",
+            "in": "query",
+            "description": "The ID of the target solution",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "warningID",
+            "in": "query",
+            "description": "The new message of the solution",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "207": {
+            "description": "Solution attached succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Solution attached succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/removesolution": {
+      "delete": {
+        "tags": [ "AdminLevel_DELETE" ],
+        "description": "Removes a solution from the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "solutionID",
+            "in": "query",
+            "description": "The ID of the target solution",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "207": {
+            "description": "Solution removed succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Solution removed succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getallsolutions": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Gets all solutions in the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "228": {
+            "description": "All the solutions in the DB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_228"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addnewroom": {
+      "put": {
+        "tags": [ "AdminLevel_PUT" ],
+        "description": "Adds a new room to the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roomName",
+            "in": "query",
+            "description": "The name of the new room",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "209": {
+            "description": "Room added succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Room added succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/removeroom": {
+      "delete": {
+        "tags": [ "AdminLevel_DELETE" ],
+        "description": "Removes a room",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roomID",
+            "in": "query",
+            "description": "The index of the room to be removed",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "210": {
+            "description": "Room removed succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Room removed succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getallsensortypes": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Gets all the sensor types in the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "210": {
+            "description": "Array of all sensor types in the database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_210"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addnewsensortype": {
+      "put": {
+        "tags": [ "AdminLevel_PUT" ],
+        "description": "Adds a new sensor type to the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "typeName",
+            "in": "query",
+            "description": "The name of the new sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "216": {
+            "description": "Sensor type added succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sensor type added succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addexistingsensortype": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Attaches an existing sensor type to a sensor",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorType",
+            "in": "query",
+            "description": "The ID of the sensor type to attach",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the sensor to attach the type to",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "threshold",
+            "in": "query",
+            "description": "The initial threshold value of the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "217": {
+            "description": "Sensor type attached succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sensor type attached succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/removesensortype": {
+      "delete": {
+        "tags": [ "AdminLevel_DELETE" ],
+        "description": "Removed a sensor type from the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorType",
+            "in": "query",
+            "description": "The ID of the sensor type to remove",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "218": {
+            "description": "Sensor type removed succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sensor type removed succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/removesensortypereference": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Detach a sensor type from a sensor",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorType",
+            "in": "query",
+            "description": "The ID of the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "219": {
+            "description": "Sensor type reference removed succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sensor type reference removed succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatesensortypethreshold": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Update a sensors sensor type threshold",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorType",
+            "in": "query",
+            "description": "The ID of the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "threshold",
+            "in": "query",
+            "description": "The new threshold for the sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "220": {
+            "description": "Sensor type reference update succesfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sensor type reference update succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getallsensors": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Gets all sensors in the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "229": {
+            "description": "An array of all the sensors in the DB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/inline_response_229"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/updatesensor": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Update a sensors target room",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the sensor",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "roomID",
+            "in": "query",
+            "description": "The ID of the target room",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "230": {
+            "description": "Sensors target room ID updated!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sensors target room ID updated!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/addnewsensor": {
+      "put": {
+        "tags": [ "AdminLevel_PUT" ],
+        "description": "Adds a new sensor",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roomID",
+            "in": "query",
+            "description": "The ID of the target room",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "212": {
+            "description": "The sensor have been added!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The sensor have been added!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/removesensorreference": {
+      "patch": {
+        "tags": [ "AdminLevel_PATCH" ],
+        "description": "Removes a sensors reference to a room",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the target sensor",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "215": {
+            "description": "The sensor reference have been removed!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The sensor reference have been removed!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/removesensor": {
+      "delete": {
+        "tags": [ "AdminLevel_DELETE" ],
+        "description": "Removes a sensor entirely",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the target sensor",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "213": {
+            "description": "The sensor was succesfully removed!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The sensor was succesfully removed!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/insertsensorvalue": {
+      "put": {
+        "tags": [ "AdminLevel_PUT" ],
+        "description": "Inserts a new value from a sensor",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sensorID",
+            "in": "query",
+            "description": "The ID of the target sensor",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sensorType",
+            "in": "query",
+            "description": "The ID of the target sensor type",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sensorValue",
+            "in": "query",
+            "description": "The messured value from the sensor",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "221": {
+            "description": "The sensor value was added succesfully!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The sensor value was added succesfully!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
                 }
               }
             }
@@ -876,255 +2488,307 @@
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "inline_response_222_data_solutionInfo" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string",
-            "example" : "Some solution for too high CO2"
+  "components": {
+    "schemas": {
+      "inline_response_229": {
+        "type": "object",
+        "properties": {
+          "sensorID": {
+            "type": "number",
+            "example": 0
           },
-          "solutionInfo" : {
-            "$ref" : "#/components/schemas/inline_response_222_data_solutionInfo_solutionInfo"
+          "roomID": {
+            "minimum": 0,
+            "type": "number",
+            "example": 0
           }
         }
       },
-      "inline_response_222_data_solutionInfo_solutionInfo" : {
-        "type" : "object",
-        "properties" : {
-          "priority" : {
-            "type" : "number",
-            "example" : 3
+      "inline_response_228": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Default solution"
           },
-          "timeUntil" : {
-            "type" : "number",
-            "example" : 4
+          "solutionID": {
+            "minimum": 0,
+            "type": "number",
+            "example": 0
+          },
+          "warningID": {
+            "minimum": 0,
+            "type": "number",
+            "example": 0
+          },
+          "warningPriority": {
+            "maximum": 3,
+            "minimum": 1,
+            "type": "number",
+            "example": 2
           }
         }
       },
-      "inline_response_222_data" : {
-        "type" : "object",
-        "properties" : {
-          "warningID" : {
-            "type" : "number",
-            "example" : 2
+      "inline_response_222_1_solutions": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Medium priority solution"
           },
-          "sensorType" : {
-            "type" : "number",
-            "example" : 1
+          "solutionID": {
+            "type": "number",
+            "example": 1
           },
-          "message" : {
-            "type" : "string",
-            "example" : "Too high CO2 Level!"
-          },
-          "solutionInfo" : {
-            "$ref" : "#/components/schemas/inline_response_222_data_solutionInfo"
+          "warningPriority": {
+            "type": "number",
+            "example": 1
           }
         }
       },
-      "inline_response_222_1_solutions" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string",
-            "example" : "Medium priority solution"
+      "getsensorinfo_sensors": {
+        "type": "object",
+        "properties": {
+          "sensorID": {
+            "type": "number",
+            "example": 1
           },
-          "solutionID" : {
-            "type" : "number",
-            "example" : 1
-          },
-          "warningPriority" : {
-            "type" : "number",
-            "example" : 1
-          }
-        }
-      },
-      "inline_response_223" : {
-        "type" : "object",
-        "properties" : {
-          "roomID" : {
-            "type" : "number",
-            "example" : 0
-          },
-          "roomName" : {
-            "type" : "string",
-            "example" : "Room A"
-          },
-          "sensors" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/getsensorinfo_sensors"
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Temperature"
             }
           }
         }
       },
-      "getsensorinfo_sensors" : {
-        "type" : "object",
-        "properties" : {
-          "sensorID" : {
-            "type" : "number",
-            "example" : 1
+      "inline_response_222_1_data": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Default warning"
           },
-          "types" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "example" : "Temperature"
+          "sensorType": {
+            "type": "number",
+            "example": 2
+          },
+          "warningID": {
+            "type": "number",
+            "example": -1
+          },
+          "solutions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_222_1_solutions"
             }
           }
         }
       },
-      "inline_response_222" : {
-        "type" : "object",
-        "properties" : {
-          "interval" : {
-            "type" : "number",
-            "example" : 5
+      "inline_response_224_thresholdPasses": {
+        "type": "object",
+        "properties": {
+          "timeUntil": {
+            "type": "number",
+            "example": 5
           },
-          "data" : {
-            "$ref" : "#/components/schemas/inline_response_222_data"
+          "timesExeeded": {
+            "type": "number",
+            "example": 0.4
           }
         }
       },
-      "inline_response_222_1" : {
-        "type" : "object",
-        "properties" : {
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/inline_response_222_1_data"
+      "inline_response_224_data": {
+        "type": "object",
+        "properties": {
+          "sensorType": {
+            "type": "number",
+            "example": 0
+          },
+          "name": {
+            "type": "string",
+            "example": "CO2"
+          },
+          "thresholdPasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_224_thresholdPasses"
             }
           }
         }
       },
-      "inline_response_222_1_data" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string",
-            "example" : "Default warning"
+      "inline_response_222_data_solutionInfo": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Some solution for too high CO2"
           },
-          "sensorType" : {
-            "type" : "number",
-            "example" : 2
+          "solutionInfo": {
+            "$ref": "#/components/schemas/inline_response_222_data_solutionInfo_solutionInfo"
+          }
+        }
+      },
+      "inline_response_222_data_solutionInfo_solutionInfo": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "type": "number",
+            "example": 3
           },
-          "warningID" : {
-            "type" : "number",
-            "example" : -1
+          "timeUntil": {
+            "type": "number",
+            "example": 4
+          }
+        }
+      },
+      "inline_response_222_data": {
+        "type": "object",
+        "properties": {
+          "warningID": {
+            "type": "number",
+            "example": 2
           },
-          "solutions" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/inline_response_222_1_solutions"
+          "sensorType": {
+            "type": "number",
+            "example": 1
+          },
+          "message": {
+            "type": "string",
+            "example": "Too high CO2 Level!"
+          },
+          "solutionInfo": {
+            "$ref": "#/components/schemas/inline_response_222_data_solutionInfo"
+          }
+        }
+      },
+      "inline_response_223": {
+        "type": "object",
+        "properties": {
+          "roomID": {
+            "type": "number",
+            "example": 0
+          },
+          "roomName": {
+            "type": "string",
+            "example": "Room A"
+          },
+          "sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/getsensorinfo_sensors"
             }
           }
         }
       },
-      "inline_response_224_thresholdPasses" : {
-        "type" : "object",
-        "properties" : {
-          "timeUntil" : {
-            "type" : "number",
-            "example" : 5
+      "inline_response_222": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "type": "number",
+            "example": 5
           },
-          "timesExeeded" : {
-            "type" : "number",
-            "example" : 0.4
+          "data": {
+            "$ref": "#/components/schemas/inline_response_222_data"
           }
         }
       },
-      "inline_response_224" : {
-        "type" : "object",
-        "properties" : {
-          "interval" : {
-            "type" : "number",
-            "example" : 1
-          },
-          "data" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/inline_response_224_data"
+      "inline_response_222_1": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_222_1_data"
             }
           }
         }
       },
-      "inline_response_224_data" : {
-        "type" : "object",
-        "properties" : {
-          "sensorType" : {
-            "type" : "number",
-            "example" : 0
+      "inline_response_210": {
+        "type": "object",
+        "properties": {
+          "sensorType": {
+            "minimum": 0,
+            "type": "number",
+            "example": 0
           },
-          "name" : {
-            "type" : "string",
-            "example" : "CO2"
+          "typeName": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_224": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "type": "number",
+            "example": 1
           },
-          "thresholdPasses" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/inline_response_224_thresholdPasses"
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_224_data"
             }
           }
         }
       }
     },
-    "responses" : {
-      "401" : {
-        "description" : "Wrong, missing or wrong parameters!",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "type" : "string",
-              "example" : "Wrong, missing or wrong parameters!"
+    "responses": {
+      "401": {
+        "description": "Wrong, missing or wrong parameters!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string",
+              "example": "Wrong, missing or wrong parameters!"
             }
           }
         }
       },
-      "411" : {
-        "description" : "Wrong credentials",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "type" : "string",
-              "example" : "Wrong credentials!"
+      "411": {
+        "description": "Wrong credentials",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string",
+              "example": "Wrong credentials!"
             }
           }
         }
       },
-      "499" : {
-        "description" : "Unknown server error!",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "type" : "string",
-              "example" : "An error occured on the server!"
+      "499": {
+        "description": "Unknown server error!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string",
+              "example": "An error occured on the server!"
             }
           }
         }
       }
     },
-    "parameters" : {
-      "adminUsername" : {
-        "name" : "username",
-        "in" : "query",
-        "description" : "The username of an admin",
-        "required" : true,
-        "style" : "form",
-        "explode" : true,
-        "schema" : {
-          "type" : "string"
+    "parameters": {
+      "adminUsername": {
+        "name": "username",
+        "in": "query",
+        "description": "The username of an admin",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
         }
       },
-      "adminPassword" : {
-        "name" : "password",
-        "in" : "query",
-        "description" : "The password of an admin",
-        "required" : true,
-        "style" : "form",
-        "explode" : true,
-        "schema" : {
-          "type" : "string"
+      "adminPassword": {
+        "name": "password",
+        "in": "query",
+        "description": "The password of an admin",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
         }
       }
     }

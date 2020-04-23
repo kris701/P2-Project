@@ -238,7 +238,7 @@ module.exports.ACC = class {
                 returnItem.data.push(v);
             })
 
-            return RC.parseToRetMSG(-1, returnItem);
+            return new BCC.retMSG(RC.successCodes.GotAllSensors, returnItem);
         }
 
         static async updateSensor(sensorID, roomID) {
@@ -349,9 +349,9 @@ module.exports.ACC = class {
             return RC.parseToRetMSG(RC.successCodes.RemoveSensorType);
         }
 
-        static async removeSensorTypeReference(sensorType) {
-            if (typeof (sensorType) == typeof (0)) {
-                let ret = await BCC.makeQuery("DELETE FROM SensorThresholds WHERE sensorType=?", [sensorType]);
+        static async removeSensorTypeReference(sensorType, sensorID) {
+            if (typeof (sensorType) == typeof (0) && typeof (sensorID) == typeof (0)) {
+                let ret = await BCC.makeQuery("DELETE FROM SensorThresholds WHERE sensorType=? AND sensorID=?", [sensorType, sensorID]);
                 if (BCC.isErrorCode(ret))
                     return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }
