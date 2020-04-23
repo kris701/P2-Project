@@ -24,7 +24,7 @@ try {
     }
 
 
-    window.onload = GetInformation()();
+    window.onload = GetInformation();
 
 
     // Adds more elements to the select in the html for room selection
