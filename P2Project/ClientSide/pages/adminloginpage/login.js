@@ -1,5 +1,5 @@
 ﻿import { CC } from './../adminpage/Cookies.js';
-import { UC } from './../clientpage/js/utils.js';
+import { UC } from '../js/utils.js';
 
 async function login() {
     CC.deleteLogin("username");
