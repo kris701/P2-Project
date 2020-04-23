@@ -56,7 +56,7 @@
     <TypeScriptSourceRoot />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="pages\adminloginpage\package.json" />
+    <Content Include="adminloginpage\package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -68,18 +68,18 @@
     <Content Include="background\2.jpg" />
     <Content Include="background\3.jpg" />
     <Content Include="background\4.jpg" />
-    <Content Include="pages\adminloginpage\login.css" />
-    <Content Include="pages\adminloginpage\login.html" />
-    <Content Include="pages\adminloginpage\login.js" />
-    <Content Include="pages\adminpage\admin.css" />
-    <Content Include="pages\adminpage\admin.html" />
-    <Content Include="pages\adminpage\admin.js" />
-    <Content Include="pages\adminpage\Cookies.js" />
-    <Content Include="pages\app.css" />
-    <Content Include="pages\index.html" />
-    <Content Include="pages\js\graphing.js" />
-    <Content Include="pages\js\main.js" />
-    <Content Include="pages\js\utils.js" />
+    <Content Include="adminloginpage\login.css" />
+    <Content Include="adminloginpage\login.html" />
+    <Content Include="adminloginpage\login.js" />
+    <Content Include="adminpage\admin.css" />
+    <Content Include="adminpage\admin.html" />
+    <Content Include="adminpage\admin.js" />
+    <Content Include="adminpage\Cookies.js" />
+    <Content Include="app.css" />
+    <Content Include="index.html" />
+    <Content Include="js\graphing.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\utils.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

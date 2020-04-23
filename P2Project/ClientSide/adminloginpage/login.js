@@ -28,7 +28,7 @@ async function login() {
         let credentials = await CheckCredentials(username, password);
         if (credentials) {
             sessionStorage.setItem("LoggedIn", "True");
-            let nextPage = "/pages/adminpage/admin.html"
+            let nextPage = "/adminpage/admin.html"
             window.location.href = nextPage;
         }
     }
