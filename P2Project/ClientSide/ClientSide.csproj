@@ -65,6 +65,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="adminpage\sensormanagement\roommanagement\room.css" />
+    <Content Include="adminpage\sensormanagement\roommanagement\room.html" />
+    <Content Include="adminpage\sensormanagement\roommanagement\room.js" />
+    <Content Include="adminpage\sensormanagement\sensormanagement\sensor.css" />
+    <Content Include="adminpage\sensormanagement\sensormanagement\sensor.html" />
+    <Content Include="adminpage\sensormanagement\sensormanagement\sensor.js" />
+    <Content Include="adminpage\sensormanagement\sensortypemanagement\sensortype.css" />
+    <Content Include="adminpage\sensormanagement\sensortypemanagement\sensortype.js" />
+    <Content Include="adminpage\sensormanagement\sensortypemanagement\sensortype.html" />
+    <Content Include="adminpage\warningsandsolutionsmanagement\solutionsmanagement\solutions.css" />
+    <Content Include="adminpage\warningsandsolutionsmanagement\solutionsmanagement\solutions.html" />
+    <Content Include="adminpage\warningsandsolutionsmanagement\solutionsmanagement\solutions.js" />
+    <Content Include="adminpage\warningsandsolutionsmanagement\warningsmanagement\warnings.css" />
+    <Content Include="adminpage\warningsandsolutionsmanagement\warningsmanagement\warnings.html" />
+    <Content Include="adminpage\warningsandsolutionsmanagement\warningsmanagement\warnings.js" />
     <Content Include="background\2.jpg" />
     <Content Include="background\3.jpg" />
     <Content Include="background\4.jpg" />

@@ -6,72 +6,95 @@
     <link rel="stylesheet" href="admin.css" type="text/css" />
     <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
-    <script>
+    <!--<script>
         if (sessionStorage.getItem("LoggedIn") != "True")
             window.location.href = "/adminloginpage/login.html";
-    </script>
+    </script>-->
 </head>
 <body>
     <div class="sidenavContainer">
         <div class="sidenav">
             <h3>Organization<span>IAQ</span></h3>
             <hr />
-            <h5>Menu</h5>
+            <h5>Sensorinfo Management</h5>
             <ul class="menu">
                 <li>
-                    <button class="navButton" type="button">Dashboard</button>
+                    <button class="navButton" id="roomButton" type="button">Room Management</button>
                 </li>
                 <li>
-                    <button class="navButton" type="button">Analytics</button>
+                    <button class="navButton" id="sensortypeButton" type="button">Sensortype Management</button>
                 </li>
                 <li>
-                    <button class="navButton" type="button">Management</button>
-                </li>
-                <li>
-                    <button class="navButton" type="button">Monitoring</button>
-                </li>
-                <li>
-                    <button class="navButton" type="button">Statistics</button>
+                    <button class="navButton" id="sensorButton" type="button">Sensor Management</button>
                 </li>
             </ul>
             <hr />
-            <h5>Components</h5>
-            <ul>
+            <h5>Warnings and Solutions Management</h5>
+            <ul class="menu">
                 <li>
-                    <input type="checkbox" id="list-item-1" />
-                    <label for="list-item-1" class="first">Locations</label>
-                    <ul class="locations">
-                        <li>Location1</li>
-                        <li>Location2</li>
-                        <li>Location3</li>
-                        <li>Location4</li>
-                        <li>Location5</li>
-                    </ul>
+                    <button class="navButton" id="warningsButton" type="button">Warnings Management</button>
                 </li>
                 <li>
-                    <input type="checkbox" id="list-item-2" />
-                    <label for="list-item-2">Sensors</label>
-                    <ul class="sensors">
-                        <li>Oxygen</li>
-                        <li>CO2</li>
-                        <li>Science</li>
-                        <li>Stuff</li>
-                    </ul>
+                    <button class="navButton" id="solutionsButton" type="button">Solutions Management</button>
                 </li>
             </ul>
-            <hr />
-            <h5>Admin</h5>
-            <ul class="admin">
-                <li>
-                    <button class="navButton" type="button">Manage Accounts</button>
-                </li>
-                <li>
-                    <button class="navButton" type="button">Statistics</button>
-                </li>
+            <!--<h5>Menu</h5>
+    <ul class="menu">
+        <li>
+            <button class="navButton" type="button">Dashboard</button>
+        </li>
+        <li>
+            <button class="navButton" type="button">Analytics</button>
+        </li>
+        <li>
+            <button class="navButton" type="button">Management</button>
+        </li>
+        <li>
+            <button class="navButton" type="button">Monitoring</button>
+        </li>
+        <li>
+            <button class="navButton" type="button">Statistics</button>
+        </li>
+    </ul>
+    <hr />
+    <h5>Components</h5>
+    <ul>
+        <li>
+            <input type="checkbox" id="list-item-1" />
+            <label for="list-item-1" class="first">Locations</label>
+            <ul class="locations">
+                <li>Location1</li>
+                <li>Location2</li>
+                <li>Location3</li>
+                <li>Location4</li>
+                <li>Location5</li>
             </ul>
+        </li>
+        <li>
+            <input type="checkbox" id="list-item-2" />
+            <label for="list-item-2">Sensors</label>
+            <ul class="sensors">
+                <li>Oxygen</li>
+                <li>CO2</li>
+                <li>Science</li>
+                <li>Stuff</li>
+            </ul>
+        </li>
+    </ul>
+    <hr />
+    <h5>Admin</h5>
+    <ul class="admin">
+        <li>
+            <button class="navButton" type="button">Manage Accounts</button>
+        </li>
+        <li>
+            <button class="navButton" type="button">Statistics</button>
+        </li>
+    </ul>-->
         </div>
     </div>
+    <div class="middleContainer"></div>
 
-    <script src="admin*.js"></script>
+    <script type="module" src="admin.js"></script>
 </body>
 </html>
