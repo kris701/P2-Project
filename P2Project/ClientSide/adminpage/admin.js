@@ -13,12 +13,6 @@
     container.insertAdjacentElement("afterbegin", iframe);
 }
 
-document.getElementById("roomButton").onclick = function () { setIframe("./sensormanagement/roommanagement/room.html") };
-document.getElementById("sensortypeButton").onclick = function () { setIframe("./sensormanagement/sensortypemanagement/sensortype.html") };
-document.getElementById("sensorButton").onclick = function () { setIframe("./sensormanagement/sensormanagement/sensor.html") };
-document.getElementById("warningsButton").onclick = function () { setIframe("./warningsandsolutionsmanagement/warningsmanagement/warnings.html") };
-document.getElementById("solutionsButton").onclick = function () { setIframe("./warningsandsolutionsmanagement/solutionsmanagement/solutions.html") };
-
 function unloadPage() {
     let iframe = document.getElementById("iframe");
     iframe.parentNode.removeChild(iframe);

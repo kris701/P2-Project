@@ -19,82 +19,81 @@
             <h5>Sensorinfo Management</h5>
             <ul class="menu">
                 <li>
-                    <button class="navButton" id="roomButton" type="button">Room Management</button>
+                    <button class="navButton" id="roomButton" type="button" onclick="setIframe('./sensormanagement/roommanagement/room.html')">Room Management</button>
                 </li>
                 <li>
-                    <button class="navButton" id="sensortypeButton" type="button">Sensortype Management</button>
+                    <button class="navButton" id="sensortypeButton" type="button" onclick="setIframe('./sensormanagement/sensortypemanagement/sensortype.html')">Sensortype Management</button>
                 </li>
                 <li>
-                    <button class="navButton" id="sensorButton" type="button">Sensor Management</button>
+                    <button class="navButton" id="sensorButton" type="button" onclick="setIframe('./sensormanagement/sensormanagement/sensor.html')">Sensor Management</button>
                 </li>
             </ul>
             <hr />
             <h5>Warnings and Solutions Management</h5>
             <ul class="menu">
                 <li>
-                    <button class="navButton" id="warningsButton" type="button">Warnings Management</button>
+                    <button class="navButton" id="warningsButton" type="button" onclick="setIframe('./warningsandsolutionsmanagement/warningsmanagement/warnings.html')">Warnings Management</button>
                 </li>
                 <li>
-                    <button class="navButton" id="solutionsButton" type="button">Solutions Management</button>
+                    <button class="navButton" id="solutionsButton" type="button" onclick="setIframe('./warningsandsolutionsmanagement/solutionsmanagement/solutions.html')">Solutions Management</button>
                 </li>
             </ul>
             <!--<h5>Menu</h5>
-    <ul class="menu">
-        <li>
-            <button class="navButton" type="button">Dashboard</button>
-        </li>
-        <li>
-            <button class="navButton" type="button">Analytics</button>
-        </li>
-        <li>
-            <button class="navButton" type="button">Management</button>
-        </li>
-        <li>
-            <button class="navButton" type="button">Monitoring</button>
-        </li>
-        <li>
-            <button class="navButton" type="button">Statistics</button>
-        </li>
-    </ul>
-    <hr />
-    <h5>Components</h5>
-    <ul>
-        <li>
-            <input type="checkbox" id="list-item-1" />
-            <label for="list-item-1" class="first">Locations</label>
-            <ul class="locations">
-                <li>Location1</li>
-                <li>Location2</li>
-                <li>Location3</li>
-                <li>Location4</li>
-                <li>Location5</li>
+            <ul class="menu">
+                <li>
+                    <button class="navButton" type="button">Dashboard</button>
+                </li>
+                <li>
+                    <button class="navButton" type="button">Analytics</button>
+                </li>
+                <li>
+                    <button class="navButton" type="button">Management</button>
+                </li>
+                <li>
+                    <button class="navButton" type="button">Monitoring</button>
+                </li>
+                <li>
+                    <button class="navButton" type="button">Statistics</button>
+                </li>
             </ul>
-        </li>
-        <li>
-            <input type="checkbox" id="list-item-2" />
-            <label for="list-item-2">Sensors</label>
-            <ul class="sensors">
-                <li>Oxygen</li>
-                <li>CO2</li>
-                <li>Science</li>
-                <li>Stuff</li>
+            <hr />
+            <h5>Components</h5>
+            <ul>
+                <li>
+                    <input type="checkbox" id="list-item-1" />
+                    <label for="list-item-1" class="first">Locations</label>
+                    <ul class="locations">
+                        <li>Location1</li>
+                        <li>Location2</li>
+                        <li>Location3</li>
+                        <li>Location4</li>
+                        <li>Location5</li>
+                    </ul>
+                </li>
+                <li>
+                    <input type="checkbox" id="list-item-2" />
+                    <label for="list-item-2">Sensors</label>
+                    <ul class="sensors">
+                        <li>Oxygen</li>
+                        <li>CO2</li>
+                        <li>Science</li>
+                        <li>Stuff</li>
+                    </ul>
+                </li>
             </ul>
-        </li>
-    </ul>
-    <hr />
-    <h5>Admin</h5>
-    <ul class="admin">
-        <li>
-            <button class="navButton" type="button">Manage Accounts</button>
-        </li>
-        <li>
-            <button class="navButton" type="button">Statistics</button>
-        </li>
-    </ul>-->
+            <hr />
+            <h5>Admin</h5>
+            <ul class="admin">
+                <li>
+                    <button class="navButton" type="button">Manage Accounts</button>
+                </li>
+                <li>
+                    <button class="navButton" type="button">Statistics</button>
+                </li>
+            </ul>-->
         </div>
     </div>
     <div class="middleContainer"></div>
-
-    <script type="module" src="admin.js"></script>
+    <script defer src="admin.js"></script>
 </body>
 </html>
