@@ -18,18 +18,16 @@ passwordInput.addEventListener("keyup", function (event) {
 });
 
 async function login() {
-    let credentials = await CheckCredentials(sessionStorage.getItem("username"), sessionStorage.getItem("password"));
-    if (credentials) {
+    if (getLoggedIn()) {
         let nextPage = "/pages/adminpage/admin.html"
         window.location.href = nextPage;
     }
     else {
         let username = document.getElementById("input_username").value;
         let password = document.getElementById("input_password").value;
-        credentials = await CheckCredentials(username, password);
+        let credentials = await CheckCredentials(username, password);
         if (credentials) {
-            sessionStorage.setItem("username", username);
-            sessionStorage.setItem("password", password);
+            sessionStorage.setItem("LoggedIn", "True");
             let nextPage = "/pages/adminpage/admin.html"
             window.location.href = nextPage;
         }
@@ -45,6 +43,12 @@ async function CheckCredentials(username, password) {
         returnValue = true;
 
     return returnValue;
+}
+
+export function getLoggedIn() {
+    if (sessionStorage.getItem("LoggedIn") == "True")
+        return true;
+    return false;
 }
 
 function unloadPage() {
