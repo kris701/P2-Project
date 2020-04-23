@@ -13,11 +13,6 @@
     container.insertAdjacentElement("afterbegin", iframe);
 }
 
-function test() {
-    let iframe = document.getElementById("iframe");
-    iframe.parentNode.removeChild(iframe);
-}
-
 document.getElementById("roomButton").onclick = function () { setIframe("./sensormanagement/roommanagement/room.html") };
 document.getElementById("sensortypeButton").onclick = function () { setIframe("./sensormanagement/sensortypemanagement/sensortype.html") };
 document.getElementById("sensorButton").onclick = function () { setIframe("./sensormanagement/sensormanagement/sensor.html") };
