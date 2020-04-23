@@ -27,6 +27,7 @@ class Credentials {
 
 // ResourceLib
 const ResourceLibrary = new Resource("/", [], function () { return true }, [
+    new Resource("api-doc", [], getOpenAPI, []),
     new Resource("getsensorinfo", [], SSIC.getSensorInfoQuery, []),
     new Resource("getpredictiondata", ["room", "date"], PAC.getPredictionDatetimeQuery, []),
     new Resource("getwarningsandsolutions", ["room", "date"], WASC.getWarningsAndSolutions, []),
@@ -164,6 +165,23 @@ function checkCredentials(username, password) {
     });
 
     return returnValue;
+}
+
+function getOpenAPI() {
+    const fs = require('fs');
+
+    let rawdata = fs.readFileSync('openAPI/openapi.json');
+    return new BCC.retMSG(RC.successCodes.ReadOpenAPIFile, saveParseJSON(rawdata));
+}
+
+function saveParseJSON(data) {
+    try {
+        return JSON.parse(data);
+    }
+    catch
+    {
+        return "Error parsing JSON file!";
+    }
 }
 
 //#endregion

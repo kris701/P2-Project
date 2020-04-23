@@ -62,6 +62,7 @@
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </Compile>
+    <Content Include="openAPI\openapi.json" />
     <Content Include="tests\ResourceCheckTest.js">
       <SubType>Code</SubType>
     </Content>
@@ -69,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="tests\" />
+    <Folder Include="openAPI\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
