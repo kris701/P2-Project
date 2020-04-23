@@ -45,8 +45,8 @@ try {
         if (roomData.length != 0) {
 
             let roomSelect = document.getElementById("selectedRoom");
-            
-            await getPredictions(roomData[roomSelect.selectedIndex].roomID, "2020-04-20T12:00:00");
+
+            await getPredictions(roomData[roomSelect.selectedIndex].roomID, UC.dateToISOString(new Date()));
 
             // Clears graph area.
             GRPH.clearGraphArea();

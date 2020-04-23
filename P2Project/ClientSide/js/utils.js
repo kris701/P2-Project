@@ -11,11 +11,18 @@ export class UC {
     static dateToISOString(date) {
         let out = "";
         out += date.getFullYear() + "-";
-        out += date.getMonth() + "-";
-        out += date.getDate() + "T";
-        out += date.getHours() + ":";
-        out += date.getMinutes() + ":";
-        out += date.getSeconds();
+        out += AddZeroIfTooSmall(date.getMonth(), "-");
+        out += AddZeroIfTooSmall(date.getDate(), "T");
+        out += AddZeroIfTooSmall(date.getHours(), ":");
+        out += AddZeroIfTooSmall(date.getMinutes(), ":");
+        out += AddZeroIfTooSmall(date.getSeconds(), "");
         return out;
     }
+}
+
+function AddZeroIfTooSmall(value, endCharacter) {
+    if (value < 10)
+        return "0" + value + endCharacter;
+    else
+        return value + endCharacter;
 }
