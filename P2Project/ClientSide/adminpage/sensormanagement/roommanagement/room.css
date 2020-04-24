@@ -1,5 +1,10 @@
 ﻿body {
-    height: 1500px;
+    height: 500px;
     width: auto;
-    padding: 15px;
+}
+
+.mainContainer {
+    height: 500px;
+    width: auto;
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
 }

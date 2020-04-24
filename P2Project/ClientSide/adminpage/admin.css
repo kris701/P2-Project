@@ -110,8 +110,8 @@ input[type="checkbox"]:checked + label{
 /* --- Middle container begins here --- */
 
 .middleContainer {
-    height: auto;
-    width: auto;
+    height: 1500px;
+    width: 1635px;
     top: 0;
     margin-left: 252px;
     margin-right: 15px;
