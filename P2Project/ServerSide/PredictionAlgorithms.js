@@ -20,7 +20,7 @@ const WC_A = -0.01;
 const WC_B = 1;
 
 // Minimum Times Exeded Value, if below, the value is removed
-const MTEV = 0.5;
+const MTEV = 1;
 
 class ReturnClass {
     constructor(interval, data) {
@@ -64,6 +64,11 @@ module.exports.PAC = class {
 
             await IRVC.insertAllThressholdPassesForSensorType(sensorsSensorTypes, returnItem.data, date);
         });
+
+        for (let i = 0; i < returnItem.data.length; i++) {
+            returnItem.data[i] = IVC.avrArrayValues(returnItem.data[i]);
+        }
+
         await ROOBVC.checkAndRemoveOutOfBounds(returnItem.data);
 
         return new BCC.retMSG(successCodes.GotPredictions, returnItem);
@@ -126,7 +131,7 @@ class IRVC {
         await BCC.asyncForEach(sensorValuesArray, async function (sensorValue) {
             let newInterval = IRVC.timeDiffToInterval(sensorValue.timestamp, date);
 
-            IVC.insertNewInterval(thresholdPassesArray, newInterval, sensorValue.timestamp, date);
+            IVC.insertNewInterval(thresholdPassesArray, newInterval, sensorValue.timestamp, date, thresholdValue, sensorValue.sensorValue);
         });
     }
 
@@ -177,15 +182,15 @@ class IRVC {
 class IVC {
 
     // Insert interval value, if it exists, increment that value
-    static async insertNewInterval(insertArray, interval, timestamp, date) {
-        let exist = await IVC.doesValueExistAndInsert(insertArray, interval, timestamp, date);
+    static insertNewInterval(insertArray, interval, timestamp, date, thresholdValue, sensorValue) {
+        let exist = IVC.doesValueExistAndInsert(insertArray, interval, timestamp, date, thresholdValue, sensorValue);
 
         if (!exist)
-            insertArray = await IVC.insertIntoCorrectPositionInArray(interval, insertArray, timestamp, date);
+            insertArray = IVC.insertIntoCorrectPositionInArray(interval, insertArray, timestamp, date, thresholdValue, sensorValue);
     }
 
     // O(n), Omega(1), Theta(n)
-    static async insertIntoCorrectPositionInArray(newInterval, insertArray, timestamp, date) {
+    static insertIntoCorrectPositionInArray(newInterval, insertArray, timestamp, date, thresholdValue, sensorValue) {
         let index = 0;
         for (let i = 0; i < insertArray.length; i++) {
             if (insertArray[i].timeUntil > newInterval) {
@@ -193,24 +198,36 @@ class IVC {
             }
             index++;
         }
-        let weight = WC.getWeight(timestamp, date);
-        insertArray.splice(index, 0, new ThresholdPassClass(newInterval, weight));
+        let weight = WC.getAgeWeight(timestamp, date) + WC.getValueWeight(sensorValue, thresholdValue);
+        insertArray.splice(index, 0, new ThresholdPassClass(newInterval, [weight]));
         return insertArray;
     }
 
     // O(n), Omega(1), Theta(1)
-    static async doesValueExistAndInsert(insertArray, newInterval, timestamp, date) {
+    static doesValueExistAndInsert(insertArray, newInterval, timestamp, date, thresholdValue, sensorValue) {
         let exist = false;
 
         for (let i = 0; i < insertArray.length; i++) {
             if (insertArray[i].timeUntil == newInterval) {
                 exist = true;
-                insertArray[i].timesExceeded += WC.getWeight(timestamp, date);
+                insertArray[i].timesExceeded.push((WC.getAgeWeight(timestamp, date) + WC.getValueWeight(sensorValue, thresholdValue)));
             }
             if (insertArray[i].timeUntil > newInterval)
                 break;
         }
         return exist;
+    }
+
+    static avrArrayValues(insertArray) {
+        for (let i = 0; i < insertArray.thresholdPasses.length; i++) {
+            let newValue = 0;
+            for (let j = 0; j < insertArray.thresholdPasses[i].timesExceeded.length; j++) {
+                newValue += insertArray.thresholdPasses[i].timesExceeded[j];
+            }
+            newValue = newValue / insertArray.thresholdPasses[i].timesExceeded.length;
+            insertArray.thresholdPasses[i].timesExceeded = newValue;
+        }
+        return insertArray;
     }
 }
 
@@ -290,7 +307,7 @@ class QCC {
 
 // WC: Weight class
 class WC {
-    static getWeight(timestamp, date) {
+    static getAgeWeight(timestamp, date) {
         let daysSince = WC.getDaysSince(timestamp, date);
         let weight = WC.weightConverter(daysSince);
         return weight;
@@ -307,6 +324,10 @@ class WC {
         if (retWeight < 0)
             retWeight = 0;
         return retWeight;
+    }
+
+    static getValueWeight(value, thresholdValue) {
+        return value / thresholdValue;
     }
 }
 
