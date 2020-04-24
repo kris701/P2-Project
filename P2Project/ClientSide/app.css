@@ -161,7 +161,7 @@ header{
 /* --- Warning Section begins here --- */
 
 .warningContainer{
-    width: 800px;
+    width: 580px;
     max-height: 600px;
     position: fixed;
     bottom: 0px;
@@ -172,8 +172,33 @@ header{
     padding: 10px;
     margin: 20px;
     border-radius: 6px;
-    box-shadow: 0 0px 10px #8f8f8f94;
+    color: white;
+    box-shadow: 0px 5px 10px #8f8f8f94;
     background-color: orange; /*Background-color may be decided in html through js*/
+}
+
+#priority1 {
+    background-color: #FFCC00;
+}
+
+#priority2 {
+    background-color: #FF8E2C;
+}
+
+#priority3 {
+    background-color: #CC3300;
+}
+
+#priority1:hover {
+    box-shadow: 0px 5px 10px #FFCC00;
+}
+
+#priority2:hover {
+    box-shadow: 0px 5px 10px #FF8E2C;
+}
+
+#priority3:hover {
+    box-shadow: 0px 5px 10px #CC3300;
 }
 
 /* --- Footer Section begins here --- */
