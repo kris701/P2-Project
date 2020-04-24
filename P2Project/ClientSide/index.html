@@ -18,6 +18,10 @@
         <div class="userType">
             <h3><i class="fas fa-users"></i></h3>
         </div>
+
+        <form action="./adminloginpage/login.html">
+            <input type="submit" class="adminButton" value="Go to Admin" />
+        </form>
     </header>
 
     <div class="displayContainer">
@@ -27,26 +31,33 @@
 
         <div class="roomSelect">
             <select name="room" id="selectedRoom">
-
             </select>
+        </div>
+
+        <div class="roomSelect">
+            <button id="refreshRoomButton">Refresh</button>
         </div>
     </div>
 
     <div class="masterContainer">
-        <div class="container">
+        <div class="loadingDiv" id="loadDiv">
+            <h1 id="loadingText">Loading</h1>
+            <p id="subLoadingText" style="font-size:20px">...</p>
+            <img src="images/loading.gif" />
 
-            </div>
+        </div>
+        <div class="container" id="IAQData">
 
         </div>
     </div>
 
-    <div class="dataContainer">
+    <div class="dataContainer" id="sensorDataContainer">
         <div class="dataDisplay">
             <p id="data"></p>
         </div>
     </div>
 
-    <div class="warningContainer">
+    <div class="warningContainer" id="warContain">
 
     </div>
 
