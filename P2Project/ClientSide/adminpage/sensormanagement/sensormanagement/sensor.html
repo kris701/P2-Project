@@ -3,9 +3,27 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link rel="stylesheet" href="sensor.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <script src="../../GetLoggedIn.js"></script>
 </head>
 <body>
+    <div class="displayContainer">
+        <div class="roomSelect">
+            <select name="room" id="selectedRoom"">
+                <option>Select room</option>
+            </select>
+        </div>
 
+        <div class="sensorSelect" id="sensorSelect">
+            <button id="sensorSelectButton" class="sensorSelectButton">Select Sensor<i class="arrowDown"></i></button>
+            <div id="sensorSelectContent" class="sensorSelectContent">
+                <input type="text" placeholder="Search..." id="sensorSearch" class="sensorSearch">
+            </div>
+        </div>
+    </div>
+    <script defer type="module" src="sensor.js"></script>
 </body>
 </html>
