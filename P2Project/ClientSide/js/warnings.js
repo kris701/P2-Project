@@ -12,16 +12,17 @@ export class WARN {
 
     static displayWarnings(warningDataForRoom) {
         for (let i = 0; i < warningDataForRoom.data.length; i++) {
-            createNewWarning(warningDataForRoom.data[i].solutionInfo.warningPriority.priority, warningDataForRoom.data[i]);
+            createNewWarning(warningDataForRoom.data[i].solutionInfo.warningPriority.priority, warningDataForRoom.data[i], i);
         }
     }
 
-    static removeWarning() {
-
+    static removeWarning(warningNum) {
+        let toBeDeleted = document.getElementById("warningNum" + warningNum);
+        toBeDeleted.remove();
     }
 }
 
-function createNewWarning(priority, warningData) {
+function createNewWarning(priority, warningData, warningNum) {
     let warning = document.createElement("div");
     let topParagraph = document.createElement("p");
     let bottomParagraph = document.createElement("p");
@@ -29,6 +30,7 @@ function createNewWarning(priority, warningData) {
     let solutionMessage = document.createTextNode(warningData.solutionInfo.message);
 
     warning.setAttribute("id", "priority" + priority);
+    warning.setAttribute("id", "warningNum" + warningNum);
     warning.setAttribute("class", "warningBox");
 
     warningContainer.appendChild(warning);
