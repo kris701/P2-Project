@@ -45,5 +45,5 @@ function createNewWarning(priority, warningData, warningNum) {
 }
 
 function fadeOutAndRemove(element) {
-    UC.fadeAndRemove(element, warningContainer);
+    UC.fade(element);
 }
