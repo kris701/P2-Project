@@ -1,6 +1,7 @@
 ﻿// This document contains the functions regarding the display of warnings
 
 let warningContainer = document.querySelector(".warningContainer");
+import { UC } from './utils.js';
 
 export class WARN {
     static clearWarningArea() {
@@ -39,4 +40,10 @@ function createNewWarning(priority, warningData, warningNum) {
 
     topParagraph.appendChild(message);
     bottomParagraph.appendChild(solutionMessage);
+
+    window.setTimeout(fadeOutAndRemove.bind(this, warning), 5000);
+}
+
+function fadeOutAndRemove(element) {
+    UC.fadeAndRemove(element, warningContainer);
 }
