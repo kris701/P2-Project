@@ -14,6 +14,25 @@
     padding: 20px;
 }
 
+.addNewSensorButton {
+    background: #eeeeee;
+    color: #3877ff;
+    height: 40px;
+    text-transform: uppercase;
+    text-align: left;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    font-size: 16px;
+    border-color: darkgray;
+    border-width: 1px;
+    border-style: solid;
+    margin-left: 30px;
+}
+
+.br {
+    display: block;
+    height: 20px;
+}
+
 .roomSelect select {
     background: #eeeeee;
     color: #3877ff;
@@ -25,15 +44,51 @@
     font-size: 16px;
 }
 
-.sensorSelect, .roomSelect {
+.sensorSelect {
+    display: inline-block;
+    margin-left: 222px;
+    width: fit-content;
+}
+
+.roomSelect {
     display: inline-block;
     margin-left: 30px;
+    position: absolute;
+}
+
+.submitButton {
+    background: #eeeeee;
+    color: #3877ff;
+    height: 40px;
+    text-transform: uppercase;
+    text-align: left;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    font-size: 16px;
+    border-color: darkgray;
+    border-width: 1px;
+    border-style: solid;
+    margin-left: 222px;
+    display: none;
+}
+
+.buttons {
+    background: #eeeeee;
+    color: #3877ff;
+    height: 40px;
+    text-transform: uppercase;
+    text-align: left;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    font-size: 16px;
+    border-color: darkgray;
+    border-width: 1px;
+    border-style: solid;
+    margin-left: 30px;
+    display: none;
 }
 
 .sensorSelectButton {
     background: #eeeeee;
     color: #3877ff;
-    width: 100%;
     height: 40px;
     text-transform: uppercase;
     text-align: left;
@@ -44,6 +99,7 @@
     border-style: solid;
     padding-left: 10px;
     padding-right: 26px;
+    position: relative;
 }
 
 .arrowDown {
@@ -62,7 +118,7 @@
     background: #eeeeee;
     color: #3877ff;
     padding: 8px;
-    width: 100%;
+    width: 90%;
     text-transform: uppercase;
     box-shadow: 0 0px 10px #8f8f8f94;
     font-size: 16px;
@@ -87,7 +143,7 @@
 }
 
 .sensorSearch {
-    width: 100%;
+    width: 98%;
     display: block;
     margin-bottom: 7px;
 }
