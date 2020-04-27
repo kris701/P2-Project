@@ -4,23 +4,9 @@ let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 let successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
 let RC = require(__dirname + "/ReturnCodes.js");
-
-// Time interval in minutes
-const interval = 15;
-
-// How many weeks should we reach back
-const weekOffset = 20;
-// Hów many hours should we watch forward
-const hourReach = 3;
+let cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
 const millisecondsPerDay = 86400000;
-
-// A and B variables for the weight class
-const WC_A = -0.01;
-const WC_B = 1;
-
-// Minimum Times Exeded Value, if below, the value is removed
-const MTEV = 1;
 
 class ReturnClass {
     constructor(interval, data) {
@@ -29,9 +15,10 @@ class ReturnClass {
     }
 }
 class SensorTypeClass {
-    constructor(sensorType, name, thresholdPasses) {
+    constructor(sensorType, name, sensorsOfThisType, thresholdPasses) {
         this.sensorType = sensorType;
         this.name = name;
+        this.sensorsOfThisType = sensorsOfThisType;
         this.thresholdPasses = thresholdPasses;
     }
 }
@@ -56,7 +43,9 @@ module.exports.PAC = class {
         if (typeof (date) != typeof (""))
             return RC.parseToRetMSG(failCodes.NoParameters);
 
-        let returnItem = new ReturnClass(interval, []);
+        cfg = require(__dirname + "/ConfigLoading.js").configuration;
+
+        let returnItem = new ReturnClass(parseInt(cfg.PAC_interval, 10), []);
 
         let sensorsInRoom = await QCC.getPredictionSensorsInRoom(room);
         await BCC.asyncForEach(sensorsInRoom, async function (sensorInfo) {
@@ -66,10 +55,12 @@ module.exports.PAC = class {
         });
 
         for (let i = 0; i < returnItem.data.length; i++) {
-            returnItem.data[i] = IVC.avrArrayValues(returnItem.data[i]);
+            for (let j = 0; j < returnItem.data[i].thresholdPasses.length; j++) {
+                returnItem.data[i].thresholdPasses[j].timesExceeded = returnItem.data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10);
+            }
         }
 
-        await ROOBVC.checkAndRemoveOutOfBounds(returnItem.data);
+        //await ROOBVC.checkAndRemoveOutOfBounds(returnItem.data);
 
         return new BCC.retMSG(successCodes.GotPredictions, returnItem);
     }
@@ -89,7 +80,7 @@ class ROOBVC {
 
     static async checkAndRemoveTooLow(checkArray) {
         for (let i = 0; i < checkArray.length; i++) {
-            if (checkArray[i].timesExceeded <= MTEV) {
+            if (checkArray[i].timesExceeded <= parseInt(cfg.PAC_MTEV, 10)) {
                 checkArray.splice(i, 1);
                 i--;
             }
@@ -105,7 +96,7 @@ class IRVC {
             let exists = await IRVC.checkIfSensorTypeExistsAndInsert(insertArray, sensorTypeInfo.sensorType, sensorTypeInfo.sensorID, sensorTypeInfo.thresholdValue, targetDate);
             if (!exists) {
                 let newName = await QCC.getSensorTypeName(sensorTypeInfo.sensorType);
-                let newReturnValue = new SensorTypeClass(sensorTypeInfo.sensorType, newName, []);
+                let newReturnValue = new SensorTypeClass(sensorTypeInfo.sensorType, newName, 1, []);
                 await IRVC.checkForThresholdPass(sensorTypeInfo.sensorID, newName, sensorTypeInfo.thresholdValue, newReturnValue.thresholdPasses, targetDate)
                 insertArray.push(newReturnValue);
             }
@@ -117,6 +108,7 @@ class IRVC {
 
         await BCC.asyncForEach(searchArray, async function (searchArrayItem) {
             if (searchArrayItem.sensorType == sensorType) {
+                searchArrayItem.sensorsOfThisType += 1;
                 await IRVC.checkForThresholdPass(sensorID, searchArrayItem.name, thresholdValue, searchArrayItem.thresholdPasses, date);
                 doesExist = true;
             }
@@ -131,7 +123,7 @@ class IRVC {
         await BCC.asyncForEach(sensorValuesArray, async function (sensorValue) {
             let newInterval = IRVC.timeDiffToInterval(sensorValue.timestamp, date);
 
-            IVC.insertNewInterval(thresholdPassesArray, newInterval, sensorValue.timestamp, date, thresholdValue, sensorValue.sensorValue);
+            IVC.insertNewInterval(thresholdPassesArray, newInterval, sensorValue.timestamp);
         });
     }
 
@@ -139,15 +131,16 @@ class IRVC {
         let result = [];
 
         let oldestEntry = await QCC.getOldestEntry(sensorType, sensorID);
-        oldestEntry.setDate(oldestEntry.getDate() - 1 - Math.ceil(hourReach / 24));
+        oldestEntry.setDate(oldestEntry.getDate() - 1 - Math.ceil(parseInt(cfg.PAC_hourReach, 10) / 24));
 
-        for (let i = 7; i <= (weekOffset * 7); i += 7) {
+        let weekLook = (parseInt(cfg.PAC_weekOffset, 10) * 7);
+        for (let i = 7; i <= weekLook; i += 7) {
             let dateMin = new Date(date);
             let dateMax = new Date(date);
 
             dateMin.setDate(dateMin.getDate() - i);
             dateMax.setDate(dateMax.getDate() - i);
-            dateMax.setHours(dateMax.getHours() + hourReach);
+            dateMax.setHours(dateMax.getHours() + parseInt(cfg.PAC_hourReach, 10));
 
             if (dateMin < oldestEntry)
                 break;
@@ -171,7 +164,7 @@ class IRVC {
         let millisecondsLeft = (date.getTime() - CurrentDate.getTime());
         let secondsLeft = Math.floor(millisecondsLeft / 1000);
         let minutesLeft = Math.floor(secondsLeft / 60);
-        let intervalMinutesLeft = Math.floor(minutesLeft / interval);
+        let intervalMinutesLeft = Math.floor(minutesLeft / parseInt(cfg.PAC_interval, 10));
 
         return intervalMinutesLeft;
     }
@@ -182,15 +175,14 @@ class IRVC {
 class IVC {
 
     // Insert interval value, if it exists, increment that value
-    static insertNewInterval(insertArray, interval, timestamp, date, thresholdValue, sensorValue) {
-        let exist = IVC.doesValueExistAndInsert(insertArray, interval, timestamp, date, thresholdValue, sensorValue);
+    static insertNewInterval(insertArray, interval, timestamp) {
+        let exist = IVC.doesValueExistAndInsert(insertArray, interval, timestamp);
 
         if (!exist)
-            insertArray = IVC.insertIntoCorrectPositionInArray(interval, insertArray, timestamp, date, thresholdValue, sensorValue);
+            insertArray = IVC.insertIntoCorrectPositionInArray(interval, insertArray, timestamp);
     }
 
-    // O(n), Omega(1), Theta(n)
-    static insertIntoCorrectPositionInArray(newInterval, insertArray, timestamp, date, thresholdValue, sensorValue) {
+    static insertIntoCorrectPositionInArray(newInterval, insertArray, timestamp) {
         let index = 0;
         for (let i = 0; i < insertArray.length; i++) {
             if (insertArray[i].timeUntil > newInterval) {
@@ -198,36 +190,33 @@ class IVC {
             }
             index++;
         }
-        let weight = WC.getAgeWeight(timestamp, date) + WC.getValueWeight(sensorValue, thresholdValue);
-        insertArray.splice(index, 0, new ThresholdPassClass(newInterval, [weight]));
+        //insertArray.splice(index, 0, new ThresholdPassClass(newInterval, WC.getAgeWeight(timestamp, date)));
+        //insertArray.splice(index, 0, new ThresholdPassClass(newInterval, 1));
+        insertArray.splice(index, 0, new ThresholdPassClass(newInterval, [{ date: timestamp }]));
         return insertArray;
     }
 
-    // O(n), Omega(1), Theta(1)
-    static doesValueExistAndInsert(insertArray, newInterval, timestamp, date, thresholdValue, sensorValue) {
+    static doesValueExistAndInsert(insertArray, newInterval, timestamp) {
         let exist = false;
 
         for (let i = 0; i < insertArray.length; i++) {
             if (insertArray[i].timeUntil == newInterval) {
                 exist = true;
-                insertArray[i].timesExceeded.push((WC.getAgeWeight(timestamp, date) + WC.getValueWeight(sensorValue, thresholdValue)));
+                let otherSensorSetValue = false
+                //insertArray[i].timesExceeded += WC.getAgeWeight(timestamp, date);
+                //insertArray[i].timesExceeded += 1;
+                for (let j = 0; j < insertArray[i].timesExceeded.length; j++) {
+                    if (timestamp.getDate() == insertArray[i].timesExceeded[j].date.getDate()) {
+                        otherSensorSetValue = true;
+                    }
+                }
+                if (!otherSensorSetValue)
+                    insertArray[i].timesExceeded.push({ date: timestamp });
             }
             if (insertArray[i].timeUntil > newInterval)
                 break;
         }
         return exist;
-    }
-
-    static avrArrayValues(insertArray) {
-        for (let i = 0; i < insertArray.thresholdPasses.length; i++) {
-            let newValue = 0;
-            for (let j = 0; j < insertArray.thresholdPasses[i].timesExceeded.length; j++) {
-                newValue += insertArray.thresholdPasses[i].timesExceeded[j];
-            }
-            newValue = newValue / insertArray.thresholdPasses[i].timesExceeded.length;
-            insertArray.thresholdPasses[i].timesExceeded = newValue;
-        }
-        return insertArray;
     }
 }
 
@@ -320,14 +309,10 @@ class WC {
     }
 
     static weightConverter(timeSince) {
-        let retWeight = WC_A * timeSince + WC_B;
+        let retWeight = parseFloat(cfg.PAC_WC_A) * timeSince + parseFloat(cfg.PAC_WC_B);
         if (retWeight < 0)
             retWeight = 0;
         return retWeight;
-    }
-
-    static getValueWeight(value, thresholdValue) {
-        return value / thresholdValue;
     }
 }
 

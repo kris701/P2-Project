@@ -4,6 +4,7 @@ let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 let successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
 let RC = require(__dirname + "/ReturnCodes.js");
+let cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
 class ReturnClass {
     constructor(interval, data, sensorID) {
@@ -25,9 +26,6 @@ class LiveSensorValuesClass {
     }
 }
 
-const backReachHours = 2;
-const interval = 15;
-
 //#endregion
 
 //#region Public
@@ -42,7 +40,9 @@ module.exports.LDC = class {
         if (typeof (date) != typeof (""))
             return RC.parseToRetMSG(failCodes.NoParameters);
 
-        let returnItem = new ReturnClass(interval, [], sensorID);
+        cfg = require(__dirname + "/ConfigLoading.js").configuration;
+
+        let returnItem = new ReturnClass(parseInt(cfg.LDC_interval, 10), [], sensorID);
 
         let sensorsSensorTypes = await QCC.getSensorTypesForSensor(sensorID);
 
@@ -63,11 +63,11 @@ module.exports.LDC = class {
 async function getHistoricData(sensorID, date, sensorTypeName) {
     let result = [];
 
-    for (let i = 0; i < backReachHours * (60 / interval); i++) {
+    for (let i = 0; i < parseInt(cfg.LDC_backReachHours, 10) * (60 / parseInt(cfg.LDC_interval, 10)); i++) {
         let dateMin = new Date(date);
         let dateMax = new Date(date);
-        dateMax.setMinutes(dateMin.getMinutes() - ((i + 1) * interval));
-        dateMin.setMinutes(dateMax.getMinutes() - (i * interval));
+        dateMax.setMinutes(dateMin.getMinutes() - ((i + 1) * parseInt(cfg.LDC_interval, 10)));
+        dateMin.setMinutes(dateMax.getMinutes() - (i * parseInt(cfg.LDC_interval, 10)));
 
         result = await getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin, i);
     }

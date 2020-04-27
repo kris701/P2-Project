@@ -34,6 +34,9 @@
   <ItemGroup>
     <Content Include="AdminCalls.js" />
     <Content Include="BasicCalls.js" />
+    <Content Include="ConfigLoading.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="interface.js" />
     <Content Include="LiveData.js">
       <SubType>Code</SubType>
