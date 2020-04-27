@@ -1,11 +1,13 @@
 try {
     let enableDebuging = true;
+    let timeSinceLastCFGUpdate = new Date();
 
     //#region Header
 
     let BCC = require(__dirname + "/BasicCalls.js").BCC;
     let RCC = require(__dirname + "/ResourceCheck.js").RCC;
     let RC = require(__dirname + "/ReturnCodes.js");
+    let CLC = require(__dirname + "/ConfigLoading.js").CLC;
 
     // Include modules
     let http = require("http");
@@ -17,6 +19,9 @@ try {
 
     // Main Server Code
     let server = http.createServer(async function (req, res) {
+
+        timeSinceLastCFGUpdate = await CLC.checkForConfigUpdate(timeSinceLastCFGUpdate);
+
         let response = new BCC.retMSG(-1,"");
         try {
             let queryUrl = queryStringParse(req.url);

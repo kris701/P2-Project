@@ -3,6 +3,7 @@
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
 let PAC = require(__dirname + "/PredictionAlgorithms.js").PAC;
 let RC = require(__dirname + "/ReturnCodes.js");
+let cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
 class SolutionInfo {
     constructor(warningPriority, message) {
@@ -52,6 +53,8 @@ module.exports.WASC = class {
             return RC.parseToRetMSG(RC.failCodes.NoParameters);
         if (typeof (date) != typeof (""))
             return RC.parseToRetMSG(RC.failCodes.NoParameters);
+
+        cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
         let predictionDataArray = await PAC.getPredictionDatetimeQuery(room, date)
 
@@ -108,11 +111,11 @@ function getPriority(timeUntilBadIAQ, interval) {
 
     let minutes = timeUntilBadIAQ * interval;
 
-    if (minutes > 60)
+    if (minutes > parseInt(cfg.WASC_LowPTime, 10))
         return new PriorityInfo(priorityEnum.None, minutes);
-    else if (minutes > 30)
+    else if (minutes > parseInt(cfg.WASC_MedPTime, 10))
         return new PriorityInfo(priorityEnum.Low, minutes);
-    else if (minutes > 10)
+    else if (minutes > parseInt(cfg.WASC_HighPTime, 10))
         return new PriorityInfo(priorityEnum.Medium, minutes);
     else
         return new PriorityInfo(priorityEnum.High, minutes);
