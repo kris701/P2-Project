@@ -15,10 +15,9 @@ class ReturnClass {
     }
 }
 class SensorTypeClass {
-    constructor(sensorType, name, sensorsOfThisType, thresholdPasses) {
+    constructor(sensorType, name, thresholdPasses) {
         this.sensorType = sensorType;
         this.name = name;
-        this.sensorsOfThisType = sensorsOfThisType;
         this.thresholdPasses = thresholdPasses;
     }
 }
@@ -54,13 +53,7 @@ module.exports.PAC = class {
             await IRVC.insertAllThressholdPassesForSensorType(sensorsSensorTypes, returnItem.data, date);
         });
 
-        for (let i = 0; i < returnItem.data.length; i++) {
-            for (let j = 0; j < returnItem.data[i].thresholdPasses.length; j++) {
-                returnItem.data[i].thresholdPasses[j].timesExceeded = (returnItem.data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10)) * 100;
-            }
-        }
-
-        //await ROOBVC.checkAndRemoveOutOfBounds(returnItem.data);
+        returnItem.data = IRVC.convertTimestampArrayToProbability(returnItem.data, date);
 
         return new BCC.retMSG(successCodes.GotPredictions, returnItem);
     }
@@ -70,24 +63,6 @@ module.exports.PAC = class {
 
 //#region Private
 
-// Remove Out of Bounds Values Class
-class ROOBVC {
-    static async checkAndRemoveOutOfBounds(checkArray) {
-        for (let i = 0; i < checkArray.length; i++) {
-            ROOBVC.checkAndRemoveTooLow(checkArray[i].thresholdPasses);
-        }
-    }
-
-    static async checkAndRemoveTooLow(checkArray) {
-        for (let i = 0; i < checkArray.length; i++) {
-            if (checkArray[i].timesExceeded <= parseInt(cfg.PAC_MTEV, 10)) {
-                checkArray.splice(i, 1);
-                i--;
-            }
-        }
-    }
-}
-
 // Insert Return Values Class
 class IRVC {
     static async insertAllThressholdPassesForSensorType(sensorTypes, insertArray, targetDate) {
@@ -95,8 +70,8 @@ class IRVC {
 
             let exists = await IRVC.checkIfSensorTypeExistsAndInsert(insertArray, sensorTypeInfo.sensorType, sensorTypeInfo.sensorID, sensorTypeInfo.thresholdValue, targetDate);
             if (!exists) {
-                let newName = await QCC.getSensorTypeName(sensorTypeInfo.sensorType);
-                let newReturnValue = new SensorTypeClass(sensorTypeInfo.sensorType, newName, 1, []);
+                let newName = await BCC.getSensorTypeName(sensorTypeInfo.sensorType);
+                let newReturnValue = new SensorTypeClass(sensorTypeInfo.sensorType, newName, []);
                 await IRVC.checkForThresholdPass(sensorTypeInfo.sensorID, newName, sensorTypeInfo.thresholdValue, newReturnValue.thresholdPasses, targetDate)
                 insertArray.push(newReturnValue);
             }
@@ -108,7 +83,6 @@ class IRVC {
 
         await BCC.asyncForEach(searchArray, async function (searchArrayItem) {
             if (searchArrayItem.sensorType == sensorType) {
-                searchArrayItem.sensorsOfThisType += 1;
                 await IRVC.checkForThresholdPass(sensorID, searchArrayItem.name, thresholdValue, searchArrayItem.thresholdPasses, date);
                 doesExist = true;
             }
@@ -169,6 +143,36 @@ class IRVC {
         return intervalMinutesLeft;
     }
 
+    // TimesExceeded are now populated with timestamps of when the threshold was exceeded.
+    static convertTimestampArrayToProbability(data, date) {
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < data[i].thresholdPasses.length; j++) {
+                data[i].thresholdPasses[j].timesExceeded = (data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10)) * 100;
+            }
+        }
+        //for (let i = 0; i < data.length; i++) {
+        //    for (let j = 0; j < data[i].thresholdPasses.length; j++) {
+        //        for (let l = 0; l < data[i].thresholdPasses[j].timesExceeded.length; l++) {
+        //            data[i].thresholdPasses[j].timesExceeded[l] = WC.getAgeWeight(data[i].thresholdPasses[j].timesExceeded[l].date, date);
+        //        }
+        //    }
+        //}
+        //for (let i = 0; i < data.length; i++) {
+        //    for (let j = 0; j < data[i].thresholdPasses.length; j++) {
+        //        data[i].thresholdPasses[j].timesExceeded = IRVC.avrArrayValues(data[i].thresholdPasses[j].timesExceeded);
+        //    }
+        //}
+        return data;
+    }
+
+    static avrArrayValues(array) {
+        let retValue = 0;
+        for (let i = 0; i < array.length; i++) {
+            retValue += array[i];
+        }
+        retValue = retValue / array.length;
+        return retValue;
+    }
 }
 
 // Insert Value Class
@@ -190,8 +194,6 @@ class IVC {
             }
             index++;
         }
-        //insertArray.splice(index, 0, new ThresholdPassClass(newInterval, WC.getAgeWeight(timestamp, date)));
-        //insertArray.splice(index, 0, new ThresholdPassClass(newInterval, 1));
         insertArray.splice(index, 0, new ThresholdPassClass(newInterval, [{ date: timestamp }]));
         return insertArray;
     }
@@ -203,11 +205,10 @@ class IVC {
             if (insertArray[i].timeUntil == newInterval) {
                 exist = true;
                 let otherSensorSetValue = false
-                //insertArray[i].timesExceeded += WC.getAgeWeight(timestamp, date);
-                //insertArray[i].timesExceeded += 1;
                 for (let j = 0; j < insertArray[i].timesExceeded.length; j++) {
                     if (timestamp.getDate() == insertArray[i].timesExceeded[j].date.getDate()) {
                         otherSensorSetValue = true;
+                        break;
                     }
                 }
                 if (!otherSensorSetValue)
@@ -225,39 +226,20 @@ class QCC {
     // All the query calls to the database.
 
     static async getPredictionSensorsInRoom(room) {
-        let result = [];
-
         let ret = await BCC.makeQuery("SELECT * FROM SensorInfo WHERE roomID=?", [room]);
         if (BCC.isErrorCode(ret))
-            return result;
-        await BCC.asyncForEach(ret.recordset, async function (v) {
-            result.push(v);
-        });
+            return [];
 
-        return result;
-    }
-
-    static async getSensorTypeName(sensorTypeID) {
-        let result;
-
-        let ret = await BCC.makeQuery("SELECT * FROM SensorTypes WHERE sensorType=?", [sensorTypeID]);
-        if (BCC.isErrorCode(ret))
-            return result;
-        result = ret.recordset[0].typeName;
-
+        let result = await BCC.pushItem(ret.recordset);
         return result;
     }
 
     static async getSensorTypesForSensor(sensorID) {
-        let result = [];
-
         let ret = await BCC.makeQuery("SELECT * FROM SensorThresholds WHERE sensorID=?", [sensorID]);
         if (BCC.isErrorCode(ret))
-            return result;
-        await BCC.asyncForEach(ret.recordset, async function (v) {
-            result.push(v);
-        });
+            return [];
 
+        let result = await BCC.pushItem(ret.recordset);
         return result;
     }
 
@@ -285,10 +267,8 @@ class QCC {
         ]);
         if (BCC.isErrorCode(ret))
             return new Date();
-        await BCC.asyncForEach(ret.recordset, async function (v) {
-            result.push(v);
-        });
 
+        result = await BCC.pushItem(ret.recordset, result);
         return result;
     }
 

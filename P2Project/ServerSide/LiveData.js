@@ -47,7 +47,7 @@ module.exports.LDC = class {
         let sensorsSensorTypes = await QCC.getSensorTypesForSensor(sensorID);
 
         await BCC.asyncForEach(sensorsSensorTypes, async function (sensorTypeInfo) {
-            let sensorTypeName = await QCC.getSensorTypeName(sensorTypeInfo);
+            let sensorTypeName = await BCC.getSensorTypeName(sensorTypeInfo);
             let sensorValues = await getHistoricData(sensorID, date, sensorTypeName);
             returnItem.data.push(new LiveSensorClass(sensorTypeName, sensorValues));
         });
@@ -94,17 +94,6 @@ async function getValueWithingTimestamps(result, sensorTypeName, sensorID, dateM
 // QCC: Query Call Class
 class QCC {
     // All the query calls to the database.
-
-    static async getSensorTypeName(sensorTypeID) {
-        let result;
-
-        let ret = await BCC.makeQuery("SELECT * FROM SensorTypes WHERE sensorType=?", [sensorTypeID]);
-        if (BCC.isErrorCode(ret))
-            return result;
-        result = ret.recordset[0].typeName;
-
-        return result;
-    }
 
     static async getSensorTypesForSensor(sensorID) {
         let result = [];
