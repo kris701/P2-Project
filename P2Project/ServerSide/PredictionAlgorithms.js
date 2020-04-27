@@ -56,7 +56,7 @@ module.exports.PAC = class {
 
         for (let i = 0; i < returnItem.data.length; i++) {
             for (let j = 0; j < returnItem.data[i].thresholdPasses.length; j++) {
-                returnItem.data[i].thresholdPasses[j].timesExceeded = returnItem.data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10);
+                returnItem.data[i].thresholdPasses[j].timesExceeded = (returnItem.data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10)) * 100;
             }
         }
 
