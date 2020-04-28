@@ -29,7 +29,7 @@ module.exports.SSIC = class {
 
         let allRooms = await getAllRooms();
         await BCC.asyncForEach(allRooms, async function (roomData) {
-            if (roomData.roomID != -1) {
+            if (roomData.roomID != 1) {
                 let sensorsInRoom = await getSensorsInRoom(roomData.roomID);
                 let newRoomInfo = new Room(roomData.roomID, roomData.roomName, sensorsInRoom);
                 sensorInfo.push(newRoomInfo);

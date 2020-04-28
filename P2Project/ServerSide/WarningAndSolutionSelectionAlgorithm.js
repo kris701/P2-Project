@@ -116,14 +116,14 @@ function getPriority(timeUntilBadIAQ, interval) {
 }
 
 async function getWarningInfoQuery(sensorType, priority) {
-    let result = new WarningInfo(-1, sensorType, "", new SolutionInfo(priority, ""));
+    let result = new WarningInfo(1, sensorType, "", new SolutionInfo(priority, ""));
 
     let ret = await BCC.makeQuery("SELECT * FROM Warnings WHERE sensorType=?", [sensorType]);
     if (BCC.isErrorCode(ret))
         return result;
 
     if (ret.recordset.length != 0) {
-        if (ret.recordset[0].warningID != -1) {
+        if (ret.recordset[0].warningID != 1) {
             result.message = ret.recordset[0].message;
             result.warningID = ret.recordset[0].warningID;
             result.solutionInfo = await getSolutionQuery(ret.recordset[0].warningID, priority);
