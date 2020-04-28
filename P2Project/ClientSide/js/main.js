@@ -14,7 +14,14 @@ const currentRoom = document.getElementById("selectedRoom");
 currentRoom.addEventListener("change", (evt) => roomChangeFunction());
 document.getElementById("refreshRoomButton").onclick = refreshDataClick;
 
+function setCurrentDate() {
+    let today = new Date();
+    let dateControl = document.querySelector('input[type="datetime-local"]');
+    dateControl.value = UC.dateToISOString(today);
+}
+
 async function GetInformation() {
+    setCurrentDate();
     setLoadingLabel("Fetching room data...");
     roomData = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
     await importDataToSelect();
@@ -43,6 +50,9 @@ async function importDataToSelect() {
 }
 
 async function roomChangeFunction() {
+
+
+
     if (roomData.length != 0) {
 
         // Clears warning area
