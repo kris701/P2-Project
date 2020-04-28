@@ -28,12 +28,12 @@ try {
             response = await RCC.checkAllResource(response, req, queryUrl, enableDebuging);
 
             if (response.returnCode == -1) {
-                console.error("Resource not found!");
+                BCC.errorWithTimestamp("Resource not found!");
                 response = new RC.parseToRetMSG(RC.failCodes.ResourceNotFound);
             }
 
         } catch (err) {
-            console.error(err);
+            BCC.errorWithTimestamp(err);
             response = new BCC.retMSG(499, "An error occured on the server!");
         }
 
@@ -47,7 +47,7 @@ try {
     }
 
     server.listen(3910);
-    console.log("Node.js server is running and listening at port 3910.");
+    BCC.logWithTimestamp("Node.js server is running and listening at port 3910.");
 
     //#endregion
 
@@ -56,11 +56,11 @@ try {
 
     // Simplified error for missing modules
     if (err.code == "MODULE_NOT_FOUND")
-        console.log("Use 'NPM INSTALL " + err.message.substring(err.message.indexOf("'"), err.message.lastIndexOf("'")) + "' to get the module");
+        BCC.logWithTimestamp("Use 'NPM INSTALL " + err.message.substring(err.message.indexOf("'"), err.message.lastIndexOf("'")) + "' to get the module");
     else
-        console.log(err)
+        BCC.logWithTimestamp(err)
 
-    console.log("\n Press any key to exit")
+    BCC.logWithTimestamp("\n Press any key to exit")
     process.stdin.setRawMode(true);
     process.stdin.resume();
     process.stdin.on('data', process.exit.bind(process, 0))

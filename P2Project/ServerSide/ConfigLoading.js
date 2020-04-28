@@ -35,9 +35,10 @@ module.exports.CLC = class {
     }
 
     static async loadConfiguration() {
-        console.log("Loading server config...");
+        let BCC = require(__dirname + "/BasicCalls.js").BCC;
+        BCC.logWithTimestamp("Loading server config...");
         module.exports.configuration = await module.exports.CLC.getServerConfiguration();
-        console.log("Server config loaded!");
+        BCC.logWithTimestamp("Server config loaded!");
     }
 }
 

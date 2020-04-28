@@ -95,6 +95,16 @@ module.exports.BCC = class {
     static roundToDigit(num) {
         return Math.round((num + Number.EPSILON) * 100) / 100;
     }
+
+    static logWithTimestamp(message) {
+        let date = new Date();
+        console.log(date.getDate() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " : " + message);
+    }
+
+    static errorWithTimestamp(message) {
+        let date = new Date();
+        console.log("(ERR) " + date.getDate() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " : " + message);
+    }
 }
 
 //#endregion
