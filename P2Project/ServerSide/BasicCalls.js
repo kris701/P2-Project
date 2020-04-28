@@ -98,12 +98,25 @@ module.exports.BCC = class {
 
     static logWithTimestamp(message) {
         let date = new Date();
-        console.log(date.getDate() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " : " + message);
+        console.log(
+            addZeroIfLessThanTen(date.getDate()) + "-" +
+            addZeroIfLessThanTen(date.getMonth()) + " " +
+            addZeroIfLessThanTen(date.getHours()) + ":" +
+            addZeroIfLessThanTen(date.getMinutes()) + ":" +
+            addZeroIfLessThanTen(date.getSeconds()) + " : " +
+            message);
     }
 
     static errorWithTimestamp(message) {
         let date = new Date();
-        console.log("(ERR) " + date.getDate() + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " : " + message);
+        console.log(
+            addZeroIfLessThanTen(date.getDate()) + "-" +
+            addZeroIfLessThanTen(date.getMonth()) + " " +
+            addZeroIfLessThanTen(date.getHours()) + ":" +
+            addZeroIfLessThanTen(date.getMinutes()) + ":" +
+            addZeroIfLessThanTen(date.getSeconds()) + " : " +
+            "(ERR) " +
+            message);
     }
 }
 
@@ -122,6 +135,12 @@ function makeDb(config) {
             return util.promisify(connection.end).call(connection);
         }
     };
+}
+
+function addZeroIfLessThanTen(number) {
+    if (number < 10)
+        number = "0" + number;
+    return number;
 }
 
 //#endregion

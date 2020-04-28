@@ -1,5 +1,5 @@
 try {
-    let enableDebuging = true;
+    const enableDebuging = true;
     let timeSinceLastCFGUpdate = new Date();
 
     //#region Header
