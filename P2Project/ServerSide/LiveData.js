@@ -1,8 +1,6 @@
 //#region Header
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
-let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
-let successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
 let RC = require(__dirname + "/ReturnCodes.js");
 let cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
@@ -34,11 +32,11 @@ class LiveSensorValuesClass {
 module.exports.LDC = class {
     static async getLiveData(sensorID, date) {
         if (sensorID == null || date == null)
-            return RC.parseToRetMSG(failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
         if (typeof (parseInt(sensorID, 10)) != typeof (0))
-            return RC.parseToRetMSG(failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
         if (typeof (date) != typeof (""))
-            return RC.parseToRetMSG(failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
         cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
@@ -52,7 +50,7 @@ module.exports.LDC = class {
             returnItem.data.push(new LiveSensorClass(sensorTypeName, sensorValues));
         });
 
-        return new BCC.retMSG(successCodes.GotLiveData, returnItem);
+        return new BCC.retMSG(RC.successCodes.GotLiveData, returnItem);
     }
 }
 

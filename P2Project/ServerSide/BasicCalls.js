@@ -11,7 +11,7 @@ const serverConfig = {
     port: 3306
 };
 
-let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 //#endregion
 
@@ -20,7 +20,7 @@ let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
 module.exports.BCC = class {
     static async asyncForEach(array, callback) {
         if (!Array.isArray(array))
-            return failCodes.InputNotAnArray;
+            return RC.failCodes.InputNotAnArray;
 
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
@@ -38,12 +38,12 @@ module.exports.BCC = class {
         try {
             if (queryText != null && parameterArray != null) {
                 if (typeof queryText !== "string")
-                    return failCodes.InputNotAString;
+                    return RC.failCodes.InputNotAString;
                 if (queryText == "")
-                    return failCodes.EmptyString;
+                    return RC.failCodes.EmptyString;
 
                 if (!Array.isArray(parameterArray))
-                    return failCodes.InputNotAnArray;
+                    return RC.failCodes.InputNotAnArray;
 
                 const db = makeDb(serverConfig);
                 try {
@@ -51,18 +51,18 @@ module.exports.BCC = class {
                     returnvalue.recordset = await db.query(queryText, parameterArray);
                     return returnvalue;
                 } catch (err) {
-                    return failCodes.DatabaseError;
+                    return RC.failCodes.DatabaseError;
                 } finally {
                     await db.close();
                 }
             }
             else {
-                return failCodes.NoParameters;
+                return RC.failCodes.NoParameters;
             }
         }
         catch (err) {
             console.error(err);
-            return failCodes.DatabaseError;
+            return RC.failCodes.DatabaseError;
         }
     }
 
