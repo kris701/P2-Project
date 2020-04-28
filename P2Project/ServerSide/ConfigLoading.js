@@ -1,7 +1,7 @@
 //#region Header
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
-let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
+let RC = require(__dirname + "/ReturnCodes.js");
 
 const millisecondsPerMinute = 60000;
 module.exports.configuration = { cfgUpdateInterval: -1};
@@ -24,7 +24,7 @@ module.exports.CLC = class {
 
     static async checkForConfigUpdate(timeSinceLastCFGUpdate) {
         if (timeSinceLastCFGUpdate == null)
-            return failCodes.NoParameters;
+            return RC.failCodes.NoParameters;
 
         let reqTime = new Date();
         if (((reqTime.getTime() - timeSinceLastCFGUpdate.getTime()) / millisecondsPerMinute) >= module.exports.configuration.cfgUpdateInterval) {
@@ -35,9 +35,10 @@ module.exports.CLC = class {
     }
 
     static async loadConfiguration() {
-        console.log("Loading server config...");
+        let BCC = require(__dirname + "/BasicCalls.js").BCC;
+        BCC.logWithTimestamp("Loading server config...");
         module.exports.configuration = await module.exports.CLC.getServerConfiguration();
-        console.log("Server config loaded!");
+        BCC.logWithTimestamp("Server config loaded!");
     }
 }
 

@@ -90,7 +90,6 @@
     <Content Include="adminpage\admin.css" />
     <Content Include="adminpage\admin.html" />
     <Content Include="adminpage\admin.js" />
-    <Content Include="adminpage\Cookies.js" />
     <Content Include="app.css" />
     <Content Include="images\loading.gif" />
     <Content Include="index.html" />

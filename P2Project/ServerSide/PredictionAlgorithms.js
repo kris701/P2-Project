@@ -1,8 +1,6 @@
 //#region Header
 
 let BCC = require(__dirname + "/BasicCalls.js").BCC;
-let failCodes = require(__dirname + "/ReturnCodes.js").failCodes;
-let successCodes = require(__dirname + "/ReturnCodes.js").successCodes;
 let RC = require(__dirname + "/ReturnCodes.js");
 let cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
@@ -36,11 +34,11 @@ class ThresholdPassClass {
 module.exports.PAC = class {
     static async getPredictionDatetimeQuery(room, date) {
         if (room == null || date == null)
-            return RC.parseToRetMSG(failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
         if (typeof (parseInt(room,10)) != typeof(0))
-            return RC.parseToRetMSG(failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
         if (typeof (date) != typeof (""))
-            return RC.parseToRetMSG(failCodes.NoParameters);
+            return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
         cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
@@ -55,7 +53,7 @@ module.exports.PAC = class {
 
         returnItem.data = IRVC.convertTimestampArrayToProbability(returnItem.data, date);
 
-        return new BCC.retMSG(successCodes.GotPredictions, returnItem);
+        return new BCC.retMSG(RC.successCodes.GotPredictions, returnItem);
     }
 }
 
@@ -156,7 +154,7 @@ class IRVC {
                 for (let l = 0; l < data[i].thresholdPasses[j].timesExceeded.length; l++) {
                     sum += WC.getAgeWeight(data[i].thresholdPasses[j].timesExceeded[l].date, date);
                 }
-                data[i].thresholdPasses[j].timesExceeded = BCC.roundToDigit(sum / parseInt(cfg.PAC_weekOffset, 10));
+                data[i].thresholdPasses[j].timesExceeded = BCC.roundToDigit(sum / parseInt(cfg.PAC_weekOffset, 10)) * 100;
             }
         }
         return data;

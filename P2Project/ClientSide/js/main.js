@@ -8,11 +8,16 @@ import { WARN } from './warnings.js'
 
 let roomData = [];
 
-window.onload = GetInformation();
+window.onload = startUpProcedure();
 // Activates once a new room has been selected
 const currentRoom = document.getElementById("selectedRoom");
 currentRoom.addEventListener("change", (evt) => roomChangeFunction());
 document.getElementById("refreshRoomButton").onclick = refreshDataClick;
+
+async function startUpProcedure() {
+    setCurrentDate();
+    GetInformation();
+}
 
 async function GetInformation() {
     setLoadingLabel("Fetching room data...");
@@ -43,6 +48,9 @@ async function importDataToSelect() {
 }
 
 async function roomChangeFunction() {
+
+    let date = document.querySelector('input[type="datetime-local"]');
+
     if (roomData.length != 0) {
 
         // Clears warning area
@@ -57,8 +65,8 @@ async function roomChangeFunction() {
 
         let roomSelect = document.getElementById("selectedRoom");
 
-        let predictionData = await getPredictions(roomData[roomSelect.selectedIndex].roomID, UC.dateToISOString(new Date()));
-        let warningData = await getWarningsAndSolutionj(roomData[roomSelect.selectedIndex].roomID, UC.dateToISOString(new Date()));
+        let predictionData = await getPredictions(roomData[roomSelect.selectedIndex].roomID, date.value);
+        let warningData = await getWarningsAndSolutionj(roomData[roomSelect.selectedIndex].roomID, date.value);
 
         // Gets the length of the x axis
         let xLength = GRPH.getHighestTimestamp(predictionData);
@@ -144,4 +152,10 @@ function setLoadingLabel(text) {
 
 function refreshDataClick() {
     roomChangeFunction();
+}
+
+function setCurrentDate() {
+    let today = new Date();
+    let dateControl = document.querySelector('input[type="datetime-local"]');
+    dateControl.value = UC.dateToISOString(today);
 }
