@@ -1,14 +1,10 @@
 ﻿import { UC } from "../../../js/utils.js";
 
 let sensorInfo = [];
-let sensorButtons = [];
-let currentSensor = -1;
 
 async function GetInformation() {
     sensorInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
-    console.log(sensorInfo);
     await importDataToSelect();
-    setBrDisplay("none");
 } window.onload = GetInformation();
 
 // Adds more elements to the select in the html for room selection
@@ -27,108 +23,53 @@ async function importDataToSelect() {
 function populateSensorMenu() {
     let selectBox = document.getElementById("selectedRoom");
     let room = selectBox.options[selectBox.selectedIndex].value;
-    let sensorMenu = document.getElementById("sensorSearch"); // Apparently this only works with a child of the parent I want to bind it to
+    let sensorSelect = document.getElementById("selectedSensor");
 
     vacateSensorMenu();
     removeSensorChoices();
 
     for (let i = 0; i < sensorInfo[room].sensors.length; i++) {
-        let sensor = document.createElement("button");
-        sensorMenu.appendChild(sensor);
-        sensor.innerHTML = "Sensor " + sensorInfo[room].sensors[i].sensorID;
-        sensor.onclick = function () { sensorClicked(sensorInfo[room].sensors[i].sensorID) };
-        sensorMenu.insertAdjacentElement("afterend", sensor);
-
-        sensorButtons.push(sensor);
+        let option = document.createElement("option");
+        option.text = "Sensor " + sensorInfo[room].sensors[i].sensorID;
+        option.value = sensorInfo[room].sensors[i].sensorID;
+        sensorSelect.add(option);
     }
 } document.getElementById("selectedRoom").onchange = populateSensorMenu;
 
-// Removes all sensors in the sensor dropdown menu
-function vacateSensorMenu() {
-    sensorButtons.forEach(function (v) {
-        v.parentNode.removeChild(v);
-    });
-    sensorButtons = [];
-}
+async function populateSensorMenuForDefaultRoom() {
+    let sensorSelect = document.getElementById("selectedSensor");
+    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensors?username=" + "Admin" + "&password=" + "Password").catch(e => console.log(e));
+    let sensors = returnMessage.data;
 
-// Function that filters the sensors by the chosen search string
-function filterFunction() {
-    let input = document.getElementById("sensorSearch");
-    let filter = input.value.toUpperCase();
+    vacateSensorMenu();
 
-    for (let i = 0; i < sensorButtons.length; i++) {
-        let txtValue = sensorButtons[i].innerHTML;
-
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            appendButton(sensorButtons[i]);
-        } else {
-            removeButton(sensorButtons[i]);
+    for (let i = 0; i < sensors.length; i++) {
+        if (sensors[i].roomID == -1) {
+            let option = document.createElement("option");
+            option.text = "Sensor " + sensors[i].sensorID;
+            option.value = sensors[i].sensorID;
+            sensorSelect.add(option);
         }
     }
-} document.getElementById("sensorSearch").onkeyup = filterFunction;
-
-// Removes a sensor from the sensor dropdown menu
-function removeButton(button) {
-    if (button.style.display != "none") {
-        let sensorMenu = document.getElementById("sensorSelectContent");
-        let check = false;
-
-        sensorButtons.forEach(function (v) {
-            console.log(button.innerHTML);
-            if (check == true) {
-                v.style.top = "" + (parseFloat(v.style.top) - 26) + "px";
-            }
-            else if (v == button) {
-                v.style.display = "none";
-                check = true;
-                sensorMenu.style.height = "" + (parseFloat(sensorMenu.style.height) - 26) + "px";
-            }
-            console.log(button.innerHTML);
-        });
-    }
 }
 
-// Appends a sensor to the sensor dropdown menu
-function appendButton(button) {
-    if (button.style.display != "block") {
-        let sensorMenu = document.getElementById("sensorSelectContent");
-        let check = false;
-
-        sensorButtons.forEach(function (v) {
-            if (check == true) {
-                v.style.top = "" + (parseFloat(v.style.top) + 26) + "px";
-            }
-            else if (v == button) {
-                v.style.display = "block";
-                check = true;
-                sensorMenu.style.height = "" + (parseFloat(sensorMenu.style.height) + 26) + "px";
-            }
-        });
+// Removes all sensors in the sensor dropdown menu
+function vacateSensorMenu() {
+    let sensorSelect = document.getElementById("selectedSensor");
+    console.log(sensorSelect.options);
+    for (let i = sensorSelect.options.length - 1; i >= 0 ; i--) {
+        let option = sensorSelect.options[i];
+        if (option.value != -1)
+            option.parentNode.removeChild(option);
     }
 }
-
-// Toggles the sensor dropdown menu
-function sensorSelectShow() {
-    if (document.getElementById("sensorSelectContent").style.display == "none") {
-        document.getElementById("sensorSelectContent").style.display = "block";
-        sensorButtons.forEach(function (v) {
-            v.style.display = "block";
-        });
-    }
-    else {
-        document.getElementById("sensorSelectContent").style.display = "none";
-        sensorButtons.forEach(function (v) {
-            v.style.display = "none";
-        });
-    }
-} document.getElementById("sensorSelectButton").onclick = sensorSelectShow;
 
 // Function called when client clicks on the "Add new sensor" button
 function addNewSensorButton() {
-    document.getElementById("sensorSelect").style.display = "none";
-    document.getElementById("addNewSensorButton").style.display = "none";
-    document.getElementById("br1").style.display = "none";
-    document.getElementById("submitNewSensor").style.display = "block";
+    setElementDisplay(["sensorSelect", "addNewSensorButton", "addExistingSensorButton"], "none");
+    setElementDisplay(["submitSensor"], "inline-block");
+    document.getElementById("submitSensor").onclick = submitNewSensorButton;
+    removeSensorChoices();
     document.getElementById("selectedRoom").onchange = "";
     document.getElementById("selectedRoom").value = -1;
 } document.getElementById("addNewSensorButton").onclick = addNewSensorButton;
@@ -140,90 +81,117 @@ async function submitNewSensorButton() {
     if (returnMessage.returnCode == 212)
         console.log("Sensor added succesfully.");
 
-    document.getElementById("sensorSelect").style.display = "block";
-    document.getElementById("addNewSensorButton").style.display = "block";
-    document.getElementById("br1").style.display = "block";
-    document.getElementById("submitNewSensor").style.display = "none";
+    setElementDisplay(["addNewSensorButton", "addExistingSensorButton"], "inline-block");
+    setElementDisplay(["sensorSelect"], "inline-block");
+    setElementDisplay(["submitSensor"], "none");
     roomSelect.onchange = populateSensorMenu;
     roomSelect.value = -1;
-} document.getElementById("submitNewSensor").onclick = submitNewSensorButton;
+    document.getElementById("selectedSensor").value = -1;
+}
+
+// Function called when the client clicks on the "Add Existing Sensor" button
+async function addExistingSensorButton() {
+    swapElements(document.getElementById("roomSelect"), document.getElementById("sensorSelect"));
+    removeSensorChoices();
+    await populateSensorMenuForDefaultRoom();
+    setElementDisplay(["addNewSensorButton", "addExistingSensorButton"], "none");
+    setElementDisplay(["submitSensor"], "inline-block");
+    document.getElementById("submitSensor").onclick = submitExistingSensorButton;
+    document.getElementById("selectedRoom").onchange = "";
+    document.getElementById("selectedRoom").value = -1;
+    document.getElementById("selectedSensor").onchange = "";
+    document.getElementById("selectedSensor").value = -1;
+} document.getElementById("addExistingSensorButton").onclick = addExistingSensorButton;
+
+// Function called when the client submits the existing sensor add
+async function submitExistingSensorButton() {
+    let roomSelect = document.getElementById("selectedRoom");
+    let sensorSelect = document.getElementById("selectedSensor");
+    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensor?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&roomID=" + roomSelect.value + "&sensorID=" + sensorSelect.value).catch(e => console.log(e));
+    if (returnMessage.returnCode == 230)
+        console.log("Sensor added succesfully.");
+
+    swapElements(document.getElementById("sensorSelect"), document.getElementById("roomSelect"));
+    setElementDisplay(["addNewSensorButton", , "addExistingSensorButton"], "inline-block");
+    setElementDisplay(["submitSensor"], "none");
+    roomSelect.onchange = populateSensorMenu;
+    sensorSelect.onchange = sensorClicked;
+    vacateSensorMenu();
+    roomSelect.value = -1;
+    sensorSelect.value = -1;
+}
 
 // Shows the choices you have when you pick a sensor
-function sensorClicked(sensorID) {
-    document.getElementById("sensorSelectButton").innerHTML = "Sensor " + sensorID + "<i class='arrowDown'>";
-    sensorSelectShow();
-    setBrDisplay("block");
-    document.getElementById("updateSensor").style.display = "block";
-    document.getElementById("removeSensorRef").style.display = "block";
-    document.getElementById("removeSensor").style.display = "block";
-    currentSensor = sensorID;
-}
+function sensorClicked() {
+    setElementDisplay(["updateSensor", "removeSensorRef", "removeSensor"], "block");
+} document.getElementById("selectedSensor").onchange = sensorClicked;
 
 // Removes the choices for the sensors
 function removeSensorChoices() {
-    document.getElementById("sensorSelectButton").innerHTML = "Select Sensor" + "<i class='arrowDown'>";
-    setBrDisplay("none");
-    document.getElementById("updateSensor").style.display = "none";
-    document.getElementById("removeSensorRef").style.display = "none";
-    document.getElementById("removeSensor").style.display = "none";
-    vacateSensorMenu();
+    setElementDisplay(["updateSensor", "removeSensorRef", "removeSensor"], "none");
 }
 
-// Function to remove or display breaks
-function setBrDisplay(mode) {
-    if (mode == "block") {
-        document.getElementById("br2").style.display = "block";
-        document.getElementById("br3").style.display = "block";
-        document.getElementById("br4").style.display = "block";
-    } else if (mode == "none"){
-        document.getElementById("br2").style.display = "none";
-        document.getElementById("br3").style.display = "none";
-        document.getElementById("br4").style.display = "none";
-    }
-}
-
+// Function called when the client chooses to update the chosen sensor
 function updateSensor() {
-    document.getElementById("sensorSelect").style.display = "none";
-    document.getElementById("addNewSensorButton").style.display = "none";
-    document.getElementById("br1").style.display = "none";
+    setElementDisplay(["sensorSelect", "addNewSensorButton", "addExistingSensorButton"], "none");
+    setElementDisplay(["submitUpdate"], "inline-block");
     removeSensorChoices();
-    document.getElementById("submitUpdate").style.display = "block";
+    vacateSensorMenu();
     document.getElementById("selectedRoom").onchange = "";
     document.getElementById("selectedRoom").value = -1;
 } document.getElementById("updateSensor").onclick = updateSensor;
 
+// Function called when the client submits the sensor update
 async function submitUpdate() {
     let roomSelect = document.getElementById("selectedRoom");
-    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensor?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&roomID=" + roomSelect.value + "&sensorID=" + currentSensor).catch(e => console.log(e));
+    let sensorSelect = document.getElementById("selectedSensor");
+    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensor?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&roomID=" + roomSelect.value + "&sensorID=" + sensorSelect.value).catch(e => console.log(e));
     if (returnMessage.returnCode == 230)
         console.log("Sensor updated succesfully.");
 
-    document.getElementById("sensorSelect").style.display = "block";
-    document.getElementById("addNewSensorButton").style.display = "block";
-    document.getElementById("br1").style.display = "block";
-    document.getElementById("submitUpdate").style.display = "none";
+    setElementDisplay(["addNewSensorButton", "addExistingSensorButton"], "inline-block");
+    setElementDisplay(["sensorSelect"], "inline-block");
+    setElementDisplay(["submitUpdate"], "none");
     roomSelect.onchange = populateSensorMenu;
     roomSelect.value = -1;
-    currentSensor = -1;
+    sensorSelect.value = -1;
     vacateSensorMenu();
 } document.getElementById("submitUpdate").onclick = submitUpdate;
 
+// Function called when the client chooses to remove the references of the chosen sensor
 async function removeSensorRef() {
-    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensorref?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&sensorID=" + currentSensor).catch(e => console.log(e));
+    let sensorSelect = document.getElementById("selectedSensor");
+    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensorref?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&sensorID=" + sensorSelect.value).catch(e => console.log(e));
     if (returnMessage.returnCode == 215)
         console.log("Sensor referenced removed succesfully.");
 
     removeSensorChoices();
     document.getElementById("selectedRoom").value = -1;
-    currentSensor = -1;
+    sensorSelect.value = -1;
+    vacateSensorMenu();
 } document.getElementById("removeSensorRef").onclick = removeSensorRef;
 
+// Function called when the client chooses to remove the chosen sensor
 async function removeSensor() {
-    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensor?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&sensorID=" + currentSensor).catch(e => console.log(e));
+    let sensorSelect = document.getElementById("selectedSensor");
+    let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensor?username=" + sessionStorage.getItem("username") + "&password=" + sessionStorage.getItem("password") + "&sensorID=" + sensorSelect.value).catch(e => console.log(e));
     if (returnMessage.returnCode == 213)
         console.log("Sensor removed succesfully.");
 
     removeSensorChoices();
     document.getElementById("selectedRoom").value = -1;
-    currentSensor = -1;
+    sensorSelect.value = -1;
+    vacateSensorMenu();
 } document.getElementById("removeSensor").onclick = removeSensor;
+
+// Generic function to set the display style of an array of elements
+function setElementDisplay(elemArray, mode) {
+    elemArray.forEach(function (v) {
+        document.getElementById(v).style.display = mode;
+    });
+}
+
+// Function to swap two elements
+function swapElements(elementOne, elementTwo) {
+    elementOne.parentNode.insertBefore(elementTwo, elementOne)
+}

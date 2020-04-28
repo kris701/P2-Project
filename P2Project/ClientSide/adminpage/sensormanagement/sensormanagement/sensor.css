@@ -14,18 +14,22 @@
     padding: 20px;
 }
 
-.addNewSensorButton {
+.displayContainer button {
     background: #eeeeee;
     color: #3877ff;
     height: 40px;
     text-transform: uppercase;
-    text-align: left;
     box-shadow: 0 0px 10px #8f8f8f94;
     font-size: 16px;
     border-color: darkgray;
     border-width: 1px;
     border-style: solid;
     margin-left: 30px;
+}
+
+.addNewSensorButton {
+    width: 180px;
+    text-align: center;
 }
 
 .br {
@@ -33,117 +37,30 @@
     height: 20px;
 }
 
-.roomSelect select {
+.roomSelect, .sensorSelect {
+    display: inline-block;
+    margin-left: 30px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.roomSelect select, .sensorSelect select {
     background: #eeeeee;
     color: #3877ff;
     padding: 8px;
-    width: 165px;
+    width: 180px;
     height: 40px;
     text-transform: uppercase;
     box-shadow: 0 0px 10px #8f8f8f94;
     font-size: 16px;
-}
-
-.sensorSelect {
-    display: inline-block;
-    margin-left: 222px;
-    width: fit-content;
-}
-
-.roomSelect {
-    display: inline-block;
-    margin-left: 30px;
-    position: absolute;
 }
 
 .submitButton {
-    background: #eeeeee;
-    color: #3877ff;
-    height: 40px;
-    text-transform: uppercase;
     text-align: left;
-    box-shadow: 0 0px 10px #8f8f8f94;
-    font-size: 16px;
-    border-color: darkgray;
-    border-width: 1px;
-    border-style: solid;
-    margin-left: 222px;
     display: none;
 }
 
 .buttons {
-    background: #eeeeee;
-    color: #3877ff;
-    height: 40px;
-    text-transform: uppercase;
     text-align: left;
-    box-shadow: 0 0px 10px #8f8f8f94;
-    font-size: 16px;
-    border-color: darkgray;
-    border-width: 1px;
-    border-style: solid;
-    margin-left: 30px;
     display: none;
-}
-
-.sensorSelectButton {
-    background: #eeeeee;
-    color: #3877ff;
-    height: 40px;
-    text-transform: uppercase;
-    text-align: left;
-    box-shadow: 0 0px 10px #8f8f8f94;
-    font-size: 16px;
-    border-color: darkgray;
-    border-width: 1px;
-    border-style: solid;
-    padding-left: 10px;
-    padding-right: 26px;
-    position: relative;
-}
-
-.arrowDown {
-    width: 0;
-    height: 0;
-    border-left: 3px solid transparent;
-    border-right: 3px solid transparent;
-    border-top: 6px solid #3877ff;
-    margin-left: 15px;
-    top: 50%;
-    position: absolute;
-    transform: translateY(-50%);
-}
-
-.sensorSelectContent {
-    background: #eeeeee;
-    color: #3877ff;
-    padding: 8px;
-    width: 90%;
-    text-transform: uppercase;
-    box-shadow: 0 0px 10px #8f8f8f94;
-    font-size: 16px;
-    border-color: darkgray;
-    border-width: 1px;
-    border-style: solid;
-    box-sizing: border-box;
-    z-index: 1;
-    display: none;
-}
-
-.sensorSelectContent button {
-    background: #eeeeee;
-    color: #3877ff;
-    text-transform: uppercase;
-    text-align: left;
-    font-size: 16px;
-    padding-left: 10px;
-    padding-right: 2px;
-    border: hidden;
-    display: block;
-}
-
-.sensorSearch {
-    width: 98%;
-    display: block;
-    margin-bottom: 7px;
 }

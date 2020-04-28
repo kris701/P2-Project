@@ -11,8 +11,9 @@
 </head>
 <body>
     <div class="displayContainer">
-        <button id="addNewSensorButton" class="addNewSensorButton">Add New Sensor</button>
-        <div id="br1" class="br"></div>
+        <button id="addNewSensorButton" class="addSensorButton">Add New Sensor</button>
+        <button id="addExistingSensorButton" class="addSensorButton">Add Existing Sensor</button>
+        <br />
         <div class="roomSelect" id="roomSelect">
             <select name="room" id="selectedRoom">
                 <option value="-1">Select room</option>
@@ -20,20 +21,18 @@
         </div>
 
         <div class="sensorSelect" id="sensorSelect">
-            <button id="sensorSelectButton" class="sensorSelectButton">Select Sensor<i class="arrowDown"></i></button>
-            <div id="sensorSelectContent" class="sensorSelectContent">
-                <input type="text" placeholder="Search..." id="sensorSearch" class="sensorSearch">
-            </div>
+            <select name="sensor" id="selectedSensor">
+                <option value="-1">Select sensor</option>
+            </select>
         </div>
 
-        <button id="submitNewSensor" class="submitButton">Add sensor</button>
+        <button id="submitSensor" class="submitButton">Add sensor</button>
         <button id="submitUpdate" class="submitButton">Update sensor</button>
-
-        <div id="br2" class="br"></div>
-        <button id="updateSensor" class="buttons">UpdateSensor</button>
-        <div id="br3" class="br"></div>
+        <br />
+        <button id="updateSensor" class="buttons">Update Sensor</button>
+        <br />
         <button id="removeSensorRef" class="buttons">Remove Sensor Reference</button>
-        <div id="br4" class="br"></div>
+        <br />
         <button id="removeSensor" class="buttons">Remove Sensor</button>
     </div>
     <script defer type="module" src="sensor.js"></script>
