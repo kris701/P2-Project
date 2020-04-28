@@ -1,5 +1,7 @@
 ﻿import { UC } from "../../../js/utils.js";
 
+//let sensorInfo = [];
+
 window.onload = initialLoad();
 document.getElementById("selectedSensor").onchange = sensorClicked;
 document.getElementById("addExistingSensorButton").onclick = addExistingSensorButton;
