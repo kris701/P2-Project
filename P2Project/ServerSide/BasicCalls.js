@@ -71,6 +71,30 @@ module.exports.BCC = class {
             return true;
         return false;
     }
+
+    static async getSensorTypeName(sensorTypeID) {
+        let result;
+
+        let ret = await module.exports.BCC.makeQuery("SELECT * FROM SensorTypes WHERE sensorType=?", [sensorTypeID]);
+        if (module.exports.BCC.isErrorCode(ret))
+            return result;
+        result = ret.recordset[0].typeName;
+
+        return result;
+    }
+
+    static async pushItem(recordset, result) {
+        if (result == null)
+            result = [];
+        await module.exports.BCC.asyncForEach(recordset, async function (v) {
+            result.push(v);
+        });
+        return result;
+    }
+
+    static roundToDigit(num) {
+        return Math.round((num + Number.EPSILON) * 100) / 100;
+    }
 }
 
 //#endregion

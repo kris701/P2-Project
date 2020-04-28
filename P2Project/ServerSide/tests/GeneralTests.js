@@ -38,6 +38,20 @@ module.exports.GTC = class {
         });
     }
 
+    static shouldReturnObject(functionCall) {
+        it('Should return an object', async function () {
+            let returnValue = await functionCall;
+            expect(returnValue).to.be.an('object');
+        });
+    }
+
+    static shouldReturnADateObject(functionCall) {
+        it('Should return a Date object', async function () {
+            let returnValue = await functionCall;
+            expect(returnValue).to.be.an('Date');
+        });
+    }
+
     static outputArrayMustBeLargerThanDotData(functionCall, largerThan) {
         it('Return array should be larger than ' + largerThan, async function () {
             let returnValue = await functionCall;
