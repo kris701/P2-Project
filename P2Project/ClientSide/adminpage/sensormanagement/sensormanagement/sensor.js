@@ -10,13 +10,7 @@ async function GetInformation() {
 // Adds more elements to the select in the html for room selection
 async function importDataToSelect() {
     let roomSelect = document.getElementById("selectedRoom");
-
-    for (let i = 0; i < sensorInfo.length; i++) {
-        let option = document.createElement("option");
-        option.text = sensorInfo[i].roomName;
-        option.value = i;
-        roomSelect.add(option);
-    }
+    addOptionsToSelect(sensorInfo, roomSelect, "", "roomName");
 }
 
 // Populates the sensor dropdown menu with all sensors in the chosen room
@@ -27,13 +21,7 @@ function populateSensorMenu() {
 
     vacateSensorMenu();
     removeSensorChoices();
-
-    for (let i = 0; i < sensorInfo[room].sensors.length; i++) {
-        let option = document.createElement("option");
-        option.text = "Sensor " + sensorInfo[room].sensors[i].sensorID;
-        option.value = sensorInfo[room].sensors[i].sensorID;
-        sensorSelect.add(option);
-    }
+    addOptionsToSelect(sensorInfo[room].sensors, sensorSelect, "Sensor ", "sensorID");
 } document.getElementById("selectedRoom").onchange = populateSensorMenu;
 
 async function populateSensorMenuForDefaultRoom() {
@@ -41,15 +29,22 @@ async function populateSensorMenuForDefaultRoom() {
     let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensors?username=" + "Admin" + "&password=" + "Password").catch(e => console.log(e));
     let sensors = returnMessage.data;
 
-    vacateSensorMenu();
+    for (let i = sensors.length - 1; i >= 0; i--) {
+        if (sensors[i].roomID != -1)
+            sensors.splice(i);
+    }
 
-    for (let i = 0; i < sensors.length; i++) {
-        if (sensors[i].roomID == -1) {
-            let option = document.createElement("option");
-            option.text = "Sensor " + sensors[i].sensorID;
-            option.value = sensors[i].sensorID;
-            sensorSelect.add(option);
-        }
+    vacateSensorMenu();
+    addOptionsToSelect(sensors, sensorSelect, "Sensor ", "sensorID");
+}
+
+// Adds options from the input array to the given select element
+function addOptionsToSelect(inputArray, selectElement, prefix, index) {
+    for (let i = 0; i < inputArray.length; i++) {
+        let option = document.createElement("option");
+        option.text = prefix + inputArray[i][index];
+        option.value = (prefix == "") ? i : inputArray[i][index];
+        selectElement.add(option);
     }
 }
 
@@ -148,6 +143,7 @@ async function submitUpdate() {
     if (returnMessage.returnCode == 230)
         console.log("Sensor updated succesfully.");
 
+    //showOnlyTheseElements(["addNewSensorButton", "addExistingSensorButton", "sensorSelect"]);
     setElementDisplay(["addNewSensorButton", "addExistingSensorButton"], "inline-block");
     setElementDisplay(["sensorSelect"], "inline-block");
     setElementDisplay(["submitUpdate"], "none");
@@ -194,3 +190,22 @@ function setElementDisplay(elemArray, mode) {
 function swapElements(elementOne, elementTwo) {
     elementOne.parentNode.insertBefore(elementTwo, elementOne)
 }
+
+// DOES NOT WORK
+//function showOnlyTheseElements(elemArray) {
+//    let allElements = document.body.getElementsByTagName("*");
+//    let displayContainer = document.getElementsByClassName("displayContainer");
+//    let enabledElements = [displayContainer[0]];
+
+//    for (let i = 0; i < elemArray.length; i++)
+//        enabledElements.push(document.getElementById(elemArray[i]));
+
+//    for (let i = 0; i < allElements.length; i++) {
+//        if (typeof (allElements[i]) != typeof (0)) {
+//            if (enabledElements.includes(allElements[i]))
+//                allElements[i].style.display = "inline-block";
+//            else
+//                allElements[i].style.display = "none";
+//        }
+//    }
+//}
