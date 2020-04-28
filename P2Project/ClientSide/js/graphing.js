@@ -91,7 +91,8 @@ function generateGraph(container, xAxis, yAxis) {
                 yAxes: [{
                     display: true,
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        max: 100
                     }
                 }]
             }
