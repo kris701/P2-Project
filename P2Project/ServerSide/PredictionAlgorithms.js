@@ -156,7 +156,7 @@ class IRVC {
                 for (let l = 0; l < data[i].thresholdPasses[j].timesExceeded.length; l++) {
                     sum += WC.getAgeWeight(data[i].thresholdPasses[j].timesExceeded[l].date, date);
                 }
-                data[i].thresholdPasses[j].timesExceeded = BCC.roundToDigit(sum / parseInt(cfg.PAC_weekOffset, 10));
+                data[i].thresholdPasses[j].timesExceeded = BCC.roundToDigit(sum / parseInt(cfg.PAC_weekOffset, 10)) * 100;
             }
         }
         return data;
