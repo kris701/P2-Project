@@ -70,15 +70,17 @@ module.exports.WASC = class {
 
 async function getWASForEachThesholdPass(predictionData, interval, returnItem) {
     await BCC.asyncForEach(predictionData.thresholdPasses, async function (passedValueInfo) {
-        let priority = getPriority(passedValueInfo.timeUntil, interval);
+        if (passedValueInfo.timesExceeded > 0) {
+            let priority = getPriority(passedValueInfo.timeUntil, interval);
 
-        if (priority.priority != cfg.priorityEnum.None) {
-            let isThere = await checkIfWarningIsThere(predictionData.sensorType, returnItem.data, priority.priority);
+            if (priority.priority != cfg.priorityEnum.None) {
+                let isThere = await checkIfWarningIsThere(predictionData.sensorType, returnItem.data, priority.priority);
 
-            if (!isThere) {
-                let warningInfo = await getWarningInfoQuery(predictionData.sensorType, priority);
-                if (warningInfo.message != "" && warningInfo.solutionInfo.message != "")
-                    returnItem.data.push(warningInfo);
+                if (!isThere) {
+                    let warningInfo = await getWarningInfoQuery(predictionData.sensorType, priority);
+                    if (warningInfo.message != "" && warningInfo.solutionInfo.message != "")
+                        returnItem.data.push(warningInfo);
+                }
             }
         }
     });
