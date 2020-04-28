@@ -91,6 +91,10 @@ module.exports.BCC = class {
         });
         return result;
     }
+
+    static roundToDigit(num) {
+        return Math.round((num + Number.EPSILON) * 100) / 100;
+    }
 }
 
 //#endregion

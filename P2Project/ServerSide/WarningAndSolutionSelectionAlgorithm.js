@@ -26,19 +26,13 @@ class ReturnClass {
     }
 }
 class PriorityInfo {
-    constructor(priority, timeUntil) {
+    constructor(priority, priorityName, timeUntil) {
         this.priority = priority;
+        this.priorityName = priorityName;
         this.timeUntil = timeUntil;
     }
 }
 const noWarnMessasge = new WarningInfo(-2, -2, "No Warnings", new SolutionInfo(0, "No Solution"));
-
-const priorityEnum = {
-    None: 0,
-    Low: 1,
-    Medium: 2,
-    High: 3
-};
 
 //#endregion
 
@@ -78,7 +72,7 @@ async function getWASForEachThesholdPass(predictionData, interval, returnItem) {
     await BCC.asyncForEach(predictionData.thresholdPasses, async function (passedValueInfo) {
         let priority = getPriority(passedValueInfo.timeUntil, interval);
 
-        if (priority.priority != priorityEnum.None) {
+        if (priority.priority != cfg.priorityEnum.None) {
             let isThere = await checkIfWarningIsThere(predictionData.sensorType, returnItem.data, priority.priority);
 
             if (!isThere) {
@@ -111,16 +105,12 @@ function getPriority(timeUntilBadIAQ, interval) {
 
     let minutes = timeUntilBadIAQ * interval;
 
-    if (minutes > parseInt(cfg.WASC_LowPTime, 10))
-        return new PriorityInfo(priorityEnum.None, minutes);
-    else if (minutes > parseInt(cfg.WASC_MedPTime, 10))
-        return new PriorityInfo(priorityEnum.Low, minutes);
-    else if (minutes > parseInt(cfg.WASC_HighPTime, 10))
-        return new PriorityInfo(priorityEnum.Medium, minutes);
-    else
-        return new PriorityInfo(priorityEnum.High, minutes);
-
-    return new PriorityInfo(priorityEnum.None, minutes);
+    let selectedP = cfg.priorityEnum.None;
+    for (let key in cfg.priorityEnum) {
+        if (minutes < parseInt(cfg.priorityTime[cfg.priorityEnum[key]], 10))
+            selectedP = cfg.priorityEnum[key];
+    }
+    return new PriorityInfo(selectedP, Object.keys(cfg.priorityEnum)[selectedP] , minutes);
 }
 
 async function getWarningInfoQuery(sensorType, priority) {

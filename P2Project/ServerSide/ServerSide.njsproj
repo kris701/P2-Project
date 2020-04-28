@@ -73,6 +73,10 @@
       <Publish>True</Publish>
       <TestFramework>mocha</TestFramework>
     </Compile>
+    <Content Include="tests\ConfigLoading.js">
+      <SubType>Code</SubType>
+      <TestFramework>Mocha</TestFramework>
+    </Content>
     <Content Include="tests\ResourceCheckTest.js">
       <SubType>Code</SubType>
     </Content>

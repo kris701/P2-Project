@@ -145,33 +145,21 @@ class IRVC {
 
     // TimesExceeded are now populated with timestamps of when the threshold was exceeded.
     static convertTimestampArrayToProbability(data, date) {
+        //for (let i = 0; i < data.length; i++) {
+        //    for (let j = 0; j < data[i].thresholdPasses.length; j++) {
+        //        data[i].thresholdPasses[j].timesExceeded = (data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10)) * 100;
+        //    }
+        //}
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].thresholdPasses.length; j++) {
-                data[i].thresholdPasses[j].timesExceeded = (data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10)) * 100;
+                let sum = 0;
+                for (let l = 0; l < data[i].thresholdPasses[j].timesExceeded.length; l++) {
+                    sum += WC.getAgeWeight(data[i].thresholdPasses[j].timesExceeded[l].date, date);
+                }
+                data[i].thresholdPasses[j].timesExceeded = BCC.roundToDigit(sum / parseInt(cfg.PAC_weekOffset, 10));
             }
         }
-        //for (let i = 0; i < data.length; i++) {
-        //    for (let j = 0; j < data[i].thresholdPasses.length; j++) {
-        //        for (let l = 0; l < data[i].thresholdPasses[j].timesExceeded.length; l++) {
-        //            data[i].thresholdPasses[j].timesExceeded[l] = WC.getAgeWeight(data[i].thresholdPasses[j].timesExceeded[l].date, date);
-        //        }
-        //    }
-        //}
-        //for (let i = 0; i < data.length; i++) {
-        //    for (let j = 0; j < data[i].thresholdPasses.length; j++) {
-        //        data[i].thresholdPasses[j].timesExceeded = IRVC.avrArrayValues(data[i].thresholdPasses[j].timesExceeded);
-        //    }
-        //}
         return data;
-    }
-
-    static avrArrayValues(array) {
-        let retValue = 0;
-        for (let i = 0; i < array.length; i++) {
-            retValue += array[i];
-        }
-        retValue = retValue / array.length;
-        return retValue;
     }
 }
 
