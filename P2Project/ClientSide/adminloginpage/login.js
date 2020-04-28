@@ -29,7 +29,7 @@ async function login() {
         if (credentials) {
             sessionStorage.setItem("LoggedIn", "True");
             sessionStorage.setItem("username", username);
-            sessionStorage.SetItem("password", password);
+            sessionStorage.setItem("password", password);
             let nextPage = "/adminpage/admin.html"
             window.location.href = nextPage;
         }

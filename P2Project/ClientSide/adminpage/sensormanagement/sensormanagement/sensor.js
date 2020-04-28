@@ -56,7 +56,6 @@ async function populateSensorMenuForDefaultRoom() {
 // Removes all sensors in the sensor dropdown menu
 function vacateSensorMenu() {
     let sensorSelect = document.getElementById("selectedSensor");
-    console.log(sensorSelect.options);
     for (let i = sensorSelect.options.length - 1; i >= 0 ; i--) {
         let option = sensorSelect.options[i];
         if (option.value != -1)
