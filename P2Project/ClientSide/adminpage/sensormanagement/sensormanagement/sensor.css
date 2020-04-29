@@ -50,10 +50,6 @@
     font-size: 16px;
 }
 
-.submitButton {
-    text-align: left;
-}
-
-.buttons {
+.submitButton, .buttons {
     text-align: left;
 }
