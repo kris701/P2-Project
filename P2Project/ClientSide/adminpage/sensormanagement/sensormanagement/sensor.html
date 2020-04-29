@@ -11,50 +11,52 @@
 </head>
 <body>
     <div class="displayContainer">
-        <div id="addNewSensorDiv" style="display:none">
-            <div class="roomSelect" id="addNewSensorRoomSelect">
+        <div id="addNewSensorMenu" style="display:none">
+            <button id="addNewSensorBackButton" class="addSensorButton">Back</button>
+            <div class="roomSelect">
                 <select name="room" id="addNewSensorSelectedRoom">
                     <option value="-1">Select room</option>
                 </select>
             </div>
-            <button id="addNewSensorButtonInner" class="addSensorButton">Add New Sensor</button>
+            <button id="addNewSensorSubmitButton" class="addSensorButton">Add New Sensor</button>
         </div>
-        <div id="addExistingSensorDiv" style="display:none">
-            <div class="roomSelect" id="addExistingSensorSensorSelect">
-                <select name="room" id="addExistingSensorSelectedSensor">
+        <div id="addExistingSensorMenu" style="display:none">
+            <button id="addExistingSensorBackButton" class="addSensorButton">Back</button>
+            <div class="roomSelect">
+                <select name="room" id="addExistingSensorSensorSelect">
                     <option value="-1">Select sensor</option>
                 </select>
             </div>
-            <div class="roomSelect" id="addExistingSensorRoomSelect">
-                <select name="room" id="addExistingSensorSelectedRoom">
+            <div class="roomSelect">
+                <select name="room" id="addExistingSensorRoomSelect">
                     <option value="-1">Select room</option>
                 </select>
             </div>
-            <button id="addExistingSensorButtonInner" class="addSensorButton">Add Existing Sensor</button>
+            <button id="addExistingSensorSubmitButton" class="addSensorButton">Add Existing Sensor</button>
         </div>
 
-        <div id="mainSelects">
-            <button id="addNewSensorButton" class="addSensorButton">Add New Sensor</button>
-            <button id="addExistingSensorButton" class="addSensorButton">Add Existing Sensor</button>
+        <div id="mainMenu">
+            <button id="addNewSensorMenuButton" class="addSensorButton">Add New Sensor</button>
+            <button id="addExistingSensorMenuButton" class="addSensorButton">Add Existing Sensor</button>
             <br />
 
-            <div class="roomSelect" id="roomSelect">
-                <select name="room" id="selectedRoom">
+            <div class="roomSelect">
+                <select name="room" id="roomSelect">
                     <option value="-1">Select room</option>
                 </select>
             </div>
 
-            <div class="sensorSelect" id="sensorSelect">
-                <select name="sensor" id="selectedSensor">
+            <div class="sensorSelect">
+                <select name="sensor" id="sensorSelect">
                     <option value="-1">Select sensor</option>
                 </select>
             </div>
         </div>
 
-        <div id="sensorButtons" style="display: none">
-            <button id="removeSensorRef" class="buttons">Remove Sensor Reference</button>
+        <div id="sensorSettingMenu" style="display: none">
+            <button id="removeSensorRefButton" class="buttons">Remove Sensor Reference</button>
             <br />
-            <button id="removeSensor" class="buttons">Remove Sensor</button>
+            <button id="removeSensorButton" class="buttons">Remove Sensor</button>
         </div>
     </div>
     <script defer type="module" src="sensor.js"></script>
