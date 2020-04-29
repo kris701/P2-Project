@@ -35,6 +35,21 @@ async function getWarningsAndSolutionj(ID, date) {
     return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getwarningsandsolutions?room=" + ID + "&date=" + date);
 }
 
+async function liveData(roomNum) {
+    let sensorIDs = [];
+
+    //This for loop will find the sensor IDs for the selected room
+    for (let i = 0; i < roomData[roomNum].sensors.length; i++) {
+        sensorIDs.push(roomData[roomNum].sensors[i].sensorID);
+    }
+
+    let CO2 = [];
+    let RH = [];
+    let Temp = [];
+
+    console.log(roomData);
+    console.log(sensorIDs);
+}
 
 // Adds more elements to the select in the html for room selection
 async function importDataToSelect() {
@@ -67,6 +82,8 @@ async function roomChangeFunction() {
 
         let predictionData = await getPredictions(roomData[roomSelect.selectedIndex].roomID, date.value);
         let warningData = await getWarningsAndSolutionj(roomData[roomSelect.selectedIndex].roomID, date.value);
+
+        await liveData(roomData[roomSelect.selectedIndex].roomID);
 
         // Gets the length of the x axis
         let xLength = GRPH.getHighestTimestamp(predictionData);
