@@ -338,6 +338,20 @@ module.exports.ACC = class {
             return new BCC.retMSG(RC.successCodes.GotAllSensorTypes, returnItem);
         }
 
+        static async getAllThresholdValues() {
+            let returnItem = new ReturnItem([]);
+
+            let ret = await BCC.makeQuery("SELECT * FROM SensorThresholds", []);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
+            await BCC.asyncForEach(ret.recordset, async function (v) {
+                if (v.sensorType != 1)
+                    returnItem.data.push(v);
+            })
+
+            return new BCC.retMSG(RC.successCodes.GotAllSensorTypes, returnItem);
+        }
+
         static async addNewSensorType(typeName) {
             if (typeName == null)
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
