@@ -1,10 +1,64 @@
 ﻿body {
-    height: 500px;
-    width: auto;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
 }
 
-.mainContainer {
-    height: 500px;
-    width: auto;
-    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+/* --- Room choice section begins here --- */
+
+.displayContainer {
+    background-color: rgba(248, 248, 248, 0.75);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    overflow: hidden;
+    padding: 20px;
+}
+
+    .displayContainer button {
+        background: #eeeeee;
+        color: #3877ff;
+        height: 40px;
+        text-transform: uppercase;
+        box-shadow: 0 0px 10px #8f8f8f94;
+        font-size: 16px;
+        border-color: darkgray;
+        border-width: 1px;
+        border-style: solid;
+        margin-left: 30px;
+    }
+
+.addNewRoomButton, updateRoomButton {
+    width: 180px;
+    text-align: center;
+}
+
+.br {
+    display: block;
+    height: 20px;
+}
+
+.roomSelect {
+    display: inline-block;
+    margin-left: 30px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+    .roomSelect select {
+        background: #eeeeee;
+        color: #3877ff;
+        padding: 8px;
+        width: 180px;
+        height: 40px;
+        text-transform: uppercase;
+        box-shadow: 0 0px 10px #8f8f8f94;
+        font-size: 16px;
+    }
+
+.submitButton {
+    text-align: left;
+}
+
+.buttons {
+    text-align: left;
 }

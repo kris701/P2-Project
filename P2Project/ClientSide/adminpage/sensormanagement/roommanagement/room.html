@@ -5,12 +5,42 @@
     <title></title>
     <link rel="stylesheet" href="room.css" type="text/css" />
     <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <script src="../../GetLoggedIn.js"></script>
 </head>
 <body>
-    <div class="mainContainer">
+    <div class="displayContainer">
+        <div id="addNewRoomMenu" style="display:none">
+            <button id="addNewRoomBackButton" class="addRoomButton">Back</button>
+            <input id="addRoomInput" class="inputClass" placeholder="Enter room name"/>
+            <button id="addNewRoomSubmitButton" class="addRoomButton">Add New Room</button>
+        </div>
 
+        <div id="updateRoomMenu" style="display:none">
+            <button id="updateRoomBackButton" class="updateRoomButton">Back</button>
+            <input id="updateRoomInput" class="inputClass" placeholder="Enter room name" />
+            <button id="updateRoomSubmitButton" class="updateRoomButton">Update Room</button>
+        </div>
+
+        <div id="mainMenu">
+            <button id="addNewRoomMenuButton" class="addRoomButton">Add New Room</button>
+            <br />
+
+            <div class="roomSelect">
+                <select name="room" id="roomSelect">
+                    <option value="-1">Select room</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div id="roomSettingMenu" style="display: none">
+            <button id="removeRoomButton" class="buttons">Remove Room</button>
+            <br />
+            <button id="updateRoomButton" class="buttons">Update Room</button>
+        </div>
     </div>
+    <script defer type="module" src="room.js"></script>
 </body>
 </html>
