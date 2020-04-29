@@ -8,6 +8,7 @@ export class UC {
         }
     }
 
+    // Explain this function please ------------------------------------------------------------------
     static async jsonFetch(targetUrl, fetchArgArray) {
         if (fetchArgArray != null) {
             if (fetchArgArray.length != 0) {

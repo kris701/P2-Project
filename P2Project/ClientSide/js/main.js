@@ -35,20 +35,8 @@ async function getWarningsAndSolutionj(ID, date) {
     return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getwarningsandsolutions?room=" + ID + "&date=" + date);
 }
 
-async function liveData(roomNum) {
-    let sensorIDs = [];
-
-    //This for loop will find the sensor IDs for the selected room
-    for (let i = 0; i < roomData[roomNum].sensors.length; i++) {
-        sensorIDs.push(roomData[roomNum].sensors[i].sensorID);
-    }
-
-    let CO2 = [];
-    let RH = [];
-    let Temp = [];
-
-    console.log(roomData);
-    console.log(sensorIDs);
+async function liveData(roomID) {
+    
 }
 
 // Adds more elements to the select in the html for room selection
