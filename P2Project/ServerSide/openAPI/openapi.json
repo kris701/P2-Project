@@ -176,10 +176,10 @@
     "/getlivedata": {
       "get": {
         "tags": [ "UserLevel" ],
-        "description": "Returns live data from sensors, split into intervals",
+        "description": "Returns live data a room, split into intervals",
         "parameters": [
           {
-            "name": "sensorID",
+            "name": "roomID",
             "in": "query",
             "description": "the ID of the sensor that you want info on",
             "required": true,
@@ -2558,14 +2558,15 @@
       "inline_response_231_data_liveDataArray": {
         "type": "object",
         "properties": {
-          "timeStamp": {
+          "sensorID": {
             "type": "number",
             "example": 2
           },
-          "sensorValue": {
-            "minimum": 0,
-            "type": "number",
-            "example": 540
+          "sensorLiveData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_231_data_sensorLiveData"
+            }
           }
         }
       },
@@ -2603,6 +2604,19 @@
           "warningPriority": {
             "maximum": 3,
             "minimum": 1,
+            "type": "number",
+            "example": 2
+          }
+        }
+      },
+      "inline_response_231_data_sensorLiveData": {
+        "type": "object",
+        "properties": {
+          "timeStamp": {
+            "type": "number",
+            "example": 2
+          },
+          "sensorValue": {
             "type": "number",
             "example": 2
           }
@@ -2802,11 +2816,6 @@
           "interval": {
             "type": "number",
             "example": 5
-          },
-          "sensorID": {
-            "minimum": 0,
-            "type": "number",
-            "example": 1
           },
           "data": {
             "$ref": "#/components/schemas/inline_response_231_data"

@@ -22,7 +22,7 @@ class Resource {
 // ResourceLib
 const ResourceLibrary = new Resource("/", [], function () { return true }, [
     new Resource("api-doc", [], getOpenAPI, []),
-    new Resource("getlivedata", ["sensorID", "date"], LDC.getLiveData, []),
+    new Resource("getlivedata", ["roomID", "date"], LDC.getLiveData, []),
     new Resource("getsensorinfo", [], SSIC.getSensorInfoQuery, []),
     new Resource("getpredictiondata", ["room", "date"], PAC.getPredictionDatetimeQuery, []),
     new Resource("getwarningsandsolutions", ["room", "date"], WASC.getWarningsAndSolutions, []),

@@ -5,9 +5,8 @@ let RC = require(__dirname + "/ReturnCodes.js");
 let cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
 class ReturnClass {
-    constructor(interval, data, sensorID) {
+    constructor(interval, data) {
         this.interval = interval;
-        this.sensorID = sensorID;
         this.data = data;
     }
 }
@@ -18,6 +17,12 @@ class LiveSensorClass {
     }
 }
 class LiveSensorValuesClass {
+    constructor(sensorID, sensorLiveData) {
+        this.sensorID = sensorID;
+        this.sensorLiveData = sensorLiveData;
+    }
+}
+class SensorValuesClass {
     constructor(timeStamp, sensorValue) {
         this.timeStamp = timeStamp;
         this.sensorValue = sensorValue;
@@ -30,24 +35,27 @@ class LiveSensorValuesClass {
 // Live Data Class
 
 module.exports.LDC = class {
-    static async getLiveData(sensorID, date) {
-        if (sensorID == null || date == null)
+    static async getLiveData(roomID, date) {
+        if (roomID == null || date == null)
             return RC.parseToRetMSG(RC.failCodes.NoParameters);
-        if (typeof (parseInt(sensorID, 10)) != typeof (0))
+        if (typeof (parseInt(roomID, 10)) != typeof (0))
             return RC.parseToRetMSG(RC.failCodes.NoParameters);
         if (typeof (date) != typeof (""))
             return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
         cfg = require(__dirname + "/ConfigLoading.js").configuration;
 
-        let returnItem = new ReturnClass(parseInt(cfg.LDC_interval, 10), [], sensorID);
+        let returnItem = new ReturnClass(parseInt(cfg.LDC_interval, 10), []);
 
-        let sensorsSensorTypes = await QCC.getSensorTypesForSensor(sensorID);
+        let sensorsInRoom = await QCC.getSensorsInRoom(roomID);
+        await BCC.asyncForEach(sensorsInRoom, async function (sensorInfo) {
+            let sensorsSensorTypes = await QCC.getSensorTypesForSensor(sensorInfo.sensorID);
 
-        await BCC.asyncForEach(sensorsSensorTypes, async function (sensorTypeInfo) {
-            let sensorTypeName = await BCC.getSensorTypeName(sensorTypeInfo);
-            let sensorValues = await getHistoricData(sensorID, date, sensorTypeName);
-            returnItem.data.push(new LiveSensorClass(sensorTypeName, sensorValues));
+            await BCC.asyncForEach(sensorsSensorTypes, async function (sensorTypeInfo) {
+                let sensorTypeName = await BCC.getSensorTypeName(sensorTypeInfo);
+                let sensorValues = await getHistoricData(sensorInfo.sensorID, date, sensorTypeName);
+                returnItem.data = await insertValuesIntoArray(returnItem.data, sensorTypeName, sensorValues, sensorInfo.sensorID);
+            });
         });
 
         return new BCC.retMSG(RC.successCodes.GotLiveData, returnItem);
@@ -57,6 +65,25 @@ module.exports.LDC = class {
 //#endregion
 
 //#region Private
+
+async function insertValuesIntoArray(dataArray, insertTypeName, sensorValues, sensorID) {
+    let isThere = await insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, sensorID);
+    if (!isThere) {
+        dataArray.push(new LiveSensorClass(insertTypeName, [new LiveSensorValuesClass(sensorID, sensorValues) ]));
+    }
+    return dataArray;
+}
+
+async function insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, sensorID) {
+    let isThere = false;
+    await BCC.asyncForEach(dataArray, async function (typeArray) {
+        if (typeArray.sensorType == insertTypeName) {
+            isThere = true;
+            typeArray.liveDataArray.push(new LiveSensorValuesClass(sensorID, sensorValues));
+        }
+    });
+    return isThere;
+}
 
 async function getHistoricData(sensorID, date, sensorTypeName) {
     let result = [];
@@ -84,7 +111,7 @@ async function getValueWithingTimestamps(result, sensorTypeName, sensorID, dateM
         return result;
 
     if (ret.recordset.length > 0)
-        result.push(new LiveSensorValuesClass(intervalsback, ret.recordset[0].sensorValue));
+        result.push(new SensorValuesClass(intervalsback, ret.recordset[0].sensorValue));
 
     return result;
 }
@@ -103,6 +130,15 @@ class QCC {
             result.push(v.sensorType);
         });
 
+        return result;
+    }
+
+    static async getSensorsInRoom(room) {
+        let ret = await BCC.makeQuery("SELECT * FROM SensorInfo WHERE roomID=?", [room]);
+        if (BCC.isErrorCode(ret))
+            return [];
+
+        let result = await BCC.pushItem(ret.recordset);
         return result;
     }
 }
