@@ -32,11 +32,6 @@
     text-align: center;
 }
 
-.br {
-    display: block;
-    height: 20px;
-}
-
 .roomSelect, .sensorSelect {
     display: inline-block;
     margin-left: 30px;
