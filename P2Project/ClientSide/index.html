@@ -11,33 +11,25 @@
 </head>
 <body>
     <header>
-        <div class="logoContainer">
-            <h3><i class="fas fa-satellite-dish"></i> &ensp; <span>air</span>control</h3>
-        </div>
+        <a href="../index.html"><i class="fas fa-satellite-dish"></i> &ensp; <span>air</span>control</a>
 
-        <div class="userType">
-            <h3><i class="fas fa-users"></i></h3>
-        </div>
+        <br />
 
         <form action="./adminloginpage/login.html">
             <input type="submit" class="adminButton" value="Go to Admin" />
         </form>
+
+         <h3><i class="fas fa-users"></i></h3>
     </header>
 
-    <div class="displayContainer">
-        <div class="roomDisplayContainer">
+    <div class="displayContainerPlacer">
+        <div class="displayContainer">
             <h3>location // </h3>
-        </div>
 
-        <div class="roomSelect">
-            <select name="room" id="selectedRoom">
-            </select>
-        </div>
-        <div class="roomSelect">
-            <label for="date"></label>
-            <input type="datetime-local" id="dateFrom" name="dateFrom">
-        </div>
-        <div class="roomSelect">
+            <select name="room" id="selectedRoom"></select>
+
+            <input type="datetime-local" id="dateFrom" name="dateFrom" />
+
             <button id="refreshRoomButton">Refresh</button>
         </div>
     </div>
@@ -47,7 +39,6 @@
             <h1 id="loadingText">Loading</h1>
             <p id="subLoadingText" style="font-size:20px">...</p>
             <img src="images/loading.gif" />
-
         </div>
         <div class="container" id="IAQData">
 
