@@ -52,6 +52,13 @@ module.exports.GTC = class {
         });
     }
 
+    static shouldReturnAString(functionCall) {
+        it('Should return a string', async function () {
+            let returnValue = await functionCall;
+            expect(returnValue.message).to.be.an('string');
+        });
+    }
+
     static outputArrayMustBeLargerThanDotData(functionCall, largerThan) {
         it('Return array should be larger than ' + largerThan, async function () {
             let returnValue = await functionCall;

@@ -42,7 +42,6 @@ export class GRPH {
             "rgb(128, 99, 132)");
 
         let ctx = document.getElementById("graph" + graphNum);
-        ctx.height = 300;
         generateGraph(ctx, xAxis, yAxis);
 
     }
@@ -116,6 +115,7 @@ function generateGraph(container, xAxis, yAxis) {
 
         // Configuration options to start the Y values from 0 and up
         options: {
+            maintainAspectRatio: false,
             scales: {
                 yAxes: [{
                     display: true,

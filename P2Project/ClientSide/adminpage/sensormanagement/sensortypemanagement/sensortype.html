@@ -22,7 +22,7 @@
                 <option value="-1">Select Sensor</option>
             </select>
             <select name="sensorType" id="addExistingSensorTypeSensorTypeSelect">
-                <option value="-1">Select SensorType</option>
+                <option value="1">Select SensorType</option>
             </select>
             <input type="number" id="addExistingSensorTypeThresholdInput" class="inputClass" placeholder="Enter threshold" />
             <button id="addExistingSensorTypeSubmitButton" class="enterMenuOrSubmitButton">Add Existing SensorType</button>
@@ -35,6 +35,10 @@
             </select>
             <input type="number" id="updateSensorTypeThresholdInput" class="inputClass" placeholder="Enter threshold" />
             <button id="updateSensorTypeSubmitButton" class="enterMenuOrSubmitButton">Update SensorType</button>
+            <br />
+
+            <h5>Current Threshold:</h5>
+            <p id="updateSensorTypeThresholdInfoBox">Select A Sensor</p>
         </div>
 
         <div id="removeSensorTypeReferenceMenu" style="display:none">
@@ -51,7 +55,7 @@
             <br />
 
             <select name="SensorType" id="sensorTypeSelect">
-                <option value="-1">Select SensorType</option>
+                <option value="1">Select SensorType</option>
             </select>
         </div>
 

@@ -2,10 +2,53 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <link rel="stylesheet" href="warnings.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <script src="../../GetLoggedIn.js"></script>
 </head>
 <body>
+    <div class="displayContainer">
+        <div id="addNewWarningMenu" style="display:none">
+            <button id="addNewWarningBackButton">Back</button>
+            <select name="room" id="addNewWarningSensorTypeSelect">
+                <option value="-1">Select SensorType</option>
+            </select>
+            <input id="addNewWarningMessageInput" placeholder="Warning Message" />
+            <button id="addNewWarningSubmitButton">Add New Warning</button>
+        </div>
+        <div id="updateWarningMenu" style="display:none">
+            <button id="updateWarningBackButton">Back</button>
+            <input id="updateWarningMessageInput" placeholder="Warning Message" />
+            <button id="updateWarningSubmitButton">Update Warning</button>
+        </div>
 
+        <div id="mainMenu">
+            <button id="addNewWarningMenuButton">Add New Warning</button>
+            <br />
+
+            <select name="warning" id="warningSelect">
+                <option value="1">Select Warning</option>
+            </select>
+        </div>
+
+        <div id="warningInfoMenu" style="display:none">
+            <h5>SensorType: </h5>
+            <p id="sensorTypeInfo">SensorTypeInfo</p>
+            <br />
+
+            <h5>Warning Message: </h5>
+            <p id="warningMessageInfo">WarningMessageInfo</p>
+        </div>
+        <br />
+
+        <div id="warningSettingMenu" style="display: none">
+            <button id="updateWarningButton">Update Warning</button>
+            <br />
+            <button id="removeWarningButton">Remove Warning</button>
+        </div>
+    </div>
+    <script defer type="module" src="warnings.js"></script>
 </body>
 </html>

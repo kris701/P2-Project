@@ -92,7 +92,7 @@ module.exports.ACC = class {
             else
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
             
-            return RC.parseToRetMSG(RC.failCodes.UpdateWarning);
+            return RC.parseToRetMSG(RC.successCodes.UpdateWarning);
         }
 
         // Solutions
@@ -194,6 +194,24 @@ module.exports.ACC = class {
             });
 
             return new BCC.retMSG(RC.successCodes.GotAllSolutions, returnItem);
+        }
+
+        static async getPriorityName(priorityID) {
+            if (priorityID == null)
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
+            if (typeof (parseInt(priorityID)) != typeof (0))
+                return RC.parseToRetMSG(RC.failCodes.NoParameters);
+
+            let returnItem = "ID does not exist!";
+
+            let ret = await BCC.makeQuery("SELECT * FROM SolutionPriorities WHERE id=?", [priorityID]);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
+
+            if (ret.recordset.length > 0)
+                returnItem = ret.recordset[0].name;
+
+            return new BCC.retMSG(RC.successCodes.GotPriorityName, returnItem);
         }
     }
 

@@ -59,7 +59,9 @@ updateSensorTypeSubmitButton.onclick = updateSensorTypeSubmitButton_Click;
 let updateSensorTypeBackButton = document.getElementById("updateSensorTypeBackButton");
 updateSensorTypeBackButton.onclick = updateSensorTypeBackButton_Click;
 let updateSensorTypeSensorSelect = document.getElementById("updateSensorTypeSensorSelect");
+updateSensorTypeSensorSelect.onchange = updateSensorTypeSensorSelect_OnChanged;
 let updateSensorTypeThresholdInput = document.getElementById("updateSensorTypeThresholdInput");
+let updateSensorTypeThresholdInfoBox = document.getElementById("updateSensorTypeThresholdInfoBox");
 
 //#endregion
 
@@ -164,6 +166,10 @@ async function updateSensorTypeSubmitButton_Click() {
     await submitUpdateSensorType();
 }
 
+async function updateSensorTypeSensorSelect_OnChanged() {
+    await populateThresholdInfoBox();
+}
+
 //#endregion
 
 //#region removeSensorTypeReferenceMenu
@@ -217,7 +223,6 @@ async function getThresholdInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    console.log(thresholdInfo);
 
     return thresholdInfo.data;
 }
@@ -248,7 +253,6 @@ function populateSelectWithSensorTypesFromSensor(sensorSelect, sensorTypeSelect,
 function populateSelectWithSensorsFromSensorType(sensorSelect, sensorTypeSelect, thresholdInfo) {
     let sensorType = sensorTypeSelect.options[sensorTypeSelect.selectedIndex].value;
     UC.clearSelect(sensorSelect);
-    console.log(sensorType);
 
     for (let i = 0; i < thresholdInfo.length; i++) {
         if (thresholdInfo[i].sensorType == sensorType) {
@@ -336,6 +340,19 @@ async function showUpdateSensorTypeMenu() {
 
     let thresholdInfo = await getThresholdInfo();
     await populateSelectWithSensorsFromSensorType(updateSensorTypeSensorSelect, sensorTypeSelect, thresholdInfo);
+}
+
+async function populateThresholdInfoBox() {
+    let sensorType = sensorTypeSelect.value;
+    let sensor = updateSensorTypeSensorSelect.value;
+    let thresholdInfo = await getThresholdInfo();
+
+    for (let i = 0; i < thresholdInfo.length; i++) {
+        if (thresholdInfo[i].sensorType == sensorType && thresholdInfo[i].sensorID == sensor) {
+            updateSensorTypeThresholdInfoBox.innerHTML = thresholdInfo[i].thresholdValue;
+            break;
+        }
+    }
 }
 
 // Function called when the client submits the sensortype update
