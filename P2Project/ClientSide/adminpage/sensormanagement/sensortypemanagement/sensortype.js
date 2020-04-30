@@ -217,7 +217,6 @@ async function getThresholdInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    console.log(thresholdInfo);
 
     return thresholdInfo.data;
 }
