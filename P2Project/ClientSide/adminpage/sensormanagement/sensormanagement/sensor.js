@@ -33,6 +33,7 @@ let addNewSensorSubmitButton = document.getElementById("addNewSensorSubmitButton
 addNewSensorSubmitButton.onclick = addNewSensorSubmitButton_Clicked;
 let addNewSensorBackButton = document.getElementById("addNewSensorBackButton");
 addNewSensorBackButton.onclick = addNewSensorBackButton_Clicked;
+let addNewSensorSelectedRoom = document.getElementById("addNewSensorSelectedRoom");
 
 //#endregion
 
@@ -175,7 +176,7 @@ async function showAddNewSensorMenu() {
     setElementDisplay([addNewSensorMenu], "block");
 
     let sensorInfo = await getSensorInfo();
-    await populateSelectWithRooms(roomSelect, sensorInfo);
+    await populateSelectWithRooms(addNewSensorSelectedRoom, sensorInfo);
 }
 
 // Function called when client submits the new sensor
@@ -184,7 +185,7 @@ async function submitNewSensorButton() {
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensor", [
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password"),
-            new UC.FetchArg("roomID", roomSelect.value)
+            new UC.FetchArg("roomID", addNewSensorSelectedRoom.value)
         ]);
     //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensor", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value)]);
 

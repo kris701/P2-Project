@@ -349,7 +349,7 @@ module.exports.ACC = class {
                     returnItem.data.push(v);
             })
 
-            return new BCC.retMSG(RC.successCodes.GotAllSensorTypes, returnItem);
+            return new BCC.retMSG(RC.successCodes.GotAllSensorTypeValues, returnItem);
         }
 
         static async addNewSensorType(typeName) {
@@ -371,7 +371,7 @@ module.exports.ACC = class {
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
             if (typeof (parseInt(sensorType, 10)) == typeof (0) && typeof (parseInt(sensorID, 10)) == typeof (0) && typeof (parseInt(threshold, 10)) == typeof (0)) {
                 let ret = await BCC.makeQuery(
-                    "INSERT INTO SensorThresholds (sensorID, sensorType, thresholdValue) values (?, ?, ?)",
+                    "INSERT INTO SensorThresholds (sensorID, sensorType, thresholdValue) VALUES (?, ?, ?)",
                     [sensorID, sensorType, threshold]);
                 if (BCC.isErrorCode(ret))
                     return RC.parseToRetMSG(RC.failCodes.DatabaseError);

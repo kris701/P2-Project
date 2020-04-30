@@ -31,7 +31,8 @@ module.exports.successCodes = {
     GotAllSolutions: 228,
     GotAllSensors: 229,
     UpdateSensor: 230,
-    GotLiveData: 231
+    GotLiveData: 231,
+    GotAllSensorTypeValues: 232
 }
 
 module.exports.failCodes = {

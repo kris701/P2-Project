@@ -22,6 +22,11 @@ describe('getAllSensorTypes function', function () {
     GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllSensorTypes(), 0);
 });
 
+describe('getAllThresholdValues function', function () {
+    GTC.shouldReturnArrayDotData(ACC.SEC.getAllSensorTypes());
+    GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllSensorTypes(), 0);
+});
+
 describe('addNewWarning function', function () {
     GTC.shouldFailWithNoParameters(ACC.WASC.addNewWarning());
     GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addNewWarning(-99, ""));

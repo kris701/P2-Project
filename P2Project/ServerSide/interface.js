@@ -31,6 +31,13 @@ try {
                 BCC.errorWithTimestamp("Resource not found!");
                 response = new RC.parseToRetMSG(RC.failCodes.ResourceNotFound);
             }
+            if (response.returnCode > 400) {
+                BCC.errorWithTimestamp("(" + response.returnCode + ") Error msg: " + RC.parseCode(response.returnCode));
+                BCC.errorWithTimestamp("Parameters was: ");
+                for (let i = 0; i < Object.keys(queryUrl).length; i++)
+                    BCC.errorWithTimestamp("     " + Object.keys(queryUrl)[i] + " : " + queryUrl[Object.keys(queryUrl)[i]]);
+                response = new RC.parseToRetMSG(response.returnCode);
+            }
 
         } catch (err) {
             BCC.errorWithTimestamp(err);

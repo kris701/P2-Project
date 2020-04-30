@@ -34,29 +34,16 @@ body {
     padding: 5px;
 }
 
-.addNewSensorButton {
-    width: 180px;
-    text-align: center;
-}
-
-.roomSelect, .sensorSelect {
+.displayContainer select {
     display: inline-block;
     margin-left: 30px;
     margin-top: 25px;
     margin-bottom: 25px;
-}
-
-.roomSelect select, .sensorSelect select {
     background: #eeeeee;
     color: #3877ff;
     padding: 8px;
-    width: 180px;
     height: 40px;
     text-transform: uppercase;
     box-shadow: 0 0px 10px #8f8f8f94;
     font-size: 16px;
-}
-
-.submitButton, .buttons {
-    text-align: left;
 }
