@@ -28,28 +28,22 @@
     text-align: center;
 }
 
-.loginContainer{
-    height: 100%;
-    display: table;
-    text-align: center;
-}
-
 .innerContainer h3 {
     text-transform: uppercase;
     text-align: center;
     margin-top: 0px;
 }
 
-input[type=text], input[type=password]{
+.innerContainer input {
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0px; 
+    margin: 8px 0px;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
 
-button{
+.innerContainer button {
     background-color: black;
     color: white;
     padding: 14px 20px;
@@ -61,8 +55,6 @@ button{
     vertical-align: bottom;
 }
 
-button:hover{
+.innerContainer button:hover {
     opacity: 0.8;
 }
-
-
