@@ -142,7 +142,7 @@ header {
         max-width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        grid-template-rows: minmax(100px, auto);
+        grid-template-rows: minmax(100px, 300px);
         margin: 40px;
         grid-auto-flow: dense;
     }
@@ -162,6 +162,7 @@ header {
 
     .box canvas {
         margin: auto;
+        height: 100%;
     }
 
 .container .box:hover{
