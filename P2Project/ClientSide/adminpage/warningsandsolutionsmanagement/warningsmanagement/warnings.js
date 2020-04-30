@@ -12,6 +12,14 @@ sensorTypeSelect.onchange = warningSelect_OnChanged;
 
 //#endregion
 
+//#region warningInfo
+
+let warningInfoMenu = document.getElementById("warningInfoMenu");
+let sensorTypeInfoBox = document.getElementById("sensorTypeInfo");
+let warningMessageInfo = document.getElementById("warningMessageInfo");
+
+//#endregion
+
 //#region warningSettingMenu
 
 let warningSettingMenu = document.getElementById("warningSettingMenu");
@@ -135,12 +143,12 @@ async function getWarningInfo() {
 }
 
 async function getSensorTypeInfo() {
-    let warningInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensortypes",
+    let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensortypes",
         [
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    return warningInfo.data;
+    return sensorTypeInfo.data;
 }
 
 function populateSelectWithWarnings(warningSelect, warningInfo) {
@@ -201,8 +209,23 @@ async function submitUpdateWarningButton() {
 }
 
 // Shows the choices you have when you pick a sensor
-function showWarningSettings() {
-    setElementDisplay([warningSettingMenu], "block");
+async function showWarningSettings() {
+    setElementDisplay([warningSettingMenu, warningInfoMenu], "block");
+
+    let warningInfo = await getWarningInfo();
+    populateInfoBoxes(warningInfo);
+}
+
+function populateInfoBoxes(warningInfo) {
+    let warning = warningSelect.options[warningSelect.selectedIndex].value;
+
+    for (let i = 0; i < warningInfo.length; i++) {
+        if (warningInfo[i].warningID == warning) {
+            sensorTypeInfoBox.innerHTML = warningInfo[i].sensorType;
+            warningMessageInfo.innerHTML = warningInfo[i].message;
+            break;
+        }
+    }
 }
 
 // Function called when the client chooses to remove the chosen sensor
