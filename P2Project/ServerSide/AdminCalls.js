@@ -100,8 +100,8 @@ module.exports.ACC = class {
             if (warningID == null || warningPriority == null || message == null)
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
             if (typeof (parseInt(warningID, 10)) == typeof (0) && typeof (parseInt(warningPriority, 10)) == typeof (0) && typeof (message) == typeof ("")) {
-                if (warningPriority < 0 || warningPriority > 3)
-                    return RC.parseToRetMSG(RC.failCodes.PriorityOutsideRange);
+                //if (warningPriority < 0 || warningPriority > 3)
+                //    return RC.parseToRetMSG(RC.failCodes.PriorityOutsideRange);
 
                 let ret = await BCC.makeQuery("INSERT INTO Solutions (warningID, warningPriority, message) values (?, ?, ?)", [warningID, warningPriority, message]);
                 if (BCC.isErrorCode(ret))
@@ -110,7 +110,7 @@ module.exports.ACC = class {
             else
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
-            return RC.parseToRetMSG(successCodes.AddSolution);
+            return RC.parseToRetMSG(RC.successCodes.AddSolution);
         }
 
         static async removeSolutionReference(solutionID) {

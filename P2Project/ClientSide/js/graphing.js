@@ -13,7 +13,7 @@ export class GRPH {
     }
 
     // Sensor data is an array
-    static createGraph(predictionData, graphNum, xLength, interval, section) {
+    static createPredictionsGraph(predictionData, graphNum, xLength, interval, section) {
         createCanvas(graphNum, section);
 
         // Resets time and dataSet to be empty arrays
@@ -22,7 +22,7 @@ export class GRPH {
             label: predictionData.name,
             backgroundColor: "rgba(255, 99, 132, 0.2",
             borderColor: "rgb(255, 99, 132)",
-            data: generateYValues(predictionData, xLength)
+            data: generateYValuesPredictions(predictionData, xLength)
         }];
         let ctx = document.getElementById("graph" + graphNum);
         generateGraph(ctx, xAxis, yAxis);
@@ -30,11 +30,11 @@ export class GRPH {
     }
 
     // Generate a graph from all the prediction data
-    static createTotalGraph(predictionData, graphNum, xLength, section) {
+    static createTotalGraphOfPredictions(predictionData, graphNum, xLength, section) {
         createCanvas(graphNum, section);
 
         let xAxis = createXAxis(predictionData.interval, xLength);
-        let yAxis = populateYValues(
+        let yAxis = populateYValuesPredictions(
             predictionData,
             xLength,
             predictionData.interval,
@@ -47,7 +47,7 @@ export class GRPH {
     }
 
     // Gets the hightes value from all the prediction data, this is so that we know a max on the x axis
-    static getHighestTimestamp(predictionData) {
+    static getHighestTimestampPredictions(predictionData) {
         let highest = 0;
         for (let i = 0; i < predictionData.data.length; i++) {
             for (let j = 0; j < predictionData.data[i].thresholdPasses.length; j++) {
@@ -84,7 +84,7 @@ export class GRPH {
             sensorType);
 
         let ctx = document.getElementById("graph" + graphNum);
-        generateGraphLive(ctx, xAxis, yAxis);
+        generateGraph(ctx, xAxis, yAxis, { beginAtZero: true });
     }
 }
 
@@ -102,7 +102,11 @@ function createCanvas(graphNum, section) {
 }
 
 // Generates a graph object
-function generateGraph(container, xAxis, yAxis) {
+function generateGraph(container, xAxis, yAxis, altTicks) {
+
+    if (altTicks == null)
+        altTicks = { beginAtZero: true, max: 100 };
+
     new Chart(container, {
         // The type of chart
         type: "line",
@@ -119,10 +123,7 @@ function generateGraph(container, xAxis, yAxis) {
             scales: {
                 yAxes: [{
                     display: true,
-                    ticks: {
-                        beginAtZero: true,
-                        max: 100
-                    }
+                    ticks: altTicks
                 }]
             }
         }
@@ -147,7 +148,7 @@ function createBackwardsXAxis(interval, until) {
 }
 
 // Makes all the Y values foreach of the datasets from predections
-function populateYValues(predictionData, until, interval, backgroundColor, borderColor) {
+function populateYValuesPredictions(predictionData, until, interval, backgroundColor, borderColor) {
     let yValues = [];
 
     for (let i = 0; i < predictionData.data.length; i++) {
@@ -155,7 +156,7 @@ function populateYValues(predictionData, until, interval, backgroundColor, borde
             label: predictionData.data[i].name,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
-            data: generateYValues(predictionData.data[i], until, interval)
+            data: generateYValuesPredictions(predictionData.data[i], until, interval)
         });
     }
 
@@ -163,7 +164,7 @@ function populateYValues(predictionData, until, interval, backgroundColor, borde
 }
 
 // Generates the Y values for a single dataset, the output is filled with 0, unless there is a valid datapoint
-function generateYValues(predictionData, until) {
+function generateYValuesPredictions(predictionData, until) {
     let dataSet = [];
     let fromJ = 0;
     let found = false;
@@ -181,33 +182,6 @@ function generateYValues(predictionData, until) {
         found = false;
     }
     return dataSet;
-}
-
-// Generates a graph object
-function generateGraphLive(container, xAxis, yAxis) {
-    new Chart(container, {
-        // The type of chart
-        type: "line",
-
-        // The data for our dataset
-        data: {
-            labels: xAxis,
-            datasets: yAxis
-        },
-
-        // Configuration options to start the Y values from 0 and up
-        options: {
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                    display: true,
-                    ticks: {
-                        beginAtZero: true,
-                    }
-                }]
-            }
-        }
-    });
 }
 
 function populateYValuesLiveData(data, until, interval, backgroundColor, borderColor, sensorType) {
