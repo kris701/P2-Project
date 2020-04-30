@@ -200,8 +200,8 @@ async function getSensorTypeInfo() {
     //    ]);
     let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensortypes",
         [
-            new BCC.FetchArg("username", "Admin"),
-            new BCC.FetchArg("password", "Password")
+            new UC.FetchArg("username", "Admin"),
+            new UC.FetchArg("password", "Password")
         ]);
     return sensorTypeInfo.data;
 }
@@ -212,13 +212,14 @@ async function getThresholdInfo() {
     //        new BCC.FetchArg("username", sessionStorage.getItem("username")),
     //        new BCC.FetchArg("password", sessionStorage.getItem("password"))
     //    ]);
-    let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallthresholdvalues",
+    let thresholdInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallthresholdvalues",
         [
-            new BCC.FetchArg("username", "Admin"),
-            new BCC.FetchArg("password", "Password")
+            new UC.FetchArg("username", "Admin"),
+            new UC.FetchArg("password", "Password")
         ]);
+    console.log(thresholdInfo);
 
-    return thresholdInfo;
+    return thresholdInfo.data;
 }
 
 async function getSensorInfo() {
@@ -247,6 +248,7 @@ function populateSelectWithSensorTypesFromSensor(sensorSelect, sensorTypeSelect,
 function populateSelectWithSensorsFromSensorType(sensorSelect, sensorTypeSelect, thresholdInfo) {
     let sensorType = sensorTypeSelect.options[sensorTypeSelect.selectedIndex].value;
     UC.clearSelect(sensorSelect);
+    console.log(sensorType);
 
     for (let i = 0; i < thresholdInfo.length; i++) {
         if (thresholdInfo[i].sensorType == sensorType) {
@@ -332,7 +334,7 @@ async function showUpdateSensorTypeMenu() {
     setElementDisplay([mainMenu, sensorTypeSettingMenu], "none");
     setElementDisplay([updateSensorTypeMenu], "block");
 
-    let thresholdInfo = getThresholdInfo();
+    let thresholdInfo = await getThresholdInfo();
     await populateSelectWithSensorsFromSensorType(updateSensorTypeSensorSelect, sensorTypeSelect, thresholdInfo);
 }
 
@@ -351,7 +353,7 @@ async function submitUpdateSensorType() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("sensorID", updateSensorTypeSensorSelect.value),
-            new UC.FetchArg("sensorType", updateSensorTypeSensorTypeSelect.value),
+            new UC.FetchArg("sensorType", sensorTypeSelect.value),
             new UC.FetchArg("threshold", updateSensorTypeThresholdInput.value)
         ]);
 
@@ -363,8 +365,8 @@ async function showRemoveSensorTypeReferenceMenu() {
     setElementDisplay([mainMenu, sensorTypeSettingMenu], "none");
     setElementDisplay([removeSensorTypeReferenceMenu], "block");
 
-    let thresholdInfo = getThresholdInfo();
-    await populateSelectWithSensorsFromSensorType(removeSensorTypeReferenceSensorSelect, thresholdInfo);
+    let thresholdInfo = await getThresholdInfo();
+    await populateSelectWithSensorsFromSensorType(removeSensorTypeReferenceSensorSelect, sensorTypeSelect, thresholdInfo);
 }
 
 // Function called when the client submits the sensortype reference removal
