@@ -40,7 +40,7 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("getallsolutions", [], ACC.WASC.getAllSolutions, []),
         new Resource("addnewroom", ["roomName"], ACC.SEC.addNewRoom, []),
         new Resource("removeroom", ["roomID"], ACC.SEC.removeRoom, []),
-        new Resource("updateroom", ["roomID", "roomName"], ACC.WASC.updateRoom, []),
+        new Resource("updateroom", ["roomID", "roomName"], ACC.SEC.updateRoom, []),
         new Resource("getallsensortypes", [], ACC.SEC.getAllSensorTypes, []),
         new Resource("getallthresholdvalues", [], ACC.SEC.getAllThresholdValues, []),
         new Resource("addnewsensortype", ["typeName"], ACC.SEC.addNewSensorType, []),
@@ -53,7 +53,8 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("addnewsensor", ["roomID"], ACC.SEC.addNewSensor, []),
         new Resource("removesensorreference", ["sensorID"], ACC.SEC.removeSensorReference, []),
         new Resource("removesensor", ["sensorID"], ACC.SEC.removeSensor, []),
-        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.insertSensorValue, [])
+        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.insertSensorValue, []),
+        new Resource("getpriorityname", ["priorityID",], ACC.WASC.getPriorityName, [])
     ])
 ]);
 

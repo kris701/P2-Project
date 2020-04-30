@@ -91,8 +91,8 @@ async function getHistoricData(sensorID, date, sensorTypeName) {
     for (let i = 0; i < parseInt(cfg.LDC_backReachHours, 10) * (60 / parseInt(cfg.LDC_interval, 10)); i++) {
         let dateMin = new Date(date);
         let dateMax = new Date(date);
-        dateMax.setMinutes(dateMin.getMinutes() - ((i + 1) * parseInt(cfg.LDC_interval, 10)));
-        dateMin.setMinutes(dateMax.getMinutes() - (i * parseInt(cfg.LDC_interval, 10)));
+        dateMax.setMinutes(dateMax.getMinutes() - ((i + 1) * parseInt(cfg.LDC_interval, 10)));
+        dateMin.setMinutes(dateMin.getMinutes() - (i * parseInt(cfg.LDC_interval, 10)));
 
         result = await getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin, i);
     }

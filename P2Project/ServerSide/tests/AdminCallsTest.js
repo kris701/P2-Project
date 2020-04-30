@@ -23,6 +23,17 @@ describe('getAllSensorTypes function', function () {
 });
 
 describe('getAllThresholdValues function', function () {
+    GTC.shouldReturnArrayDotData(ACC.SEC.getAllThresholdValues());
+    GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllThresholdValues(), 0);
+});
+
+describe('getPriorityName function', function () {
+    GTC.shouldFailWithNoParameters(ACC.WASC.getPriorityName());
+    GTC.shouldReturnAString(ACC.WASC.getPriorityName(1));
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.getPriorityName([]), successCodes.GotPriorityName);
+});
+
+describe('getAllThresholdValues function', function () {
     GTC.shouldReturnArrayDotData(ACC.SEC.getAllSensorTypes());
     GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllSensorTypes(), 0);
 });
@@ -49,8 +60,8 @@ describe('updateWarning function', function () {
 
 describe('addSolution function', function () {
     GTC.shouldFailWithNoParameters(ACC.WASC.addSolution());
-    GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(1, -99, ""), failCodes.PriorityOutsideRange);
-    GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(1, 99, ""), failCodes.PriorityOutsideRange);
+    //GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(1, -99, ""), failCodes.PriorityOutsideRange);
+    //GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(1, 99, ""), failCodes.PriorityOutsideRange);
     GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addSolution(-99, 0, ""));
     GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution(0, [], ""), successCodes.AddSolution);
     GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution(0, 0, []), successCodes.AddSolution);

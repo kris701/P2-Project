@@ -2551,6 +2551,169 @@
           }
         }
       }
+    },
+    "/admin/getpriorityname": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Inserts a new value from a sensor",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "priorityID",
+            "in": "query",
+            "description": "The ID of the priority",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "233": {
+            "description": "Name of the priority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Medium"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/getallthresholdvalues": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Gets all threshold values from the DB",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "232": {
+            "description": "List of all threshold values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_232"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong, missing or wrong parameters!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong, missing or wrong parameters!"
+                }
+              }
+            }
+          },
+          "411": {
+            "description": "Wrong credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wrong credentials!"
+                }
+              }
+            }
+          },
+          "499": {
+            "description": "Unknown server error!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "An error occured on the server!"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2691,6 +2854,27 @@
           }
         }
       },
+      "inline_response_232_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 2
+          },
+          "sensorID": {
+            "type": "number",
+            "example": 3
+          },
+          "sensorType": {
+            "type": "number",
+            "example": 2
+          },
+          "thresholdValue": {
+            "type": "number",
+            "example": 400
+          }
+        }
+      },
       "inline_response_224_data": {
         "type": "object",
         "properties": {
@@ -2807,6 +2991,17 @@
           },
           "typeName": {
             "type": "string"
+          }
+        }
+      },
+      "inline_response_232": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_232_data"
+            }
           }
         }
       },

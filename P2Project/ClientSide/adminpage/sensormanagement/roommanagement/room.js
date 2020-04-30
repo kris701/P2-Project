@@ -24,6 +24,7 @@ updateRoomButton.onclick = updateRoomButton_Click;
 
 //#region addNewSensorMenu
 
+let addNewRoomMenu = document.getElementById("addNewRoomMenu");
 let addNewRoomSubmitButton = document.getElementById("addNewRoomSubmitButton");
 addNewRoomSubmitButton.onclick = addNewRoomSubmitButton_Clicked;
 let addRoomInput = document.getElementById("addRoomInput");
@@ -34,6 +35,7 @@ addNewRoomBackButton.onclick = addNewRoomBackButton_Clicked;
 
 //#region updateRoomMenu
 
+let updateRoomMenu = document.getElementById("updateRoomMenu");
 let updateRoomSubmitButton = document.getElementById("updateRoomSubmitButton");
 updateRoomSubmitButton.onclick = updateRoomSubmitButton_Clicked;
 let updateRoomInput = document.getElementById("updateRoomInput");
@@ -80,15 +82,7 @@ async function removeRoomButton_Click() {
 }
 
 async function updateRoomButton_Click() {
-    await updateRoom();
-}
-
-async function updateRoomSubmitButton_Clicked() {
-    await intitialLoad();
-}
-
-async function updateRoomBackButton_Clicked() {
-    await intitialLoad();
+    await showUpdateRoomMenu();
 }
 
 //#endregion
@@ -105,12 +99,22 @@ async function addNewRoomSubmitButton_Clicked() {
 
 //#endregion
 
+//#region updateRoomMenu
+
+async function updateRoomBackButton_Clicked() {
+    await initialLoad();
+}
+
+async function updateRoomSubmitButton_Clicked() {
+    await submitUpdateRoomButton();
+}
+
 //#endregion
 
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([roomSettingMenu, addNewRoomMenu], "none");
+    setElementDisplay([roomSettingMenu, addNewRoomMenu, updateRoomMenu], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(roomSelect);
@@ -135,9 +139,6 @@ function populateSelectWithRooms(roomSelect, sensorInfo) {
 async function showAddNewRoomMenu() {
     setElementDisplay([mainMenu, roomSettingMenu], "none");
     setElementDisplay([addNewRoomMenu], "block");
-
-    let sensorInfo = await getSensorInfo();
-    await populateSelectWithRooms(roomSelect, sensorInfo);
 }
 
 // Function called when client submits the new room
@@ -146,7 +147,7 @@ async function submitNewRoomButton() {
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewroom", [
         new UC.FetchArg("username", "Admin"),
         new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("roomName", roomInput.value)
+        new UC.FetchArg("roomName", addRoomInput.value)
     ]);
     //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewroom", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value)]);
 
@@ -171,17 +172,25 @@ async function removeRoom() {
     await initialLoad();
 }
 
+// Function called when client clicks on the "Update room" button
+async function showUpdateRoomMenu() {
+    setElementDisplay([mainMenu, roomSettingMenu], "none");
+    setElementDisplay([updateRoomMenu], "block");
+}
+
 // Function called when the client chooses to update the chosen room
-async function updateRoom() {
+async function submitUpdateRoomButton() {
     //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updateroom", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorID", sensorSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updateroom", [
         new UC.FetchArg("username", "Admin"),
         new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("roomID", roomSelect.value)
+        new UC.FetchArg("roomID", roomSelect.value),
+        new UC.FetchArg("roomName", updateRoomInput.value)
     ]);
 
     await initialLoad();
+
 }
 
 // Generic function to set the display style of an array of elements
