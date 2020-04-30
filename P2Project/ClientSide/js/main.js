@@ -74,6 +74,7 @@ async function roomChangeFunction() {
         WARN.clearWarningArea();
         // Clears graph area
         GRPH.clearData("#predictionContainer");
+        GRPH.clearData("#liveDataContainer");
         // Resets the data display section
         clearSensorInfoArea();
 
@@ -85,7 +86,7 @@ async function roomChangeFunction() {
         let predictionData = await getPredictions(roomData[roomSelect.selectedIndex].roomID, date.value);
         let warningData = await getWarningsAndSolutionj(roomData[roomSelect.selectedIndex].roomID, date.value);
 
-        liveDataShow(roomData[roomSelect.selectedIndex].roomID);
+        await liveDataShow(roomData[roomSelect.selectedIndex].roomID);
 
         // Gets the length of the x axis
         let xLength = GRPH.getHighestTimestamp(predictionData);

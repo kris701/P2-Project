@@ -74,7 +74,7 @@ export class GRPH {
     static createLiveDataGraph(data, graphNum, xLength, sensorType, section) {
         createCanvas(graphNum, section);
 
-        let xAxis = createXAxis(data.interval, xLength);
+        let xAxis = createBackwardsXAxis(data.interval, xLength);
         let yAxis = populateYValuesLiveData(
             data.data,
             xLength,
@@ -134,6 +134,14 @@ function createXAxis(interval, until) {
     let xAxis = [];
     for (let i = 0; i < until; i++) {
         xAxis.push(i * interval + " min");
+    }
+    return xAxis;
+}
+
+function createBackwardsXAxis(interval, until) {
+    let xAxis = [];
+    for (let i = until; i >= 0; i--) {
+        xAxis.push(i * interval + " min ago");
     }
     return xAxis;
 }
