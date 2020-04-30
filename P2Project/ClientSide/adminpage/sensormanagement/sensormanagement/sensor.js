@@ -28,6 +28,7 @@ removeSensorButton.onclick = removeSensorButton_Click;
 
 //#region addNewSensorMenu
 
+let addNewSensorMenu = document.getElementById("addNewSensorMenu");
 let addNewSensorSubmitButton = document.getElementById("addNewSensorSubmitButton");
 addNewSensorSubmitButton.onclick = addNewSensorSubmitButton_Clicked;
 let addNewSensorBackButton = document.getElementById("addNewSensorBackButton");
@@ -37,6 +38,7 @@ addNewSensorBackButton.onclick = addNewSensorBackButton_Clicked;
 
 //#region addExistingSensorMenu
 
+let addExistingSensorMenu = document.getElementById("addExistingSensorMenu");
 let addExistingSensorSubmitButton = document.getElementById("addExistingSensorSubmitButton");
 addExistingSensorSubmitButton.onclick = addExistingSensorSubmitButton_Click;
 let addExistingSensorBackButton = document.getElementById("addExistingSensorBackButton");

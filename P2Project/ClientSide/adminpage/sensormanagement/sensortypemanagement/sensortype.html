@@ -3,9 +3,77 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link rel="stylesheet" href="sensortype.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <script src="../../GetLoggedIn.js"></script>
 </head>
 <body>
+    <div class="displayContainer">
+        <div id="addNewSensorTypeMenu" style="display:none">
+            <button id="addNewSensorTypeBackButton" class="enterMenuOrSubmitButton">Back</button>
+            <input id="addNewSensorTypeInput" class="inputClass" placeholder="Enter typename" />
+            <button id="addNewSensorTypeSubmitButton" class="enterMenuOrSubmitButton">Add New SensorType</button>
+        </div>
 
+        <div id="addExistingSensorTypeMenu" style="display:none">
+            <button id="addExistingSensorTypeBackButton" class="enterMenuOrSubmitButton">Back</button>
+            <div class="sensorTypeSelect">
+                <select name="sensorType" id="addExistingSensorTypeSensorSelect">
+                    <option value="-1">Select Sensor</option>
+                </select>
+            </div>
+            <div class="sensorTypeSelect">
+                <select name="sensorType" id="addExistingSensorTypeSensorTypeSelect">
+                    <option value="-1">Select SensorType</option>
+                </select>
+            </div>
+            <input id="addExistingSensorTypeThresholdInput" class="inputClass" placeholder="Enter threshold" />
+            <button id="addExistingSensorTypeSubmitButton" class="enterMenuOrSubmitButton">Add Existing SensorType</button>
+        </div>
+
+        <div id="updateSensorTypeMenu" style="display:none">
+            <button id="updateSensorTypeBackButton" class="enterMenuOrSubmitButton">Back</button>
+            <div class="sensorTypeSelect">
+                <select name="sensor" id="updateSensorTypeSensorSelect">
+                    <option value="-1">Select Sensor</option>
+                </select>
+            </div>
+            <input id="updateSensorTypeThresholdInput" class="inputClass" placeholder="Enter threshold" />
+            <button id="updateSensorTypeSubmitButton" class="enterMenuOrSubmitButton">Update SensorType</button>
+        </div>
+
+        <div id="removeSensorTypeReferenceMenu" style="display:none">
+            <button id="removeSensorTypeReferenceBackButton" class="enterMenuOrSubmitButton">Back</button>
+            <div class="sensorTypeSelect">
+                <select name="sensor" id="removeSensorTypeReferenceSensorSelect">
+                    <option value="-1">Select Sensor</option>
+                </select>
+            </div>
+            <button id="removeSensorTypeReferenceSubmitButton" class="enterMenuOrSubmitButton">Remove SensorType Reference</button>
+        </div>
+
+        <div id="mainMenu">
+            <button id="addNewSensorTypeMenuButton" class="enterMenuOrSubmitButton">Add New SensorType</button>
+            <button id="addExistingSensorTypeMenuButton" class="enterMenuOrSubmitButton">Add Existing SensorType</button>
+            <br />
+
+            <div class="sensorTypeSelect">
+                <select name="SensorType" id="sensorTypeSelect">
+                    <option value="-1">Select SensorType</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="sensorTypeSettingMenu" style="display: none">
+            <button id="updateSensorTypeButton" class="buttons">Update SensorType</button>
+            <br />
+            <button id="removeSensorTypeRefButton" class="buttons">Remove SensorType Reference</button>
+            <br />
+            <button id="removeSensorTypeButton" class="buttons">Remove SensorType</button>
+        </div>
+    </div>
+    <script defer type="module" src="sensortype.js"></script>
 </body>
 </html>

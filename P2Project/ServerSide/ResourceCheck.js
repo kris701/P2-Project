@@ -42,6 +42,7 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("removeroom", ["roomID"], ACC.WASC.removeRoom, []),
         new Resource("updateroom", ["roomID", "roomName"], ACC.WASC.updateRoom, []),
         new Resource("getallsensortypes", [], ACC.SEC.getAllSensorTypes, []),
+        new Resource("getallthresholdvalues", [], ACC.SEC.getAllThresholdValues, []),
         new Resource("addnewsensortype", ["typeName"], ACC.SEC.addNewSensorType, []),
         new Resource("addexistingsensortype", ["sensorType", "sensorID", "threshold"], ACC.SEC.addExistingSensorType, []),
         new Resource("removesensortype", ["sensorType"], ACC.SEC.removeSensorType, []),
