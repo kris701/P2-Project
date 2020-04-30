@@ -16,14 +16,10 @@ export class WARN {
             createNewWarning(warningDataForRoom.data[i].solutionInfo.warningPriority.priority, warningDataForRoom.data[i], i);
         }
     }
-
-    static removeWarning(warningNum) {
-        let toBeDeleted = document.getElementById("warningNum" + warningNum);
-        toBeDeleted.remove();
-    }
 }
 
 function createNewWarning(priority, warningData, warningNum) {
+    let removeButton = document.createElement("input");
     let warning = document.createElement("div");
     let topParagraph = document.createElement("p");
     let bottomParagraph = document.createElement("p");
@@ -33,17 +29,28 @@ function createNewWarning(priority, warningData, warningNum) {
     warning.setAttribute("id", "priority" + priority);
     warning.setAttribute("id", "warningNum" + warningNum);
     warning.setAttribute("class", "warningBox");
+    removeButton.setAttribute("type", "submit");
+    removeButton.setAttribute("value", "X");
+    removeButton.setAttribute("id", warningNum);
+    topParagraph.setAttribute("style", "text-transform: uppercase;font-weight: bold;");
 
     warningContainer.appendChild(warning);
+    warning.appendChild(removeButton);
     warning.appendChild(topParagraph);
     warning.appendChild(bottomParagraph);
 
+    removeButton.onclick = removeButton_Click;
     topParagraph.appendChild(message);
     bottomParagraph.appendChild(solutionMessage);
 
-    window.setTimeout(fadeOutAndRemove.bind(this, warning), 5000);
+    window.setTimeout(fadeOutAndRemove.bind(this, warning), 60000);
 }
 
 function fadeOutAndRemove(element) {
     UC.fade(element);
+}
+
+function removeButton_Click(element) {
+    let toBeDeleted = document.getElementById("warningNum" + element.currentTarget.id);
+    fadeOutAndRemove(toBeDeleted);
 }

@@ -1,5 +1,7 @@
 ﻿/* This is the stylesheet for the front page */
 
+/*#region Overall*/
+
 html body {
     font-family: "Montserrat", sans-serif;
     font-weight: 300;
@@ -9,7 +11,9 @@ html body {
     padding: 0;
 }
 
-/* --- Header Section begins here --- */
+/*#endregion*/
+
+/*#region Header*/
 
 header {
     overflow: hidden;
@@ -52,7 +56,9 @@ header {
         margin: auto;
     }
 
-/* --- Room choice section begins here --- */
+/*#endregion*/
+
+/*#region Top selection bar*/
 
 .displayContainerPlacer {
     height: 40px;
@@ -108,20 +114,23 @@ header {
         font-size: 16px;
     }
 
-/* --- Main section begins here ---*/
+/*#endregion*/
 
-.dataContainer{
+/*#region Main section*/
+
+.dataContainer {
     min-height: 100%;
     overflow: auto;
-    padding: 80px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
 
-.dataDisplay {
-    padding: 20px;
-    background: #fff;
-    box-shadow: 2px 2px 10px #8f8f8f94;
-    border-radius: 5px;
-}
+    .dataContainer p {
+        padding: 20px;
+        background: #fff;
+        box-shadow: 2px 2px 10px #8f8f8f94;
+        border-radius: 5px;
+    }
 
 .masterContainer{
     margin-left: auto;
@@ -129,56 +138,39 @@ header {
     max-width: 1250px;
 }
 
-.container{
-    position: relative;
-    max-width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-template-rows: minmax(100px, auto);
-    margin: 40px;
-    grid-auto-flow: dense;
-}
+    .masterContainer .container {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-rows: minmax(100px, auto);
+        margin: 40px;
+        grid-auto-flow: dense;
+    }
 
-.container .box{
-    background: #fff;
-    box-shadow: 0px 0px 12px #8f8f8f94;
-    border-radius: 4px;
-    min-height: 200px;
-    padding: 20px;
-    margin: 8px;
-    display: grid;
-    font-size: 20px;
-    place-items: center;
-    text-align: center;
-    color: black;
-    transition: 0.5s;
-}
+    .container .box {
+        background: #fff;
+        box-shadow: 0px 0px 12px #8f8f8f94;
+        border-radius: 4px;
+        min-height: 200px;
+        padding: 20px;
+        margin: 8px;
+        display: grid;
+        font-size: 20px;
+        color: black;
+        transition: 0.5s;
+    }
+
+    .box canvas {
+        margin: auto;
+    }
 
 .container .box:hover{
     box-shadow: 0px 0px 18px #e91e63;
 }
 
-.container .box:nth-child(1){
-    grid-column: span 1;
-    grid-row: span 2;
-}
+/*#endregion*/
 
-.container .box:nth-child(2){
-    grid-column: span 1;
-    grid-row: span 1;
-}
-
-.container .box:nth-child(3){
-    grid-column: span 1;
-    grid-row: span 1;
-}
-
-.container .box:nth-child(4){
-    grid-column: span 1;
-    grid-row: span 1;
-}
-
-/* --- Warning Section begins here --- */
+/*#region Warnings*/
 
 .warningContainer{
     width: 580px;
@@ -188,42 +180,33 @@ header {
     left: 0px;
 }
 
-.warningBox {
-    padding: 10px;
-    margin: 20px;
-    border-radius: 6px;
-    color: white;
-    box-shadow: 0px 5px 10px #8f8f8f94;
-    background-color: orange; /*Background-color may be decided in html through js*/
-}
+    .warningContainer .warningBox {
+        padding: 5px;
+        margin: 20px;
+        border-radius: 6px;
+        color: white;
+        box-shadow: 0px 5px 10px #8f8f8f94;
+        background-color: orange; /*Background-color may be decided in html through js*/
+        transition: 0.5s;
+    }
 
-#priority1 {
-    background-color: #FFCC00;
-}
+    .warningBox input {
+        background: #eeeeee;
+        color: #3877ff;
+        padding: 8px;
+        text-transform: uppercase;
+        box-shadow: 0 0px 10px #8f8f8f94;
+        border: none;
+        font-size: 16px;
+    }
 
-#priority2 {
-    background-color: #FF8E2C;
-}
+    .warningBox:hover {
+        box-shadow: 0px 0px 18px #e91e63;
+    }
 
-#priority3 {
-    background-color: #CC3300;
-}
+/*#endregion*/
 
-#priority1:hover {
-    box-shadow: 0px 5px 10px #FFCC00;
-}
-
-#priority2:hover {
-    box-shadow: 0px 5px 10px #FF8E2C;
-}
-
-#priority3:hover {
-    box-shadow: 0px 5px 10px #CC3300;
-}
-
-/* --- Footer Section begins here --- */
-
-/* --- Loading Section --- */
+/*#region Loading section*/
 
 .loadingDiv {
     text-align: center;
@@ -233,13 +216,4 @@ header {
     margin-top: 250px;
 }
 
-.loadingInlineTextDiv {
-    display: block;
-    margin-left: 20px;
-}
-
-.loadingInlineImgDiv {
-    display: block;
-    margin-left: 5px;
-    height: 100px;
-}
+/*#endregion*/
