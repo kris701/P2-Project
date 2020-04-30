@@ -51,6 +51,7 @@ module.exports.BCC = class {
                     returnvalue.recordset = await db.query(queryText, parameterArray);
                     return returnvalue;
                 } catch (err) {
+                    module.exports.BCC.errorWithTimestamp(err);
                     return RC.failCodes.DatabaseError;
                 } finally {
                     await db.close();
@@ -61,7 +62,7 @@ module.exports.BCC = class {
             }
         }
         catch (err) {
-            console.error(err);
+            module.exports.BCC.errorWithTimestamp(err);
             return RC.failCodes.DatabaseError;
         }
     }
