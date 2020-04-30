@@ -27,34 +27,34 @@ header {
     grid-column-gap: 20px;
 }
 
-    header a {
-        color: white;
-        text-transform: uppercase;
-        text-decoration: none;
-        margin: auto;
-    }
+header a {
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin: auto;
+}
 
-    header span {
-        color: white;
-        font-weight: bold;
-        margin: auto;
-    }
+header span {
+    color: white;
+    font-weight: bold;
+    margin: auto;
+}
 
-    header h3 {
-        color: white;
-        margin: auto;
-    }
+header h3 {
+    color: white;
+    margin: auto;
+}
 
-    header input {
-        background: #a8a8a8;
-        color: white;
-        width: 100px;
-        padding: 5px;
-        text-transform: uppercase;
-        box-shadow: 0 0px 10px #8f8f8f94;
-        border: none;
-        margin: auto;
-    }
+header input {
+    background: #a8a8a8;
+    color: white;
+    width: 100px;
+    padding: 5px;
+    text-transform: uppercase;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    border: none;
+    margin: auto;
+}
 
 /*#endregion*/
 
@@ -75,44 +75,44 @@ header {
     grid-column-gap: 20px;
 }
 
-    .displayContainer h3 {
-        text-transform: uppercase;
-        margin: auto;
-    }
+.displayContainer h3 {
+    text-transform: uppercase;
+    margin: auto;
+}
 
-    .displayContainer select {
-        background: #eeeeee;
-        color: #3877ff;
-        padding: 8px;
-        width: 150px;
-        text-transform: uppercase;
-        box-shadow: 0 0px 10px #8f8f8f94;
-        font-size: 16px;
-        border: none;
-        margin: 0px;
-    }
+.displayContainer select {
+    background: #eeeeee;
+    color: #3877ff;
+    padding: 8px;
+    width: 150px;
+    text-transform: uppercase;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    font-size: 16px;
+    border: none;
+    margin: 0px;
+}
 
-    .displayContainer button {
-        background: #eeeeee;
-        color: #3877ff;
-        padding: 8px;
-        width: 150px;
-        text-transform: uppercase;
-        box-shadow: 0 0px 10px #8f8f8f94;
-        border: none;
-        font-size: 16px;
-    }
+.displayContainer button {
+    background: #eeeeee;
+    color: #3877ff;
+    padding: 8px;
+    width: 150px;
+    text-transform: uppercase;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    border: none;
+    font-size: 16px;
+}
 
-    .displayContainer input {
-        background: #eeeeee;
-        color: #3877ff;
-        padding: 8px;
-        width: 250px;
-        text-transform: uppercase;
-        box-shadow: 0 0px 10px #8f8f8f94;
-        border: none;
-        font-size: 16px;
-    }
+.displayContainer input {
+    background: #eeeeee;
+    color: #3877ff;
+    padding: 8px;
+    width: 250px;
+    text-transform: uppercase;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    border: none;
+    font-size: 16px;
+}
 
 /*#endregion*/
 
@@ -125,12 +125,12 @@ header {
     padding-right: 80px;
 }
 
-    .dataContainer p {
-        padding: 20px;
-        background: #fff;
-        box-shadow: 2px 2px 10px #8f8f8f94;
-        border-radius: 5px;
-    }
+.dataContainer p {
+    padding: 20px;
+    background: #fff;
+    box-shadow: 2px 2px 10px #8f8f8f94;
+    border-radius: 5px;
+}
 
 .masterContainer{
     margin-left: auto;
@@ -138,34 +138,34 @@ header {
     max-width: 1250px;
 }
 
-    .masterContainer .container {
-        max-width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        grid-template-rows: minmax(100px, auto);
-        margin: 40px;
-        grid-auto-flow: dense;
-    }
+.masterContainer .container {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: minmax(100px, auto);
+    margin: 40px;
+    grid-auto-flow: dense;
+}
 
-    .container .box {
-        background: #fff;
-        box-shadow: 0px 0px 12px #8f8f8f94;
-        border-radius: 4px;
-        min-height: 200px;
-        padding: 20px;
-        margin: 8px;
-        display: grid;
-        font-size: 20px;
-        color: black;
-        transition: 0.5s;
-    }
+.container .box {
+    background: #fff;
+    box-shadow: 0px 0px 12px #8f8f8f94;
+    border-radius: 4px;
+    min-height: 200px;
+    padding: 20px;
+    margin: 8px;
+    display: grid;
+    font-size: 20px;
+    color: black;
+    transition: 0.5s;
+}
 
-    .box canvas {
-        margin: auto;
-    }
+.box canvas {
+    margin: auto;
+}
 
 .container .box:hover{
-    box-shadow: 0px 0px 18px #e91e63;
+box-shadow: 0px 0px 18px #e91e63;
 }
 
 /*#endregion*/
@@ -180,29 +180,29 @@ header {
     left: 0px;
 }
 
-    .warningContainer .warningBox {
-        padding: 5px;
-        margin: 20px;
-        border-radius: 6px;
-        color: white;
-        box-shadow: 0px 5px 10px #8f8f8f94;
-        background-color: orange; /*Background-color may be decided in html through js*/
-        transition: 0.5s;
-    }
+.warningContainer .warningBox {
+    padding: 5px;
+    margin: 20px;
+    border-radius: 6px;
+    color: white;
+    box-shadow: 0px 5px 10px #8f8f8f94;
+    background-color: orange; /*Background-color may be decided in html through js*/
+    transition: 0.5s;
+}
 
-    .warningBox input {
-        background: #eeeeee;
-        color: #3877ff;
-        padding: 8px;
-        text-transform: uppercase;
-        box-shadow: 0 0px 10px #8f8f8f94;
-        border: none;
-        font-size: 16px;
-    }
+.warningBox input {
+    background: #eeeeee;
+    color: #3877ff;
+    padding: 8px;
+    text-transform: uppercase;
+    box-shadow: 0 0px 10px #8f8f8f94;
+    border: none;
+    font-size: 16px;
+}
 
-    .warningBox:hover {
-        box-shadow: 0px 0px 18px #e91e63;
-    }
+.warningBox:hover {
+    box-shadow: 0px 0px 18px #e91e63;
+}
 
 /*#endregion*/
 

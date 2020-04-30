@@ -3,8 +3,8 @@
 export class GRPH {
 
     // Clears all current children in the parent container "container"
-    static clearGraphArea() {
-        let container = document.querySelector(".container");
+    static clearData(sectionToClear) {
+        let container = document.querySelector(sectionToClear);
 
         // For as long as there are children in container the first child will be removed
         while (container.firstChild) {
@@ -13,8 +13,8 @@ export class GRPH {
     }
 
     // Sensor data is an array
-    static createGraph(predictionData, graphNum, xLength, interval) {
-        createCanvas(graphNum);
+    static createGraph(predictionData, graphNum, xLength, interval, section) {
+        createCanvas(graphNum, section);
 
         // Resets time and dataSet to be empty arrays
         let xAxis = createXAxis(interval, xLength);
@@ -30,8 +30,8 @@ export class GRPH {
     }
 
     // Generate a graph from all the prediction data
-    static createTotalGraph(predictionData, graphNum, xLength) {
-        createCanvas(graphNum);
+    static createTotalGraph(predictionData, graphNum, xLength, section) {
+        createCanvas(graphNum, section);
 
         let xAxis = createXAxis(predictionData.interval, xLength);
         let yAxis = populateYValues(
@@ -49,20 +49,49 @@ export class GRPH {
 
     // Gets the hightes value from all the prediction data, this is so that we know a max on the x axis
     static getHighestTimestamp(predictionData) {
-        let hightest = 0;
+        let highest = 0;
         for (let i = 0; i < predictionData.data.length; i++) {
             for (let j = 0; j < predictionData.data[i].thresholdPasses.length; j++) {
-                if (predictionData.data[i].thresholdPasses[j].timeUntil > hightest)
-                    hightest = predictionData.data[i].thresholdPasses[j].timeUntil;
+                if (predictionData.data[i].thresholdPasses[j].timeUntil > highest)
+                    highest = predictionData.data[i].thresholdPasses[j].timeUntil;
             }
         }
-        return hightest;
+        return highest;
+    }
+
+    static getHighestTimestampLiveData(data) {
+        let highest = 0;
+        for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < data[i].liveDataArray.length; j++) {
+                for (let l = 0; l < data[i].liveDataArray[j].sensorLiveData.length; l++) {
+                    if (data[i].liveDataArray[j].sensorLiveData[l].timeStamp > highest)
+                        highest = data[i].liveDataArray[j].sensorLiveData[l].timeStamp;
+                }
+            }
+        }
+        return highest;
+    }
+
+    static createLiveDataGraph(data, graphNum, xLength, sensorType, section) {
+        createCanvas(graphNum, section);
+
+        let xAxis = createXAxis(data.interval, xLength);
+        let yAxis = populateYValuesLiveData(
+            data.data,
+            xLength,
+            data.interval,
+            "rgba(128, 99, 132, 0.2",
+            "rgb(128, 99, 132)",
+            sensorType);
+
+        let ctx = document.getElementById("graph" + graphNum);
+        generateGraphLive(ctx, xAxis, yAxis);
     }
 }
 
 // Populates the parent container "container" with divs and canvas within each
-function createCanvas(graphNum) {
-    let container = document.querySelector(".container");
+function createCanvas(graphNum, section) {
+    let container = document.querySelector(section);
     let graphContainer = document.createElement("div");
     let canvas = document.createElement("CANVAS");
 
@@ -134,6 +163,72 @@ function generateYValues(predictionData, until) {
         for (let j = fromJ; j < predictionData.thresholdPasses.length; j++) {
             if (predictionData.thresholdPasses[j].timeUntil == i) {
                 dataSet.push(predictionData.thresholdPasses[j].timesExceeded);
+                fromJ = j + 1;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            dataSet.push(0);
+        found = false;
+    }
+    return dataSet;
+}
+
+// Generates a graph object
+function generateGraphLive(container, xAxis, yAxis) {
+    new Chart(container, {
+        // The type of chart
+        type: "line",
+
+        // The data for our dataset
+        data: {
+            labels: xAxis,
+            datasets: yAxis
+        },
+
+        // Configuration options to start the Y values from 0 and up
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        beginAtZero: true,
+                    }
+                }]
+            }
+        }
+    });
+}
+
+function populateYValuesLiveData(data, until, interval, backgroundColor, borderColor, sensorType) {
+    let yValues = [];
+
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].liveDataArray.length; j++) {
+            if (data[i].sensorType == sensorType) {
+                yValues.push({
+                    label: data[i].sensorType + ": Sensor " + data[i].liveDataArray[j].sensorID,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    data: generateYValuesLiveData(data[i].liveDataArray[j], until, interval)
+                });
+            }
+        }
+    }
+
+    return yValues;
+}
+
+function generateYValuesLiveData(data, until) {
+    let dataSet = [];
+    let fromJ = 0;
+    let found = false;
+    for (let i = 0; i < until; i++) {
+        for (let j = fromJ; j < data.sensorLiveData.length; j++) {
+            if (data.sensorLiveData[j].timeStamp == i) {
+                dataSet.push(data.sensorLiveData[j].sensorValue);
                 fromJ = j + 1;
                 found = true;
                 break;

@@ -30,13 +30,27 @@ async function getPredictions(ID, date) {
     setLoadingLabel("Fetching prediction data...");
     return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getpredictiondata?room=" + ID + "&date=" + date);
 }
+
 async function getWarningsAndSolutionj(ID, date) {
     setLoadingLabel("Fetching warning and solutions...");
     return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getwarningsandsolutions?room=" + ID + "&date=" + date);
 }
 
-async function liveData(roomID) {
-    
+async function getLiveData(ID, date) {
+    setLoadingLabel("Fetching live data...");
+    return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getlivedata?roomID=" + ID + "&date=" + date);
+}
+
+async function liveDataShow(roomID) {
+    let date = document.querySelector('input[type="datetime-local"]');
+    let liveData = await getLiveData(roomID, date.value);
+
+    GRPH.clearData("#liveDataContainer");
+    let xLength = GRPH.getHighestTimestampLiveData(liveData.data);
+
+    for (let i = 0; i < liveData.data.length; i++) {
+        GRPH.createLiveDataGraph(liveData, "livedata" + i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
+    }
 }
 
 // Adds more elements to the select in the html for room selection
@@ -59,7 +73,7 @@ async function roomChangeFunction() {
         // Clears warning area
         WARN.clearWarningArea();
         // Clears graph area
-        GRPH.clearGraphArea();
+        GRPH.clearData("#predictionContainer");
         // Resets the data display section
         clearSensorInfoArea();
 
@@ -71,17 +85,17 @@ async function roomChangeFunction() {
         let predictionData = await getPredictions(roomData[roomSelect.selectedIndex].roomID, date.value);
         let warningData = await getWarningsAndSolutionj(roomData[roomSelect.selectedIndex].roomID, date.value);
 
-        await liveData(roomData[roomSelect.selectedIndex].roomID);
+        liveDataShow(roomData[roomSelect.selectedIndex].roomID);
 
         // Gets the length of the x axis
         let xLength = GRPH.getHighestTimestamp(predictionData);
         // Generate a graph of all the sensortypes, in one
-        GRPH.createTotalGraph(predictionData, "A", xLength);
+        GRPH.createTotalGraph(predictionData, "A", xLength, "#predictionContainer");
 
         // This for loop is where the createGraph function is called. i is passed along also so that 
         // it is clear which iteration of graph is the current and the total number of graps also
         for (let i = 0; i < predictionData.data.length; i++) {
-            GRPH.createGraph(predictionData.data[i], i, xLength, predictionData.interval);
+            GRPH.createGraph(predictionData.data[i], i, xLength, predictionData.interval, "#predictionContainer");
         }
 
         // Displays the warnings of the selected room
@@ -92,7 +106,8 @@ async function roomChangeFunction() {
         hideElementById("loadDiv", true);
         hideElementById("sensorDataContainer", false);
         hideElementById("warContain", false);
-        hideElementById("IAQData", false, null, "grid");
+        hideElementById("liveDataContainer", false, null, "grid");
+        hideElementById("predictionContainer", false, null, "grid");
     }
     else
         GetInformation();
