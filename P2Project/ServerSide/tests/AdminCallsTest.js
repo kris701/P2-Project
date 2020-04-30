@@ -23,6 +23,17 @@ describe('getAllSensorTypes function', function () {
 });
 
 describe('getAllThresholdValues function', function () {
+    GTC.shouldReturnArrayDotData(ACC.SEC.getAllThresholdValues());
+    GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllThresholdValues(), 0);
+});
+
+describe('getPriorityName function', function () {
+    GTC.shouldFailWithNoParameters(ACC.WASC.getPriorityName());
+    GTC.shouldReturnAString(ACC.WASC.getPriorityName(1));
+    GTC.shouldNotReturnCodeWithInput(ACC.WASC.getPriorityName([]), successCodes.GotPriorityName);
+});
+
+describe('getAllThresholdValues function', function () {
     GTC.shouldReturnArrayDotData(ACC.SEC.getAllSensorTypes());
     GTC.outputArrayMustBeLargerThanDotData(ACC.SEC.getAllSensorTypes(), 0);
 });

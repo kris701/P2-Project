@@ -53,7 +53,8 @@ const ResourceLibrary = new Resource("/", [], function () { return true }, [
         new Resource("addnewsensor", ["roomID"], ACC.SEC.addNewSensor, []),
         new Resource("removesensorreference", ["sensorID"], ACC.SEC.removeSensorReference, []),
         new Resource("removesensor", ["sensorID"], ACC.SEC.removeSensor, []),
-        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.insertSensorValue, [])
+        new Resource("insertsensorvalue", ["sensorID", "sensorType", "sensorValue"], ACC.insertSensorValue, []),
+        new Resource("getpriorityname", ["priorityID",], ACC.WASC.getPriorityName, [])
     ])
 ]);
 
