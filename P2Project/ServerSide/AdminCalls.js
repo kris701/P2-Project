@@ -199,7 +199,7 @@ module.exports.ACC = class {
         static async getPriorityName(priorityID) {
             if (priorityID == null)
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
-            if (typeof (parseInt(priorityID)) == typeof (0))
+            if (typeof (parseInt(priorityID)) != typeof (0))
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
 
             let returnItem = "ID does not exist!";
