@@ -137,7 +137,7 @@ module.exports.ACC = class {
                 if (solutionID == 1)
                     return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.makeQuery("UPDATE Solutions SET message=?, warningPriority=? WHERE solutionID=?",[message, solutionID, warningPriority]
+                let ret = await BCC.makeQuery("UPDATE Solutions SET message=?, warningPriority=? WHERE solutionID=?", [message, warningPriority, solutionID]
                 );
                 if (BCC.isErrorCode(ret))
                     return RC.parseToRetMSG(RC.failCodes.DatabaseError);

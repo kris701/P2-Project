@@ -124,7 +124,7 @@ async function updateWarningSubmitButton_Click() {
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([warningSettingMenu, addNewWarningMenu, updateWarningMenu], "none");
+    setElementDisplay([warningSettingMenu, addNewWarningMenu, updateWarningMenu, warningInfoMenu], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(sensorTypeSelect);
@@ -167,7 +167,7 @@ function populateSelectWithSensorTypes(sensorTypeSelect, sensorTypeInfo) {
 
 // Function called when client clicks on the "Add new warning" button
 async function showAddNewWarningMenu() {
-    setElementDisplay([mainMenu, warningSettingMenu], "none");
+    setElementDisplay([mainMenu, warningSettingMenu, warningInfoMenu], "none");
     setElementDisplay([addNewWarningMenu], "block");
 
     let sensorTypeInfo = await getSensorTypeInfo();
@@ -190,7 +190,7 @@ async function submitNewWarningButton() {
 
 // Function called when the client clicks on the "Update Warning" button
 async function showUpdateWarningMenu() {
-    setElementDisplay([mainMenu, warningSettingMenu], "none");
+    setElementDisplay([mainMenu, warningSettingMenu, warningInfoMenu], "none");
     setElementDisplay([updateWarningMenu], "block");
 }
 

@@ -2,10 +2,114 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <link rel="stylesheet" href="solutions.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/5d9de4dd13.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <script src="../../GetLoggedIn.js"></script>
 </head>
 <body>
+    <div class="displayContainer">
+        <div id="addNewSolutionMenu" style="display:none">
+            <button id="addNewSolutionBackButton">Back</button>
+            <select name="warning" id="addNewSolutionWarningSelect">
+                <option value="1">Select Warning</option>
+            </select>
+            <select name="priority" id="addNewSolutionPrioritySelect">
+                <option value="1">Select Priority</option>
+                <option value="2">No Priority</option>
+                <option value="3">Low Priority</option>
+                <option value="4">Medium Priority</option>
+                <option value="5">High Priority</option>
+            </select>
+            <input id="addNewSolutionMessageInput" placeholder="Solution Message" />
+            <button id="addNewSolutionSubmitButton">Add New Solution</button>
+            <br />
 
+            <h5>Warning Message:</h5>
+            <p id="addNewSolutionWarningInfoBox">WarningMessage</p>
+        </div>
+
+        <div id="addExistingSolutionMenu" style="display:none">
+            <button id="addExistingSolutionBackButton">Back</button>
+            <select name="solution" id="addExistingSolutionSolutionSelect">
+                <option value="1">Select Solution</option>
+            </select>
+            <select name="warning" id="addExistingSolutionWarningSelect">
+                <option value="1">Select Warning</option>
+            </select>
+            <button id="addExistingSolutionSubmitButton">Add Existing Solution</button>
+            <br />
+
+            <h5>Solution Message:</h5>
+            <p id="addExistingSolutionSolutionInfoBox">SolutionMessage</p>
+            <h5>Warning Message:</h5>
+            <p id="addExistingSolutionWarningInfoBox">WarningMessage</p>
+        </div>
+
+        <div id="updateSolutionPriorityMenu" style="display:none">
+            <button id="updateSolutionPriorityBackButton">Back</button>
+            <select name="priority" id="updateSolutionPrioritySelect">
+                <option value="1">Select Priority</option>
+                <option value="2">No Priority</option>
+                <option value="3">Low Priority</option>
+                <option value="4">Medium Priority</option>
+                <option value="5">High Priority</option>
+            </select>
+            <button id="updateSolutionPrioritySubmitButton">Update Solution Priority</button>
+            <br />
+
+            <h5>Current Priority:</h5>
+            <p id="updateSolutionPriorityInfoBox">Priority</p>
+        </div>
+
+        <div id="updateSolutionMessageMenu" style="display:none">
+            <button id="updateSolutionMessageBackButton">Back</button>
+            <input id="updateSolutionMessageInput" />
+            <button id="updateSolutionMessageSubmitButton">Update Solution Message</button>
+            <br />
+
+            <h5>Current Message:</h5>
+            <p id="updateSolutionMessageInfoBox">Message</p>
+        </div>
+
+        <div id="mainMenu">
+            <button id="addNewSolutionMenuButton">Add New Solution</button>
+            <button id="addExistingSolutionMenuButton">Add Existing Solution</button>
+            <br />
+
+            <select name="solution" id="solutionSelect">
+                <option value="1">Select Solution</option>
+            </select>
+        </div>
+
+        <div id="solutionInfoBox" style="display:none">
+            <h5>Solution Message:</h5>
+            <p id="solutionMessageInfoBox">SolutionMessage</p>
+            <br />
+
+            <h5>Solution Priority:</h5>
+            <p id="solutionPriorityInfoBox">SolutionPriority</p>
+            <br />
+
+            <h5>Connected Warning ID:</h5>
+            <p id="solutionWarningIdInfoBox">WarningID</p>
+            <br />
+
+            <h5>Connected Warning Message:</h5>
+            <p id="solutionWarningMessageInfoBox"></p>
+        </div>
+
+        <div id="solutionSettingMenu" style="display: none">
+            <button id="updateSolutionPriorityButton">Update Solution Priority</button>
+            <br />
+            <button id="updateSolutionMessageButton">Update Solution Message</button>
+            <br />
+            <button id="removeSolutionRefButton">Remove Solution Reference</button>
+            <br />
+            <button id="removeSolutionButton">Remove Solution</button>
+        </div>
+    </div>
+    <script defer type="module" src="solutions.js"></script>
 </body>
 </html>
