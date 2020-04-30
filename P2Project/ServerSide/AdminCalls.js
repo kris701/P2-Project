@@ -92,7 +92,7 @@ module.exports.ACC = class {
             else
                 return RC.parseToRetMSG(RC.failCodes.NoParameters);
             
-            return RC.parseToRetMSG(RC.failCodes.UpdateWarning);
+            return RC.parseToRetMSG(RC.successCodes.UpdateWarning);
         }
 
         // Solutions
