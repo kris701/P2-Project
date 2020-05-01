@@ -170,11 +170,10 @@ async function showAddNewRoomMenu() {
 async function submitNewRoomButton() {
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewroom", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("roomName", addRoomInput.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("roomName", addRoomInput.value)
     ]);
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewroom", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value)]);
     checkReturnCode(returnMessage, "New room added succesfully!");
 
     await initialLoad();
@@ -187,12 +186,11 @@ function showRoomSettings() {
 
 // Function called when the client chooses to remove the chosen room
 async function removeRoom() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removeroom", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorID", sensorSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removeroom", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("roomID", roomSelect.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("roomID", roomSelect.value)
     ]);
     checkReturnCode(returnMessage, "Room removed succesfully!");
 
@@ -207,13 +205,12 @@ async function showUpdateRoomMenu() {
 
 // Function called when the client chooses to update the chosen room
 async function submitUpdateRoomButton() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updateroom", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorID", sensorSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updateroom", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("roomID", roomSelect.value),
-        new UC.FetchArg("roomName", updateRoomInput.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("roomID", roomSelect.value),
+            new UC.FetchArg("roomName", updateRoomInput.value)
     ]);
     checkReturnCode(returnMessage, "Room updated succesfully!");
 

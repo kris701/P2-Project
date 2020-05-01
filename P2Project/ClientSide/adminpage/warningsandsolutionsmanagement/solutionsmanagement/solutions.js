@@ -243,44 +243,28 @@ async function initialLoad() {
 }
 
 async function getSolutionInfo() {
-    //let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsolutions",
-    //    [
-    //        new BCC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new BCC.FetchArg("password", sessionStorage.getItem("password"))
-    //    ]);
     let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsolutions",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
     return sensorTypeInfo.message.data;
 }
 
 async function getWarningInfo() {
-    //let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallwarningsandsolutions",
-    //    [
-    //        new BCC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new BCC.FetchArg("password", sessionStorage.getItem("password"))
-    //    ]);
     let warningInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallwarningsandsolutions",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
     return warningInfo.message.data;
 }
 
 async function getPriorityName(priority) {
-    //let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getpriorityname",
-    //    [
-    //        new BCC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new BCC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("prioriyID", priority)
-    //    ]);
     let priorityName = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getpriorityname",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("priorityID", priority)
         ]);
     return priorityName.message;
@@ -376,18 +360,10 @@ async function showAddNewSolutionMenu() {
 
 // Function called when client submits the new solution
 async function submitNewSolution() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsolution", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("warningID", addNewSolutionWarningSelect.value),
-    //        new UC.FetchArg("warningPriority", addNewSolutionPrioritySelect.value),
-    //        new UC.FetchArg("message", addNewSolutionInput.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsolution", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("warningID", addNewSolutionWarningSelect.value),
             new UC.FetchArg("priority", addNewSolutionPrioritySelect.value),
             new UC.FetchArg("message", addNewSolutionMessageInput.value)
@@ -410,16 +386,10 @@ async function showAddExistingSolutionMenu() {
 
 // Function called when the client submits the existing sensortype add
 async function submitExistingSolution() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addexistingsolution", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("solutionID", solutionSelect.value),
-    //        new UC.FetchArg("warningID", addExistingSolutionWarningSelect.value)
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addexistingsolution", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("solutionID", addExistingSolutionSolutionSelect.value),
             new UC.FetchArg("warningID", addExistingSolutionWarningSelect.value)
     ]);
@@ -438,19 +408,11 @@ async function showUpdateSolutionPriorityMenu() {
 
 // Function called when the client submits the sensortype update
 async function submitUpdateSolutionPriority() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesolution", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("solutionID", solutionSelect.value),
-    //        new UC.FetchArg("message", await getSolutionMessage(solutionSelect.value)),
-    //        new UC.FetchArg("warningPriority", updateSolutionPrioritySelect.value)
-    //    ]);
     let solutionMessage = await getSolutionMessage(solutionSelect.value);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesolution", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("solutionID", solutionSelect.value),
             new UC.FetchArg("message", solutionMessage),
             new UC.FetchArg("priority", updateSolutionPrioritySelect.value)
@@ -467,22 +429,14 @@ async function showUpdateSolutionMessageMenu() {
 
 // Function called when the client submits the sensortype update
 async function submitUpdateSolutionMessage() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesolution", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("solutionID", solutionSelect.value),
-    //        new UC.FetchArg("message", updateSolutionMessageInput.value),
-    //        new UC.FetchArg("warningPriority", await getSolutionPriority(solutionSelect.value))
-    //    ]);
     let solutionPriority = await getSolutionPriority(solutionSelect.value);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesolution", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("solutionID", solutionSelect.value),
-        new UC.FetchArg("message", updateSolutionMessageInput.value),
-        new UC.FetchArg("priority", solutionPriority)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("solutionID", solutionSelect.value),
+            new UC.FetchArg("message", updateSolutionMessageInput.value),
+            new UC.FetchArg("priority", solutionPriority)
     ]);
     checkReturnCode(returnMessage, "Solution message succesfully updated!");
 
@@ -522,17 +476,11 @@ function showSolutionSettings() {
 
 // Function called when the client clicks on the "Remove sensortype reference" button
 async function removeSolutionRef() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesolutionreference", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("solutionID", solutionSelect.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesolutionreference", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("solutionID", solutionSelect.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("solutionID", solutionSelect.value)
     ]);
     checkReturnCode(returnMessage, "Solution reference succesfully removed!");
 
@@ -542,16 +490,10 @@ async function removeSolutionRef() {
 
 // Function called when the client chooses to remove the chosen sensor
 async function removeSolution() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensortype", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("solutionID", solutionSelect.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesolution", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("solutionID", solutionSelect.value)
     ]);
     checkReturnCode(returnMessage, "Solution succesfully removed!");

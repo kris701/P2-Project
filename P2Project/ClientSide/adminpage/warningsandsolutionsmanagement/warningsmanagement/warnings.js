@@ -161,8 +161,8 @@ async function initialLoad() {
 async function getWarningInfo() {
     let warningInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallwarningsandsolutions",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
     return warningInfo.message.data;
 }
@@ -170,8 +170,8 @@ async function getWarningInfo() {
 async function getSensorTypeInfo() {
     let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensortypes",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
     return sensorTypeInfo.message.data;
 }
@@ -203,12 +203,11 @@ async function showAddNewWarningMenu() {
 async function submitNewWarningButton() {
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewwarning", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("sensorType", addNewWarningSensorTypeSelect.value),
-        new UC.FetchArg("message", addNewWarningMessageInput.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("sensorType", addNewWarningSensorTypeSelect.value),
+            new UC.FetchArg("message", addNewWarningMessageInput.value)
     ]);
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewwarning", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorType", addNewWarningSensorTypeSelect.value), new UC.FetchArg("message", addNewWarningMessageInput.value)]);
     checkReturnCode(returnMessage, "New warning succesfully added!");
 
     await initialLoad();
@@ -222,13 +221,12 @@ async function showUpdateWarningMenu() {
 
 // Function called when the client submits warning update
 async function submitUpdateWarningButton() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatewarning", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("warningID", warningSelect.value), new UC.FetchArg("message", updateWarningMessageInput.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatewarning", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("warningID", warningSelect.value),
-        new UC.FetchArg("message", updateWarningMessageInput.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("warningID", warningSelect.value),
+            new UC.FetchArg("message", updateWarningMessageInput.value)
     ]);
     checkReturnCode(returnMessage, "Warning succesfully updated!");
 
@@ -257,12 +255,11 @@ function populateInfoBoxes(warningInfo) {
 
 // Function called when the client chooses to remove the chosen sensor
 async function removeWarning() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removewarning", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("warningID", warningSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removewarning", [
-        new UC.FetchArg("username", "Admin"),
-        new UC.FetchArg("password", "Password"),
-        new UC.FetchArg("warningID", warningSelect.value)
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
+            new UC.FetchArg("warningID", warningSelect.value)
     ]);
     checkReturnCode(returnMessage, "Warning succesfully removed!");
 

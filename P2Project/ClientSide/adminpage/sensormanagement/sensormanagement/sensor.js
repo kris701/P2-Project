@@ -209,11 +209,10 @@ async function showAddNewSensorMenu() {
 async function submitNewSensorButton() {
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensor", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("roomID", addNewSensorSelectedRoom.value)
         ]);
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensor", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value)]);
     checkReturnCode(returnMessage, "New sensor added succesfully!");
 
     await initialLoad();
@@ -222,8 +221,8 @@ async function submitNewSensorButton() {
 async function populateSensorMenuForDefaultRoom(sensorSelect) {
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensors", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
     let sensors = returnMessage.message.data;
 
@@ -248,11 +247,10 @@ async function showAddExistingSensorMenu() {
 
 // Function called when the client submits the existing sensor add
 async function submitExistingSensorButton() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensor", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value), new UC.FetchArg("sensorID", sensorSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensor", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("roomID", addExistingSensorRoomSelect.value),
             new UC.FetchArg("sensorID", addExistingSensorSensorSelect.value)
         ]);
@@ -268,11 +266,10 @@ function showSensorSettings() {
 
 // Function called when the client chooses to remove the references of the chosen sensor
 async function removeSensorRef() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensorreference", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorID", sensorSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensorreference", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("sensorID", sensorSelect.value)
         ]);
     checkReturnCode(returnMessage, "Sensor reference succesfully removed!");
@@ -282,11 +279,10 @@ async function removeSensorRef() {
 
 // Function called when the client chooses to remove the chosen sensor
 async function removeSensor() {
-    //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensor", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorID", sensorSelect.value)]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensor", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("sensorID", sensorSelect.value)
         ]);
     checkReturnCode(returnMessage, "Sensor succesfully removed!");
