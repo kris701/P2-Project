@@ -53,6 +53,16 @@ let updateWarningMessageInput = document.getElementById("updateWarningMessageInp
 
 //#endregion
 
+//#region popupBox
+
+let popupBox = document.getElementById("popupBox");
+let popupCancel = document.getElementById("popupCancel");
+popupCancel.onclick = popupCancel_Click;
+let popupConfirm = document.getElementById("popupConfirm");
+popupConfirm.onclick = popupConfirm_Click;
+
+//#endregion
+
 //#region window
 
 window.onload = window_OnLoad();
@@ -90,7 +100,8 @@ async function updateWarningButton_Click() {
 }
 
 async function removeWarningButton_Click() {
-    await removeWarning();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeWarning;
 }
 
 //#endregion
@@ -119,15 +130,29 @@ async function updateWarningSubmitButton_Click() {
 
 //#endregion
 
+//#region popupBox
+
+async function popupCancel_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+async function popupConfirm_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+//#endregion
+
 //#endregion
 
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([warningSettingMenu, addNewWarningMenu, updateWarningMenu, warningInfoMenu], "none");
+    setElementDisplay([warningSettingMenu, addNewWarningMenu, updateWarningMenu, warningInfoMenu, popupBox], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(sensorTypeSelect);
+
+    popupConfirm.onclick = popupConfirm_Click;
 
     let warningInfo = await getWarningInfo();
     await populateSelectWithWarnings(sensorTypeSelect, warningInfo);

@@ -76,6 +76,16 @@ let removeSensorTypeReferenceSensorSelect = document.getElementById("removeSenso
 
 //#endregion
 
+//#region popupBox
+
+let popupBox = document.getElementById("popupBox");
+let popupCancel = document.getElementById("popupCancel");
+popupCancel.onclick = popupCancel_Click;
+let popupConfirm = document.getElementById("popupConfirm");
+popupConfirm.onclick = popupConfirm_Click;
+
+//#endregion
+
 //#region window
 
 window.onload = window_OnLoad();
@@ -121,7 +131,8 @@ async function removeSensorTypeRefButton_Click() {
 }
 
 async function removeSensorTypeButton_Click() {
-    await removeSensorType();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeSensorType;
 }
 
 //#endregion
@@ -179,7 +190,20 @@ async function removeSensorTypeReferenceBackButton_Click() {
 }
 
 async function removeSensorTypeReferenceSubmitButton_Click() {
-    await submitRemoveSensorTypeReference();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = submitRemoveSensorTypeReference;
+}
+
+//#endregion
+
+//#region popupBox
+
+async function popupCancel_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+async function popupConfirm_Click() {
+    setElementDisplay([popupBox], "none");
 }
 
 //#endregion
@@ -189,10 +213,12 @@ async function removeSensorTypeReferenceSubmitButton_Click() {
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([sensorTypeSettingMenu, addNewSensorTypeMenu, addExistingSensorTypeMenu, updateSensorTypeMenu, removeSensorTypeReferenceMenu], "none");
+    setElementDisplay([sensorTypeSettingMenu, addNewSensorTypeMenu, addExistingSensorTypeMenu, updateSensorTypeMenu, removeSensorTypeReferenceMenu, popupBox], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(sensorTypeSelect);
+
+    popupConfirm.onclick = popupConfirm_Click;
 
     let sensorTypeInfo = await getSensorTypeInfo();
     await populateSelectWithSensorTypes(sensorTypeSelect, sensorTypeInfo);

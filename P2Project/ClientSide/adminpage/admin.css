@@ -18,10 +18,12 @@
     grid-column-start: 1;
     grid-column-end: 2;
     grid-template-columns: 230px auto;
+    grid-template-rows: 600px auto;
 }
 
 .sidenav {
     width: 200px;
+    height: 260px;
     z-index: 1;
     overflow-x: hidden;
     padding: 10px;

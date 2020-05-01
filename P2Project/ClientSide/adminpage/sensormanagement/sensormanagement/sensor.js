@@ -47,6 +47,16 @@ addExistingSensorBackButton.onclick = addExistingSensorBackButton_Click;
 
 //#endregion
 
+//#region popupBox
+
+let popupBox = document.getElementById("popupBox");
+let popupCancel = document.getElementById("popupCancel");
+popupCancel.onclick = popupCancel_Click;
+let popupConfirm = document.getElementById("popupConfirm");
+popupConfirm.onclick = popupConfirm_Click;
+
+//#endregion
+
 //#region window
 
 window.onload = window_OnLoad();
@@ -88,11 +98,13 @@ async function addExistingSensorMenuButton_Click() {
 //#region sensorSettingMenu
 
 async function removeSensorRefButton_Click() {
-    await removeSensorRef();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeSensorRef;
 }
 
 async function removeSensorButton_Click() {
-    await removeSensor();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeSensor;
 }
 
 //#endregion
@@ -121,16 +133,30 @@ async function addExistingSensorSubmitButton_Click() {
 
 //#endregion
 
+//#region popupBox
+
+async function popupCancel_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+async function popupConfirm_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+//#endregion
+
 //#endregion
 
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([sensorSettingMenu, addNewSensorMenu, addExistingSensorMenu], "none");
+    setElementDisplay([sensorSettingMenu, addNewSensorMenu, addExistingSensorMenu, popupBox], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(roomSelect);
     UC.clearSelect(sensorSelect);
+
+    popupConfirm.onclick = popupConfirm_Click;
 
     let sensorInfo = await getSensorInfo();
     await populateSelectWithRooms(roomSelect, sensorInfo);
@@ -198,7 +224,7 @@ async function populateSensorMenuForDefaultRoom(sensorSelect) {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    let sensors = returnMessage.data;
+    let sensors = returnMessage.message.data;
 
     UC.clearSelect(sensorSelect);
 

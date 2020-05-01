@@ -44,6 +44,16 @@ updateRoomBackButton.onclick = updateRoomBackButton_Clicked;
 
 //#endregion
 
+//#region popupBox
+
+let popupBox = document.getElementById("popupBox");
+let popupCancel = document.getElementById("popupCancel");
+popupCancel.onclick = popupCancel_Click;
+let popupConfirm = document.getElementById("popupConfirm");
+popupConfirm.onclick = popupConfirm_Click;
+
+//#endregion
+
 //#region window
 
 window.onload = window_OnLoad();
@@ -78,7 +88,8 @@ async function addNewRoomMenuButton_Click() {
 
 
 async function removeRoomButton_Click() {
-    await removeRoom();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeRoom;
 }
 
 async function updateRoomButton_Click() {
@@ -111,13 +122,27 @@ async function updateRoomSubmitButton_Clicked() {
 
 //#endregion
 
+//#region popupBox
+
+async function popupCancel_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+async function popupConfirm_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+//#endregion
+
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([roomSettingMenu, addNewRoomMenu, updateRoomMenu], "none");
+    setElementDisplay([roomSettingMenu, addNewRoomMenu, updateRoomMenu, popupBox], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(roomSelect);
+
+    popupConfirm.onclick = popupConfirm_Click;
 
     let sensorInfo = await getSensorInfo();
     await populateSelectWithRooms(roomSelect, sensorInfo);

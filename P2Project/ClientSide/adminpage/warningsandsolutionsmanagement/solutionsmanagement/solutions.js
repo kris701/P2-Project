@@ -88,6 +88,16 @@ let updateSolutionMessageInfoBox = document.getElementById("updateSolutionMessag
 
 //#endregion
 
+//#region popupBox
+
+let popupBox = document.getElementById("popupBox");
+let popupCancel = document.getElementById("popupCancel");
+popupCancel.onclick = popupCancel_Click;
+let popupConfirm = document.getElementById("popupConfirm");
+popupConfirm.onclick = popupConfirm_Click;
+
+//#endregion
+
 //#region window
 
 window.onload = window_OnLoad();
@@ -133,11 +143,13 @@ async function updateSolutionMessageButton_Click() {
 }
 
 async function removeSolutionRefButton_Click() {
-    await removeSolutionRef();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeSolutionRef;
 }
 
 async function removeSolutionButton_Click() {
-    await removeSolution();
+    setElementDisplay([popupBox], "block");
+    popupConfirm.onclick = removeSolution;
 }
 
 //#endregion
@@ -202,15 +214,29 @@ async function updateSolutionMessageSubmitButton_Click() {
 
 //#endregion
 
+//#region popupBox
+
+async function popupCancel_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+async function popupConfirm_Click() {
+    setElementDisplay([popupBox], "none");
+}
+
+//#endregion
+
 //#endregion
 
 //#region backendCode
 
 async function initialLoad() {
-    setElementDisplay([solutionSettingMenu, addNewSolutionMenu, addExistingSolutionMenu, updateSolutionPriorityMenu, updateSolutionMessageMenu, solutionInfoBox], "none");
+    setElementDisplay([solutionSettingMenu, addNewSolutionMenu, addExistingSolutionMenu, updateSolutionPriorityMenu, updateSolutionMessageMenu, solutionInfoBox, popupBox], "none");
     setElementDisplay([mainMenu], "block");
 
     UC.clearSelect(solutionSelect);
+
+    popupConfirm.onclick = popupConfirm_Click;
 
     let solutionInfo = await getSolutionInfo();
     await populateSelectWithSolutions(solutionSelect, solutionInfo);
