@@ -16,26 +16,22 @@
         "tags": [ "UserLevel" ],
         "description": "Returns information regarding sensors, rooms and sensor types",
         "responses": {
-          "223": {
+          "200": {
             "description": "Rooms with sensors and their sensor types",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/inline_response_223"
-                  }
+                  "$ref": "#/components/schemas/inline_response_200"
                 }
               }
             }
           },
-          "499": {
-            "description": "Unknown server error!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -73,34 +69,22 @@
           }
         ],
         "responses": {
-          "224": {
+          "200": {
             "description": "Prediction data",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_224"
+                  "$ref": "#/components/schemas/inline_response_200_1"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -138,34 +122,22 @@
           }
         ],
         "responses": {
-          "222": {
+          "200": {
             "description": "Warnings and Solutions",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_222"
+                  "$ref": "#/components/schemas/inline_response_200_2"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -203,34 +175,22 @@
           }
         ],
         "responses": {
-          "231": {
+          "200": {
             "description": "Live data",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_231"
+                  "$ref": "#/components/schemas/inline_response_200_3"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -267,46 +227,22 @@
           }
         ],
         "responses": {
-          "225": {
+          "200": {
             "description": "Correct credentials",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Credentials correct!"
+                  "$ref": "#/components/schemas/inline_response_200_4"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -343,45 +279,22 @@
           }
         ],
         "responses": {
-          "222": {
+          "200": {
             "description": "Rooms with sensors and their sensor types",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_222_1"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -440,46 +353,22 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Warning added succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Warning added succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_6"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -527,46 +416,22 @@
           }
         ],
         "responses": {
-          "202": {
+          "200": {
             "description": "Warning removed succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Warning removed succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_7"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -626,46 +491,22 @@
           }
         ],
         "responses": {
-          "203": {
+          "200": {
             "description": "Warning updated succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Warning updated succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_8"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -738,46 +579,22 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Solution added succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Solution added succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_9"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -825,46 +642,22 @@
           }
         ],
         "responses": {
-          "208": {
+          "200": {
             "description": "Solution reference removed succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Solution reference removed succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_10"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -937,46 +730,22 @@
           }
         ],
         "responses": {
-          "206": {
+          "200": {
             "description": "Solution updated succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Solution updated succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_11"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1037,46 +806,22 @@
           }
         ],
         "responses": {
-          "207": {
+          "200": {
             "description": "Solution attached succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Solution attached succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_12"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1125,46 +870,22 @@
           }
         ],
         "responses": {
-          "207": {
+          "200": {
             "description": "Solution removed succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Solution removed succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_13"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1201,48 +922,22 @@
           }
         ],
         "responses": {
-          "228": {
+          "200": {
             "description": "All the solutions in the DB",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/inline_response_228"
-                  }
+                  "$ref": "#/components/schemas/inline_response_200_14"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1290,46 +985,22 @@
           }
         ],
         "responses": {
-          "209": {
+          "200": {
             "description": "Room added succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Room added succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_15"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1378,46 +1049,22 @@
           }
         ],
         "responses": {
-          "210": {
+          "200": {
             "description": "Room removed succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Room removed succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_16"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1454,48 +1101,22 @@
           }
         ],
         "responses": {
-          "210": {
+          "200": {
             "description": "Array of all sensor types in the database",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/inline_response_210"
-                  }
+                  "$ref": "#/components/schemas/inline_response_200_17"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1543,46 +1164,22 @@
           }
         ],
         "responses": {
-          "216": {
+          "200": {
             "description": "Sensor type added succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Sensor type added succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_18"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1653,46 +1250,22 @@
           }
         ],
         "responses": {
-          "217": {
+          "200": {
             "description": "Sensor type attached succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Sensor type attached succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_19"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1741,46 +1314,22 @@
           }
         ],
         "responses": {
-          "218": {
+          "200": {
             "description": "Sensor type removed succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Sensor type removed succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_20"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1841,46 +1390,22 @@
           }
         ],
         "responses": {
-          "219": {
+          "200": {
             "description": "Sensor type reference removed succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Sensor type reference removed succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_21"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -1952,46 +1477,22 @@
           }
         ],
         "responses": {
-          "220": {
+          "200": {
             "description": "Sensor type reference update succesfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Sensor type reference update succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_22"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2028,48 +1529,22 @@
           }
         ],
         "responses": {
-          "229": {
+          "200": {
             "description": "An array of all the sensors in the DB",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/inline_response_229"
-                  }
+                  "$ref": "#/components/schemas/inline_response_200_23"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2130,46 +1605,22 @@
           }
         ],
         "responses": {
-          "230": {
+          "200": {
             "description": "Sensors target room ID updated!",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Sensors target room ID updated!"
+                  "$ref": "#/components/schemas/inline_response_200_24"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2218,46 +1669,22 @@
           }
         ],
         "responses": {
-          "212": {
+          "200": {
             "description": "The sensor have been added!",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "The sensor have been added!"
+                  "$ref": "#/components/schemas/inline_response_200_25"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2306,46 +1733,22 @@
           }
         ],
         "responses": {
-          "215": {
+          "200": {
             "description": "The sensor reference have been removed!",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "The sensor reference have been removed!"
+                  "$ref": "#/components/schemas/inline_response_200_26"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2394,46 +1797,22 @@
           }
         ],
         "responses": {
-          "213": {
+          "200": {
             "description": "The sensor was succesfully removed!",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "The sensor was succesfully removed!"
+                  "$ref": "#/components/schemas/inline_response_200_27"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2505,46 +1884,22 @@
           }
         ],
         "responses": {
-          "221": {
+          "200": {
             "description": "The sensor value was added succesfully!",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "The sensor value was added succesfully!"
+                  "$ref": "#/components/schemas/inline_response_200_28"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2593,46 +1948,22 @@
           }
         ],
         "responses": {
-          "233": {
+          "200": {
             "description": "Name of the priority",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Medium"
+                  "$ref": "#/components/schemas/inline_response_200_29"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
-                }
-              }
-            }
-          },
-          "411": {
-            "description": "Wrong credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2669,45 +2000,51 @@
           }
         ],
         "responses": {
-          "232": {
+          "200": {
             "description": "List of all threshold values",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_232"
+                  "$ref": "#/components/schemas/inline_response_200_30"
                 }
               }
             }
           },
-          "401": {
-            "description": "Wrong, missing or wrong parameters!",
+          "404": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api-doc": {
+      "get": {
+        "tags": [ "UserLevel" ],
+        "description": "Gets this document",
+        "responses": {
+          "200": {
+            "description": "Gets the openAPI document",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "example": "Wrong, missing or wrong parameters!"
+                  "format": "binary"
                 }
               }
             }
           },
-          "411": {
-            "description": "Wrong credentials",
+          "404": {
+            "description": "Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Wrong credentials!"
-                }
-              }
-            }
-          },
-          "499": {
-            "description": "Unknown server error!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "An error occured on the server!"
+                  "$ref": "#/components/schemas/inline_response_404"
                 }
               }
             }
@@ -2718,7 +2055,617 @@
   },
   "components": {
     "schemas": {
-      "inline_response_231_data_liveDataArray": {
+      "WrongParam": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Wrong, missing or wrong parameters!"
+          },
+          "returnCode": {
+            "type": "number",
+            "example": 401
+          }
+        }
+      },
+      "WrongCredentials": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Wrong credentials!"
+          },
+          "returnCode": {
+            "type": "number",
+            "example": 411
+          }
+        }
+      },
+      "UnknownServerError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "An error occured on the server!"
+          },
+          "returnCode": {
+            "type": "number",
+            "example": 499
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 223
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_message"
+            }
+          }
+        }
+      },
+      "inline_response_404": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/WrongParam"
+          },
+          {
+            "$ref": "#/components/schemas/WrongCredentials"
+          },
+          {
+            "$ref": "#/components/schemas/UnknownServerError"
+          }
+        ]
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 224
+          },
+          "message": {
+            "$ref": "#/components/schemas/inline_response_200_1_message"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 222
+          },
+          "message": {
+            "$ref": "#/components/schemas/inline_response_200_2_message"
+          }
+        }
+      },
+      "inline_response_200_3": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 231
+          },
+          "message": {
+            "$ref": "#/components/schemas/inline_response_200_3_message"
+          }
+        }
+      },
+      "inline_response_200_4": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 225
+          },
+          "message": {
+            "type": "string",
+            "example": "Credentials correct!"
+          }
+        }
+      },
+      "inline_response_200_5": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 234
+          },
+          "message": {
+            "$ref": "#/components/schemas/inline_response_200_5_message"
+          }
+        }
+      },
+      "inline_response_200_6": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 201
+          },
+          "message": {
+            "type": "string",
+            "example": "Warning added succesfully!"
+          }
+        }
+      },
+      "inline_response_200_7": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 202
+          },
+          "message": {
+            "type": "string",
+            "example": "Warning removed succesfully!"
+          }
+        }
+      },
+      "inline_response_200_8": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 203
+          },
+          "message": {
+            "type": "string",
+            "example": "Warning updated succesfully!"
+          }
+        }
+      },
+      "inline_response_200_9": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 204
+          },
+          "message": {
+            "type": "string",
+            "example": "Solution added succesfully!"
+          }
+        }
+      },
+      "inline_response_200_10": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 208
+          },
+          "message": {
+            "type": "string",
+            "example": "Solution reference removed succesfully!"
+          }
+        }
+      },
+      "inline_response_200_11": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 206
+          },
+          "message": {
+            "type": "string",
+            "example": "Solution updated succesfully!"
+          }
+        }
+      },
+      "inline_response_200_12": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 207
+          },
+          "message": {
+            "type": "string",
+            "example": "Solution attached succesfully!"
+          }
+        }
+      },
+      "inline_response_200_13": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 205
+          },
+          "message": {
+            "type": "string",
+            "example": "Solution removed succesfully!"
+          }
+        }
+      },
+      "inline_response_200_14": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 228
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_14_message"
+            }
+          }
+        }
+      },
+      "inline_response_200_15": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 209
+          },
+          "message": {
+            "type": "string",
+            "example": "Room added succesfully!"
+          }
+        }
+      },
+      "inline_response_200_16": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 210
+          },
+          "message": {
+            "type": "string",
+            "example": "Room removed succesfully!"
+          }
+        }
+      },
+      "inline_response_200_17": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 227
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_17_message"
+            }
+          }
+        }
+      },
+      "inline_response_200_18": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 216
+          },
+          "message": {
+            "type": "string",
+            "example": "Sensor type added succesfully!"
+          }
+        }
+      },
+      "inline_response_200_19": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 217
+          },
+          "message": {
+            "type": "string",
+            "example": "Sensor type attached succesfully!"
+          }
+        }
+      },
+      "inline_response_200_20": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 218
+          },
+          "message": {
+            "type": "string",
+            "example": "Sensor type removed succesfully!"
+          }
+        }
+      },
+      "inline_response_200_21": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 219
+          },
+          "message": {
+            "type": "string",
+            "example": "Sensor type reference removed succesfully!"
+          }
+        }
+      },
+      "inline_response_200_22": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 220
+          },
+          "message": {
+            "type": "string",
+            "example": "Sensor type reference update succesfully!"
+          }
+        }
+      },
+      "inline_response_200_23": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 229
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_23_message"
+            }
+          }
+        }
+      },
+      "inline_response_200_24": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 230
+          },
+          "message": {
+            "type": "string",
+            "example": "Sensors target room ID updated!"
+          }
+        }
+      },
+      "inline_response_200_25": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 212
+          },
+          "message": {
+            "type": "string",
+            "example": "The sensor have been added!"
+          }
+        }
+      },
+      "inline_response_200_26": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 215
+          },
+          "message": {
+            "type": "string",
+            "example": "The sensor reference have been removed!"
+          }
+        }
+      },
+      "inline_response_200_27": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 213
+          },
+          "message": {
+            "type": "string",
+            "example": "The sensor was succesfully removed!"
+          }
+        }
+      },
+      "inline_response_200_28": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 221
+          },
+          "message": {
+            "type": "string",
+            "example": "The sensor value was added succesfully!"
+          }
+        }
+      },
+      "inline_response_200_29": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 233
+          },
+          "message": {
+            "type": "string",
+            "example": "Medium"
+          }
+        }
+      },
+      "inline_response_200_30": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 232
+          },
+          "message": {
+            "$ref": "#/components/schemas/inline_response_200_30_message"
+          }
+        }
+      },
+      "inline_response_200_sensors": {
+        "type": "object",
+        "properties": {
+          "sensorID": {
+            "type": "number",
+            "example": 1
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Temperature"
+            }
+          }
+        }
+      },
+      "inline_response_200_message": {
+        "type": "object",
+        "properties": {
+          "roomID": {
+            "type": "number",
+            "example": 0
+          },
+          "roomName": {
+            "type": "string",
+            "example": "Room A"
+          },
+          "sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_sensors"
+            }
+          }
+        }
+      },
+      "inline_response_200_1_message_thresholdPasses": {
+        "type": "object",
+        "properties": {
+          "timeUntil": {
+            "type": "number",
+            "example": 5
+          },
+          "timesExeeded": {
+            "type": "number",
+            "example": 0.4
+          }
+        }
+      },
+      "inline_response_200_1_message_data": {
+        "type": "object",
+        "properties": {
+          "sensorType": {
+            "type": "number",
+            "example": 0
+          },
+          "name": {
+            "type": "string",
+            "example": "CO2"
+          },
+          "thresholdPasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_1_message_thresholdPasses"
+            }
+          }
+        }
+      },
+      "inline_response_200_1_message": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "type": "number",
+            "example": 1
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_1_message_data"
+            }
+          }
+        }
+      },
+      "inline_response_200_2_message_data_solutionInfo_solutionInfo": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "type": "number",
+            "example": 3
+          },
+          "timeUntil": {
+            "type": "number",
+            "example": 4
+          }
+        }
+      },
+      "inline_response_200_2_message_data_solutionInfo": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Some solution for too high CO2"
+          },
+          "solutionInfo": {
+            "$ref": "#/components/schemas/inline_response_200_2_message_data_solutionInfo_solutionInfo"
+          }
+        }
+      },
+      "inline_response_200_2_message_data": {
+        "type": "object",
+        "properties": {
+          "warningID": {
+            "type": "number",
+            "example": 2
+          },
+          "sensorType": {
+            "type": "number",
+            "example": 1
+          },
+          "message": {
+            "type": "string",
+            "example": "Too high CO2 Level!"
+          },
+          "solutionInfo": {
+            "$ref": "#/components/schemas/inline_response_200_2_message_data_solutionInfo"
+          }
+        }
+      },
+      "inline_response_200_2_message": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "type": "number",
+            "example": 5
+          },
+          "data": {
+            "$ref": "#/components/schemas/inline_response_200_2_message_data"
+          }
+        }
+      },
+      "inline_response_200_3_message_data_sensorLiveData": {
+        "type": "object",
+        "properties": {
+          "timeStamp": {
+            "type": "number",
+            "example": 2
+          },
+          "sensorValue": {
+            "type": "number",
+            "example": 2
+          }
+        }
+      },
+      "inline_response_200_3_message_data_liveDataArray": {
         "type": "object",
         "properties": {
           "sensorID": {
@@ -2728,26 +2675,90 @@
           "sensorLiveData": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/inline_response_231_data_sensorLiveData"
+              "$ref": "#/components/schemas/inline_response_200_3_message_data_sensorLiveData"
             }
           }
         }
       },
-      "inline_response_229": {
+      "inline_response_200_3_message_data": {
         "type": "object",
         "properties": {
-          "sensorID": {
-            "type": "number",
-            "example": 0
+          "sensorType": {
+            "type": "string",
+            "example": "CO2"
           },
-          "roomID": {
-            "minimum": 0,
-            "type": "number",
-            "example": 0
+          "liveDataArray": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_3_message_data_liveDataArray"
+            }
           }
         }
       },
-      "inline_response_228": {
+      "inline_response_200_3_message": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "type": "number",
+            "example": 5
+          },
+          "data": {
+            "$ref": "#/components/schemas/inline_response_200_3_message_data"
+          }
+        }
+      },
+      "inline_response_200_5_message_solutions": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Medium priority solution"
+          },
+          "solutionID": {
+            "type": "number",
+            "example": 1
+          },
+          "warningPriority": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      },
+      "inline_response_200_5_message_data": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Default warning"
+          },
+          "sensorType": {
+            "type": "number",
+            "example": 2
+          },
+          "warningID": {
+            "type": "number",
+            "example": -1
+          },
+          "solutions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_5_message_solutions"
+            }
+          }
+        }
+      },
+      "inline_response_200_5_message": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_5_message_data"
+            }
+          }
+        }
+      },
+      "inline_response_200_14_message": {
         "type": "object",
         "properties": {
           "message": {
@@ -2772,89 +2783,34 @@
           }
         }
       },
-      "inline_response_231_data_sensorLiveData": {
+      "inline_response_200_17_message": {
         "type": "object",
         "properties": {
-          "timeStamp": {
+          "sensorType": {
+            "minimum": 0,
             "type": "number",
-            "example": 2
+            "example": 0
           },
-          "sensorValue": {
-            "type": "number",
-            "example": 2
+          "typeName": {
+            "type": "string"
           }
         }
       },
-      "inline_response_222_1_solutions": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Medium priority solution"
-          },
-          "solutionID": {
-            "type": "number",
-            "example": 1
-          },
-          "warningPriority": {
-            "type": "number",
-            "example": 1
-          }
-        }
-      },
-      "getsensorinfo_sensors": {
+      "inline_response_200_23_message": {
         "type": "object",
         "properties": {
           "sensorID": {
             "type": "number",
-            "example": 1
+            "example": 0
           },
-          "types": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "Temperature"
-            }
+          "roomID": {
+            "minimum": 0,
+            "type": "number",
+            "example": 0
           }
         }
       },
-      "inline_response_222_1_data": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Default warning"
-          },
-          "sensorType": {
-            "type": "number",
-            "example": 2
-          },
-          "warningID": {
-            "type": "number",
-            "example": -1
-          },
-          "solutions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/inline_response_222_1_solutions"
-            }
-          }
-        }
-      },
-      "inline_response_224_thresholdPasses": {
-        "type": "object",
-        "properties": {
-          "timeUntil": {
-            "type": "number",
-            "example": 5
-          },
-          "timesExeeded": {
-            "type": "number",
-            "example": 0.4
-          }
-        }
-      },
-      "inline_response_232_data": {
+      "inline_response_200_30_message_data": {
         "type": "object",
         "properties": {
           "id": {
@@ -2875,209 +2831,25 @@
           }
         }
       },
-      "inline_response_224_data": {
-        "type": "object",
-        "properties": {
-          "sensorType": {
-            "type": "number",
-            "example": 0
-          },
-          "name": {
-            "type": "string",
-            "example": "CO2"
-          },
-          "thresholdPasses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/inline_response_224_thresholdPasses"
-            }
-          }
-        }
-      },
-      "inline_response_222_data_solutionInfo": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "example": "Some solution for too high CO2"
-          },
-          "solutionInfo": {
-            "$ref": "#/components/schemas/inline_response_222_data_solutionInfo_solutionInfo"
-          }
-        }
-      },
-      "inline_response_222_data_solutionInfo_solutionInfo": {
-        "type": "object",
-        "properties": {
-          "priority": {
-            "type": "number",
-            "example": 3
-          },
-          "timeUntil": {
-            "type": "number",
-            "example": 4
-          }
-        }
-      },
-      "inline_response_222_data": {
-        "type": "object",
-        "properties": {
-          "warningID": {
-            "type": "number",
-            "example": 2
-          },
-          "sensorType": {
-            "type": "number",
-            "example": 1
-          },
-          "message": {
-            "type": "string",
-            "example": "Too high CO2 Level!"
-          },
-          "solutionInfo": {
-            "$ref": "#/components/schemas/inline_response_222_data_solutionInfo"
-          }
-        }
-      },
-      "inline_response_223": {
-        "type": "object",
-        "properties": {
-          "roomID": {
-            "type": "number",
-            "example": 0
-          },
-          "roomName": {
-            "type": "string",
-            "example": "Room A"
-          },
-          "sensors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/getsensorinfo_sensors"
-            }
-          }
-        }
-      },
-      "inline_response_222": {
-        "type": "object",
-        "properties": {
-          "interval": {
-            "type": "number",
-            "example": 5
-          },
-          "data": {
-            "$ref": "#/components/schemas/inline_response_222_data"
-          }
-        }
-      },
-      "inline_response_222_1": {
+      "inline_response_200_30_message": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/inline_response_222_1_data"
-            }
-          }
-        }
-      },
-      "inline_response_210": {
-        "type": "object",
-        "properties": {
-          "sensorType": {
-            "minimum": 0,
-            "type": "number",
-            "example": 0
-          },
-          "typeName": {
-            "type": "string"
-          }
-        }
-      },
-      "inline_response_232": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/inline_response_232_data"
-            }
-          }
-        }
-      },
-      "inline_response_231": {
-        "type": "object",
-        "properties": {
-          "interval": {
-            "type": "number",
-            "example": 5
-          },
-          "data": {
-            "$ref": "#/components/schemas/inline_response_231_data"
-          }
-        }
-      },
-      "inline_response_231_data": {
-        "type": "object",
-        "properties": {
-          "sensorType": {
-            "type": "string",
-            "example": "CO2"
-          },
-          "liveDataArray": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/inline_response_231_data_liveDataArray"
-            }
-          }
-        }
-      },
-      "inline_response_224": {
-        "type": "object",
-        "properties": {
-          "interval": {
-            "type": "number",
-            "example": 1
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/inline_response_224_data"
+              "$ref": "#/components/schemas/inline_response_200_30_message_data"
             }
           }
         }
       }
     },
     "responses": {
-      "401": {
-        "description": "Wrong, missing or wrong parameters!",
+      "404": {
+        "description": "Errors",
         "content": {
           "application/json": {
             "schema": {
-              "type": "string",
-              "example": "Wrong, missing or wrong parameters!"
-            }
-          }
-        }
-      },
-      "411": {
-        "description": "Wrong credentials",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "string",
-              "example": "Wrong credentials!"
-            }
-          }
-        }
-      },
-      "499": {
-        "description": "Unknown server error!",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "string",
-              "example": "An error occured on the server!"
+              "$ref": "#/components/schemas/inline_response_404"
             }
           }
         }
