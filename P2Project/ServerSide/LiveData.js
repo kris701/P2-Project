@@ -88,32 +88,36 @@ async function insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, 
 async function getHistoricData(sensorID, date, sensorTypeName) {
     let result = [];
 
-    for (let i = 0; i < parseInt(cfg.LDC_backReachHours, 10) * (60 / parseInt(cfg.LDC_interval, 10)); i++) {
-        let dateMin = new Date(date);
-        let dateMax = new Date(date);
-        dateMax.setMinutes(dateMax.getMinutes() - ((i + 1) * parseInt(cfg.LDC_interval, 10)));
-        dateMin.setMinutes(dateMin.getMinutes() - (i * parseInt(cfg.LDC_interval, 10)));
+    let dateMin = new Date(date);
+    let dateMax = new Date(date);
+    dateMin.setHours(dateMin.getHours() - parseInt(cfg.LDC_backReachHours, 10));
 
-        result = await getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin, i);
-    }
+    result = await QCC.getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin);
+
+    for (let i = 0; i < result.length; i++)
+        result[i].timeStamp = BCC.timeDiffToInterval(date, result[i].timeStamp, parseInt(cfg.LDC_interval, 10));
+
+    result = stitchData(result);
 
     return result;
 }
 
-async function getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin, intervalsback) {
-    let ret = await BCC.makeQuery(
-        "SELECT * FROM SensorValue_" + sensorTypeName + " WHERE sensorID=? AND timestamp BETWEEN ? AND ?", [
-        sensorID,
-        dateMax,
-        dateMin
-    ]);
-    if (BCC.isErrorCode(ret))
-        return result;
-
-    if (ret.recordset.length > 0)
-        result.push(new SensorValuesClass(intervalsback, ret.recordset[0].sensorValue));
-
-    return result;
+async function stitchData(data) {
+    for (let i = 0; i < data.length; i++) {
+        let count = 1;
+        for (let j = i + 1; j < data.length; j++) {
+            if (data[i].timeStamp < data[j].timeStamp)
+                break;
+            if (data[i].timeStamp == data[j].timeStamp) {
+                data[i].sensorValue += data[j].sensorValue;
+                data.splice(j,1);
+                count++;
+                j--;
+            }
+        }
+        data[i].sensorValue = Math.floor(data[i].sensorValue / count);
+    }
+    return data;
 }
 
 // QCC: Query Call Class
@@ -139,6 +143,23 @@ class QCC {
             return [];
 
         let result = await BCC.pushItem(ret.recordset);
+        return result;
+    }
+
+    static async getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin) {
+        let ret = await BCC.makeQuery(
+            "SELECT * FROM SensorValue_" + sensorTypeName + " WHERE sensorID=? AND timestamp BETWEEN ? AND ?", [
+            sensorID,
+            dateMin,
+            dateMax
+        ]);
+        if (BCC.isErrorCode(ret))
+            return result;
+
+        await BCC.asyncForEach(ret.recordset, async function (v) {
+            result.push(new SensorValuesClass(v.timestamp, v.sensorValue));
+        });
+
         return result;
     }
 }

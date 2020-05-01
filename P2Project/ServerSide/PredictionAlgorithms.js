@@ -93,7 +93,7 @@ class IRVC {
         let sensorValuesArray = await IRVC.getPredictionSensorValues(sensorID, sensorType, thresholdValue, date);
 
         await BCC.asyncForEach(sensorValuesArray, async function (sensorValue) {
-            let newInterval = IRVC.timeDiffToInterval(sensorValue.timestamp, date);
+            let newInterval = BCC.timeDiffToInterval(sensorValue.timestamp, date, parseInt(cfg.PAC_interval, 10), true);
 
             IVC.insertNewInterval(thresholdPassesArray, newInterval, sensorValue.timestamp);
         });
@@ -123,31 +123,8 @@ class IRVC {
         return result;
     }
 
-    static timeDiffToInterval(timestamp, senderdate) {
-        let date = new Date(timestamp);
-        let CurrentDate = new Date(senderdate);
-        date.setDate(CurrentDate.getDate());
-        date.setMonth(CurrentDate.getMonth());
-
-        if (date < CurrentDate) {
-            date.setDate(date.getDate() + 1);
-        }
-
-        let millisecondsLeft = (date.getTime() - CurrentDate.getTime());
-        let secondsLeft = Math.floor(millisecondsLeft / 1000);
-        let minutesLeft = Math.floor(secondsLeft / 60);
-        let intervalMinutesLeft = Math.floor(minutesLeft / parseInt(cfg.PAC_interval, 10));
-
-        return intervalMinutesLeft;
-    }
-
     // TimesExceeded are now populated with timestamps of when the threshold was exceeded.
     static convertTimestampArrayToProbability(data, date) {
-        //for (let i = 0; i < data.length; i++) {
-        //    for (let j = 0; j < data[i].thresholdPasses.length; j++) {
-        //        data[i].thresholdPasses[j].timesExceeded = (data[i].thresholdPasses[j].timesExceeded.length / parseInt(cfg.PAC_weekOffset, 10)) * 100;
-        //    }
-        //}
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].thresholdPasses.length; j++) {
                 let sum = 0;
