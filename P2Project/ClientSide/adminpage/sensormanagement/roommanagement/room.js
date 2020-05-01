@@ -175,6 +175,7 @@ async function submitNewRoomButton() {
         new UC.FetchArg("roomName", addRoomInput.value)
     ]);
     //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewroom", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value)]);
+    checkReturnCode(returnMessage, "New room added succesfully!");
 
     await initialLoad();
 }
@@ -193,6 +194,7 @@ async function removeRoom() {
         new UC.FetchArg("password", "Password"),
         new UC.FetchArg("roomID", roomSelect.value)
     ]);
+    checkReturnCode(returnMessage, "Room removed succesfully!");
 
     await initialLoad();
 }
@@ -213,6 +215,7 @@ async function submitUpdateRoomButton() {
         new UC.FetchArg("roomID", roomSelect.value),
         new UC.FetchArg("roomName", updateRoomInput.value)
     ]);
+    checkReturnCode(returnMessage, "Room updated succesfully!");
 
     await initialLoad();
 
@@ -230,6 +233,13 @@ function makeOptionFromParam(name, value) {
     option.text = name;
     option.value = value;
     return option;
+}
+
+function checkReturnCode(returnMessage, successMessage) {
+    if (returnMessage.returnCode >= 200 && returnMessage.returnCode < 300)
+        console.log(successMessage);
+    else
+        console.log(returnMessage.message);
 }
 
 //#endregion

@@ -392,8 +392,7 @@ async function submitNewSolution() {
             new UC.FetchArg("priority", addNewSolutionPrioritySelect.value),
             new UC.FetchArg("message", addNewSolutionMessageInput.value)
     ]);
-
-    console.log(returnMessage);
+    checkReturnCode(returnMessage, "New solution succesfully added!");
 
     await initialLoad();
 }
@@ -423,7 +422,8 @@ async function submitExistingSolution() {
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("solutionID", addExistingSolutionSolutionSelect.value),
             new UC.FetchArg("warningID", addExistingSolutionWarningSelect.value)
-        ]);
+    ]);
+    checkReturnCode(returnMessage, "Solution succesfully added to warning!");
 
     await initialLoad();
 }
@@ -455,6 +455,7 @@ async function submitUpdateSolutionPriority() {
             new UC.FetchArg("message", solutionMessage),
             new UC.FetchArg("priority", updateSolutionPrioritySelect.value)
     ]);
+    checkReturnCode(returnMessage, "Solution priority succesfully updated!");
 
     await initialLoad();
 }
@@ -483,6 +484,7 @@ async function submitUpdateSolutionMessage() {
         new UC.FetchArg("message", updateSolutionMessageInput.value),
         new UC.FetchArg("priority", solutionPriority)
     ]);
+    checkReturnCode(returnMessage, "Solution message succesfully updated!");
 
     await initialLoad();
 }
@@ -532,6 +534,7 @@ async function removeSolutionRef() {
         new UC.FetchArg("password", "Password"),
         new UC.FetchArg("solutionID", solutionSelect.value)
     ]);
+    checkReturnCode(returnMessage, "Solution reference succesfully removed!");
 
     await initialLoad();
 
@@ -550,7 +553,8 @@ async function removeSolution() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("solutionID", solutionSelect.value)
-        ]);
+    ]);
+    checkReturnCode(returnMessage, "Solution succesfully removed!");
 
     await initialLoad();
 }
@@ -567,6 +571,13 @@ function makeOptionFromParam(name, value) {
     option.text = name;
     option.value = value;
     return option;
+}
+
+function checkReturnCode(returnMessage, successMessage) {
+    if (returnMessage.returnCode >= 200 && returnMessage.returnCode < 300)
+        console.log(successMessage);
+    else
+        console.log(returnMessage.message);
 }
 
 //#endregion

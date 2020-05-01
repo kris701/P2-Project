@@ -324,6 +324,7 @@ async function submitNewSensorType() {
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("typeName", addNewSensorTypeInput.value)
         ]);
+    checkReturnCode(returnMessage, "New sensortype succesfully added!");
 
     await initialLoad();
 }
@@ -355,6 +356,7 @@ async function submitExistingSensorType() {
             new UC.FetchArg("sensorID", addExistingSensorTypeSensorSelect.value),
             new UC.FetchArg("threshold", addExistingSensorTypeThresholdInput.value)
         ]);
+    checkReturnCode(returnMessage, "Sensortype succesfully added to sensor!");
 
     await initialLoad();
 }
@@ -399,6 +401,7 @@ async function submitUpdateSensorType() {
             new UC.FetchArg("sensorType", sensorTypeSelect.value),
             new UC.FetchArg("threshold", updateSensorTypeThresholdInput.value)
         ]);
+    checkReturnCode(returnMessage, "Sensortype succesfully updated!");
 
     await initialLoad();
 }
@@ -428,6 +431,7 @@ async function submitRemoveSensorTypeReference() {
             new UC.FetchArg("sensorType", sensorTypeSelect.value),
             new UC.FetchArg("sensorID", removeSensorTypeReferenceSensorSelect.value)
         ]);
+    checkReturnCode(returnMessage, "Sensortype reference succesfully removed!");
 
     await initialLoad();
 }
@@ -451,6 +455,7 @@ async function removeSensorType() {
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("sensorType", sensorTypeSelect.value)
         ]);
+    checkReturnCode(returnMessage, "Sensortype succesfully removed!");
 
     await initialLoad();
 }
@@ -467,6 +472,13 @@ function makeOptionFromParam(name, value) {
     option.text = name;
     option.value = value;
     return option;
+}
+
+function checkReturnCode(returnMessage, successMessage) {
+    if (returnMessage.returnCode >= 200 && returnMessage.returnCode < 300)
+        console.log(successMessage);
+    else
+        console.log(returnMessage.message);
 }
 
 //#endregion

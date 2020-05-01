@@ -214,6 +214,7 @@ async function submitNewSensorButton() {
             new UC.FetchArg("roomID", addNewSensorSelectedRoom.value)
         ]);
     //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensor", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("roomID", roomSelect.value)]);
+    checkReturnCode(returnMessage, "New sensor added succesfully!");
 
     await initialLoad();
 }
@@ -255,6 +256,7 @@ async function submitExistingSensorButton() {
             new UC.FetchArg("roomID", addExistingSensorRoomSelect.value),
             new UC.FetchArg("sensorID", addExistingSensorSensorSelect.value)
         ]);
+    checkReturnCode(returnMessage, "Sensor succesfully added to room!");
 
     await initialLoad();
 }
@@ -273,6 +275,7 @@ async function removeSensorRef() {
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("sensorID", sensorSelect.value)
         ]);
+    checkReturnCode(returnMessage, "Sensor reference succesfully removed!");
 
     await initialLoad();
 }
@@ -286,6 +289,7 @@ async function removeSensor() {
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("sensorID", sensorSelect.value)
         ]);
+    checkReturnCode(returnMessage, "Sensor succesfully removed!");
 
     await initialLoad();
 }
@@ -302,6 +306,13 @@ function makeOptionFromParam(name, value) {
     option.text = name;
     option.value = value;
     return option;
+}
+
+function checkReturnCode(returnMessage, successMessage) {
+    if (returnMessage.returnCode >= 200 && returnMessage.returnCode < 300)
+        console.log(successMessage);
+    else
+        console.log(returnMessage.message);
 }
 
 //#endregion

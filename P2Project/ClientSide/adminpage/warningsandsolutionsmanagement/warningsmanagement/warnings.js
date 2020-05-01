@@ -209,6 +209,7 @@ async function submitNewWarningButton() {
         new UC.FetchArg("message", addNewWarningMessageInput.value)
     ]);
     //let returnMessage = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewwarning", [new UC.FetchArg("username", sessionStorage.getItem("username")), new UC.FetchArg("password", sessionStorage.getItem("password")), new UC.FetchArg("sensorType", addNewWarningSensorTypeSelect.value), new UC.FetchArg("message", addNewWarningMessageInput.value)]);
+    checkReturnCode(returnMessage, "New warning succesfully added!");
 
     await initialLoad();
 }
@@ -229,6 +230,7 @@ async function submitUpdateWarningButton() {
         new UC.FetchArg("warningID", warningSelect.value),
         new UC.FetchArg("message", updateWarningMessageInput.value)
     ]);
+    checkReturnCode(returnMessage, "Warning succesfully updated!");
 
     await initialLoad();
 }
@@ -262,6 +264,7 @@ async function removeWarning() {
         new UC.FetchArg("password", "Password"),
         new UC.FetchArg("warningID", warningSelect.value)
     ]);
+    checkReturnCode(returnMessage, "Warning succesfully removed!");
 
     await initialLoad();
 }
@@ -278,6 +281,13 @@ function makeOptionFromParam(name, value) {
     option.text = name;
     option.value = value;
     return option;
+}
+
+function checkReturnCode(returnMessage, successMessage) {
+    if (returnMessage.returnCode >= 200 && returnMessage.returnCode < 300)
+        console.log(successMessage);
+    else
+        console.log(returnMessage.message);
 }
 
 //#endregion
