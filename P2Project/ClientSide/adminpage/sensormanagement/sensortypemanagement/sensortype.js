@@ -209,7 +209,7 @@ async function getSensorTypeInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    return sensorTypeInfo.data;
+    return sensorTypeInfo.message.data;
 }
 
 async function getThresholdInfo() {
@@ -224,12 +224,12 @@ async function getThresholdInfo() {
             new UC.FetchArg("password", "Password")
         ]);
 
-    return thresholdInfo.data;
+    return thresholdInfo.message.data;
 }
 
 async function getSensorInfo() {
     let sensorInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
-    return sensorInfo;
+    return sensorInfo.message;
 }
 
 function populateSelectWithSensorTypesFromSensor(sensorSelect, sensorTypeSelect, sensorTypeInfo, thresholdInfo) {

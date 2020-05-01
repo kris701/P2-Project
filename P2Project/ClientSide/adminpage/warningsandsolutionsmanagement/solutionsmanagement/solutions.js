@@ -227,7 +227,7 @@ async function getSolutionInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    return sensorTypeInfo.data;
+    return sensorTypeInfo.message.data;
 }
 
 async function getWarningInfo() {
@@ -241,7 +241,7 @@ async function getWarningInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    return warningInfo.data;
+    return warningInfo.message.data;
 }
 
 async function getPriorityName(priority) {
@@ -257,7 +257,7 @@ async function getPriorityName(priority) {
             new UC.FetchArg("password", "Password"),
             new UC.FetchArg("priorityID", priority)
         ]);
-    return priorityName;
+    return priorityName.message;
 }
 
 function populateSelectWithSolutions(solutionSelect, solutionInfo) {

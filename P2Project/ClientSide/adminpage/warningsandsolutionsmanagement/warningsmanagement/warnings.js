@@ -139,7 +139,7 @@ async function getWarningInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    return warningInfo.data;
+    return warningInfo.message.data;
 }
 
 async function getSensorTypeInfo() {
@@ -148,7 +148,7 @@ async function getSensorTypeInfo() {
             new UC.FetchArg("username", "Admin"),
             new UC.FetchArg("password", "Password")
         ]);
-    return sensorTypeInfo.data;
+    return sensorTypeInfo.message.data;
 }
 
 function populateSelectWithWarnings(warningSelect, warningInfo) {

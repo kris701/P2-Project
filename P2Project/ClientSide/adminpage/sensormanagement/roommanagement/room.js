@@ -125,7 +125,7 @@ async function initialLoad() {
 
 async function getSensorInfo() {
     let sensorInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
-    return sensorInfo;
+    return sensorInfo.message;
 }
 
 function populateSelectWithRooms(roomSelect, sensorInfo) {
