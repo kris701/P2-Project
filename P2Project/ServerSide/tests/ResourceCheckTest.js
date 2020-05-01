@@ -17,20 +17,20 @@ wrongReq.headers = {};
 wrongReq.headers.host = "UnitTest";
 wrongReq.url = "/unittest";
 var credentialsURL = {};
-credentialsURL.Username = "User";
-credentialsURL.Password = "UserPassword";
+credentialsURL.username = "User";
+credentialsURL.password = "UserPassword";
 credentialsURL.roomName = "UnitTest";
 var parametersURL = {};
-parametersURL.Username = "Admin";
-parametersURL.Password = "Password";
+parametersURL.username = "Admin";
+parametersURL.password = "Password";
 
 //#endregion
 
 //#region Tests
 
 describe('Check all resources test', function () {
-    GTC.expectErrorCodeFromInput("Should fail with wrong credentials", RCC.checkAllResource(response, req, credentialsURL), -1);
-    GTC.expectErrorCodeFromInput("Should fail with wrong parameters", RCC.checkAllResource(response, req, parametersURL), -1);
+    GTC.expectErrorCodeFromInput("Should fail with wrong credentials", RCC.checkAllResource(response, req, credentialsURL), failCodes.WrongInputCredentials);
+    GTC.expectErrorCodeFromInput("Should fail with wrong parameters", RCC.checkAllResource(response, req, parametersURL), failCodes.NoParameters);
     GTC.expectErrorCodeFromInput("Should fail with wrong request path", RCC.checkAllResource(response, wrongReq, parametersURL), -1);
 });
 

@@ -2672,6 +2672,10 @@
             "type": "number",
             "example": 2
           },
+          "sensorThreshold": {
+            "type": "number",
+            "example": 500
+          },
           "sensorLiveData": {
             "type": "array",
             "items": {
