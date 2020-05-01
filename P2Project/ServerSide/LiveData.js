@@ -17,8 +17,9 @@ class LiveSensorClass {
     }
 }
 class LiveSensorValuesClass {
-    constructor(sensorID, sensorLiveData) {
+    constructor(sensorID, sensorThreshold, sensorLiveData) {
         this.sensorID = sensorID;
+        this.sensorThreshold = sensorThreshold;
         this.sensorLiveData = sensorLiveData;
     }
 }
@@ -52,9 +53,9 @@ module.exports.LDC = class {
             let sensorsSensorTypes = await QCC.getSensorTypesForSensor(sensorInfo.sensorID);
 
             await BCC.asyncForEach(sensorsSensorTypes, async function (sensorTypeInfo) {
-                let sensorTypeName = await BCC.getSensorTypeName(sensorTypeInfo);
+                let sensorTypeName = await BCC.getSensorTypeName(sensorTypeInfo.sensorType);
                 let sensorValues = await getHistoricData(sensorInfo.sensorID, date, sensorTypeName);
-                returnItem.data = await insertValuesIntoArray(returnItem.data, sensorTypeName, sensorValues, sensorInfo.sensorID);
+                returnItem.data = await insertValuesIntoArray(returnItem.data, sensorTypeName, sensorValues, sensorInfo.sensorID, sensorTypeInfo.thresholdValue);
             });
         });
 
@@ -66,20 +67,20 @@ module.exports.LDC = class {
 
 //#region Private
 
-async function insertValuesIntoArray(dataArray, insertTypeName, sensorValues, sensorID) {
-    let isThere = await insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, sensorID);
+async function insertValuesIntoArray(dataArray, insertTypeName, sensorValues, sensorID, sensorThreshold) {
+    let isThere = await insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, sensorID, sensorThreshold);
     if (!isThere) {
-        dataArray.push(new LiveSensorClass(insertTypeName, [new LiveSensorValuesClass(sensorID, sensorValues) ]));
+        dataArray.push(new LiveSensorClass(insertTypeName, [new LiveSensorValuesClass(sensorID, sensorThreshold, sensorValues) ]));
     }
     return dataArray;
 }
 
-async function insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, sensorID) {
+async function insertIfExistsAndInsert(dataArray, insertTypeName, sensorValues, sensorID, sensorThreshold) {
     let isThere = false;
     await BCC.asyncForEach(dataArray, async function (typeArray) {
         if (typeArray.sensorType == insertTypeName) {
             isThere = true;
-            typeArray.liveDataArray.push(new LiveSensorValuesClass(sensorID, sensorValues));
+            typeArray.liveDataArray.push(new LiveSensorValuesClass(sensorID, sensorThreshold, sensorValues));
         }
     });
     return isThere;
@@ -125,14 +126,10 @@ class QCC {
     // All the query calls to the database.
 
     static async getSensorTypesForSensor(sensorID) {
-        let result = [];
-
         let ret = await BCC.makeQuery("SELECT * FROM SensorThresholds WHERE sensorID=?", [sensorID]);
         if (BCC.isErrorCode(ret))
-            return result;
-        await BCC.asyncForEach(ret.recordset, async function (v) {
-            result.push(v.sensorType);
-        });
+            return [];
+        let result = await BCC.pushItem(ret.recordset);
 
         return result;
     }
