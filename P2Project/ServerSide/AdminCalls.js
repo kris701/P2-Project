@@ -41,7 +41,7 @@ module.exports.ACC = class {
 
             returnItem.data = await getAllWarningsQuery();
 
-            return new BCC.retMSG(200, returnItem);
+            return new BCC.retMSG(RC.successCodes.GotAllWarningsAndSolutions, returnItem);
         }
 
         static async addNewWarning(sensorType, message) {
@@ -85,7 +85,7 @@ module.exports.ACC = class {
                 if (warningID == 1) 
                     return RC.parseToRetMSG(RC.failCodes.TargetIsDefaultID);
 
-                let ret = await BCC.makeQuery("UPDATE Warnings SET message=? WHERE warningID=?", [warningID,message]);
+                let ret = await BCC.makeQuery("UPDATE Warnings SET message=? WHERE warningID=?", [message, warningID]);
                 if (BCC.isErrorCode(ret))
                     return RC.parseToRetMSG(RC.failCodes.DatabaseError);
             }

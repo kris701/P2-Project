@@ -205,13 +205,13 @@ function populateYValuesLiveData(data, until, interval, backgroundColor, borderC
 
 function generateYValuesLiveData(data, until) {
     let dataSet = [];
-    let fromJ = 0;
+    let fromJ = data.sensorLiveData.length - 1;
     let found = false;
     for (let i = 0; i < until; i++) {
-        for (let j = fromJ; j < data.sensorLiveData.length; j++) {
+        for (let j = fromJ; j >= 0; j--) {
             if (data.sensorLiveData[j].timeStamp == i) {
                 dataSet.push(data.sensorLiveData[j].sensorValue);
-                fromJ = j + 1;
+                fromJ -= 1;
                 found = true;
                 break;
             }

@@ -63,7 +63,7 @@ async function refreshRoomButton_Click() {
 async function startUpProcedure() {
     setCurrentDate();
     let sensorInfo = await getSensorInfo();
-    importDataToSelect(roomSelect, sensorInfo.message);
+    importDataToSelect(roomSelect, sensorInfo);
     roomSelect.selectedIndex = 0;
     await roomChangeFunction();
 }
@@ -84,22 +84,26 @@ function importDataToSelect(select, data) {
 
 async function getSensorInfo() {
     setLoadingLabel("Fetching room data...");
-    return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
+    let ret = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getsensorinfo");
+    return ret.message;
 }
 
 async function getPredictions(ID, date) {
     setLoadingLabel("Fetching prediction data...");
-    return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getpredictiondata?room=" + ID + "&date=" + date);
+    let ret = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getpredictiondata?room=" + ID + "&date=" + date);
+    return ret.message;
 }
 
 async function getWarningsAndSolution(ID, date) {
     setLoadingLabel("Fetching warning and solutions...");
-    return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getwarningsandsolutions?room=" + ID + "&date=" + date);
+    let ret = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getwarningsandsolutions?room=" + ID + "&date=" + date);
+    return ret.message;
 }
 
 async function getLiveData(ID, date) {
     setLoadingLabel("Fetching live data...");
-    return await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getlivedata?roomID=" + ID + "&date=" + date);
+    let ret = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/getlivedata?roomID=" + ID + "&date=" + date);
+    return ret.message;
 }
 
 async function roomChangeFunction() {
@@ -116,10 +120,10 @@ async function roomChangeFunction() {
         hideElementById("predictionContainer", true, true);
 
         let roomData = await getSensorInfo();
-        await loadPredictionShow(roomData.message[roomSelect.selectedIndex].roomID, dateFromInput.value);
-        displayRoomData(roomData.message[roomSelect.selectedIndex]);
-        await liveDataShow(roomData.message[roomSelect.selectedIndex].roomID);
-        await warningsShow(roomData.message[roomSelect.selectedIndex].roomID, dateFromInput.value);
+        await loadPredictionShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
+        displayRoomData(roomData[roomSelect.selectedIndex]);
+        await liveDataShow(roomData[roomSelect.selectedIndex].roomID);
+        await warningsShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
 
         hideElementById("loadDiv", true);
         hideElementById("sensorDataContainer", false);
@@ -136,31 +140,31 @@ function setLoadingLabel(text) {
 async function loadPredictionShow(roomID, date) {
     let predictionData = await getPredictions(roomID, date);
     // Gets the length of the x axis
-    let xLength = GRPH.getHighestTimestampPredictions(predictionData.message);
+    let xLength = GRPH.getHighestTimestampPredictions(predictionData);
     // Generate a graph of all the sensortypes, in one
-    GRPH.createTotalGraphOfPredictions(predictionData.message, "A", xLength, "#predictionContainer");
+    GRPH.createTotalGraphOfPredictions(predictionData, "A", xLength, "#predictionContainer");
 
     // This for loop is where the createGraph function is called. i is passed along also so that 
     // it is clear which iteration of graph is the current and the total number of graps also
-    for (let i = 0; i < predictionData.message.data.length; i++) {
-        GRPH.createPredictionsGraph(predictionData.message.data[i], i, xLength, predictionData.message.interval, "#predictionContainer");
+    for (let i = 0; i < predictionData.data.length; i++) {
+        GRPH.createPredictionsGraph(predictionData.data[i], i, xLength, predictionData.interval, "#predictionContainer");
     }
 }
 
 async function warningsShow(roomID, date) {
     let warningData = await getWarningsAndSolution(roomID, date);
     // Displays the warnings of the selected room
-    WARN.displayWarnings(warningData.message);
+    WARN.displayWarnings(warningData);
 }
 
 async function liveDataShow(roomID) {
     let liveData = await getLiveData(roomID, dateFromInput.value);
 
     GRPH.clearData("#liveDataContainer");
-    let xLength = GRPH.getHighestTimestampLiveData(liveData.message.data);
+    let xLength = GRPH.getHighestTimestampLiveData(liveData.data);
 
-    for (let i = 0; i < liveData.message.data.length; i++) {
-        GRPH.createLiveDataGraph(liveData.message, "livedata" + i, xLength, liveData.message.data[i].sensorType, "#liveDataContainer");
+    for (let i = 0; i < liveData.data.length; i++) {
+        GRPH.createLiveDataGraph(liveData, "livedata" + i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
     }
 }
 

@@ -33,7 +33,8 @@ module.exports.successCodes = {
     UpdateSensor: 230,
     GotLiveData: 231,
     GotAllSensorTypeValues: 232,
-    GotPriorityName: 233
+    GotPriorityName: 233,
+    GotAllWarningsAndSolutions: 234
 }
 
 module.exports.failCodes = {
