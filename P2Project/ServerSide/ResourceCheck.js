@@ -100,33 +100,12 @@ async function checkInnerResources(response, req, resource, queryURL, enableDebu
 
 function checkForResource(request, targetResource, queryStringArray, queryURL, enableDebuging) {
     if (request.url.includes(targetResource)) {
-        if (doesQueryContainAllNeededKeys(queryStringArray, queryURL)) {
-            BCC.errorWithTimestamp("Client (" + request.headers.host + ") Attempted to request resource: " + request.url + ". However input was wrong!");
-            return false;
-        }
-
         if (enableDebuging)
             if (targetResource != "/")
                 BCC.logWithTimestamp("Client requested resource: " + targetResource);
         return true;
     }
     return false;
-}
-
-function doesQueryContainAllNeededKeys(queryStringArray, queryURL) {
-    let isInputWrong = false;
-    for (let i = 0; i < queryStringArray.length; i++) {
-        isInputWrong = true;
-        for (let j = 0; j < Object.keys(queryURL).length; j++) {
-            if (queryStringArray[i] == Object.keys(queryURL)[j]) {
-                isInputWrong = false;
-                break;
-            }
-        }
-        if (isInputWrong)
-            break;
-    }
-    return isInputWrong;
 }
 
 async function executeResource(functionCall, queryStringArray, queryURL) {
