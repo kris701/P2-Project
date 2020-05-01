@@ -102,23 +102,12 @@ class IRVC {
     static async getPredictionSensorValues(sensorID, sensorType, thresholdValue, date) {
         let result = [];
 
-        let oldestEntry = await QCC.getOldestEntry(sensorType, sensorID);
-        oldestEntry.setDate(oldestEntry.getDate() - 1 - Math.ceil(parseInt(cfg.PAC_hourReach, 10) / 24));
-
-        let weekLook = (parseInt(cfg.PAC_weekOffset, 10) * 7);
-        for (let i = 7; i <= weekLook; i += 7) {
-            let dateMin = new Date(date);
-            let dateMax = new Date(date);
-
-            dateMin.setDate(dateMin.getDate() - i);
-            dateMax.setDate(dateMax.getDate() - i);
-            dateMax.setHours(dateMax.getHours() + parseInt(cfg.PAC_hourReach, 10));
-
-            if (dateMin < oldestEntry)
-                break;
-
-            result = await QCC.getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, thresholdValue);
-        }
+        let dateMin = new Date(date);
+        let dateMax = new Date(date);
+        let weekOffset = new Date(date);
+        dateMax.setHours(dateMax.getHours() + parseInt(cfg.PAC_hourReach, 10));
+        weekOffset.setDate(weekOffset.getDate() - parseInt(cfg.PAC_weekOffset, 10) * 7);
+        result = await QCC.getPredictionSensorValues(sensorID, dateMin, dateMax, sensorType, thresholdValue, weekOffset);
 
         return result;
     }
@@ -206,35 +195,62 @@ class QCC {
         return result;
     }
 
+    static async getPredictionSensorValues(sensorID, dateMin, dateMax, sensorType, thresholdValue, weekReach) {
+        let ret;
+        if (dateMin.getHours() > dateMax.getHours()) {
+            ret = await BCC.makeQuery(
+                "SELECT * FROM SensorValue_" + sensorType + " WHERE " +
+                "(sensorID=? AND TIME_TO_SEC(TIME(timestamp)) >= ? AND sensorValue>=? AND timestamp >= ? AND timestamp <= ? AND WEEKDAY(timestamp) = ?) OR " +
+                "(sensorID=? AND TIME_TO_SEC(TIME(timestamp)) <= ? AND sensorValue>=? AND timestamp >= ? AND timestamp <= ? AND WEEKDAY(timestamp) = ?)", [
+                sensorID,
+                QCC.getSecondsOfDay(dateMin),
+                thresholdValue,
+                weekReach,
+                dateMin,
+                QCC.jsDayToMySQLDay(dateMin.getDay()),
 
-    static async getOldestEntry(sensorType, sensorID) {
-        let ret = await BCC.makeQuery(
-            "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? ORDER By timestamp ASC LIMIT 1", [sensorID]);
-        if (BCC.isErrorCode(ret))
-            return new Date();
-
-        if (ret.recordset.length >= 1) {
-            return new Date(ret.recordset[0].timestamp);
+                sensorID,
+                QCC.getSecondsOfDay(dateMax),
+                thresholdValue,
+                weekReach,
+                dateMin,
+                QCC.jsDayToMySQLDay(dateMin.getDay() + 1),
+            ]);
         }
-        else
-            return new Date();
-    }
-
-    static async getPredictionSensorValues(result, sensorID, dateMin, dateMax, sensorType, thresholdValue) {
-        let ret = await BCC.makeQuery(
-            "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? AND timestamp BETWEEN ? AND ? AND sensorValue>=?", [
-            sensorID,
-            dateMin,
-            dateMax,
-            thresholdValue
-        ]);
+        else {
+            ret = await BCC.makeQuery(
+                "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? AND TIME_TO_SEC(TIME(timestamp)) >= ? AND sensorValue>=? AND timestamp >= ? AND timestamp <= ? AND WEEKDAY(timestamp) = ?", [
+                sensorID,
+                QCC.getSecondsOfDay(dateMin),
+                thresholdValue,
+                weekReach,
+                dateMin,
+                QCC.jsDayToMySQLDay(dateMin.getDay()),
+            ]);
+        }
         if (BCC.isErrorCode(ret))
             return new Date();
 
+        let result = [];
         result = await BCC.pushItem(ret.recordset, result);
         return result;
     }
 
+    static jsDayToMySQLDay(jsDay) {
+        if (jsDay == 0)
+            jsDay = 7;
+        else {
+            if (jsDay == 6)
+                jsDay = 7;
+            else
+                jsDay -= 1;
+        }
+        return jsDay;
+    }
+
+    static getSecondsOfDay(datetime) {
+        return datetime.getSeconds() + (60 * datetime.getMinutes()) + (60 * 60 * datetime.getHours());
+    }
 }
 
 // WC: Weight class
