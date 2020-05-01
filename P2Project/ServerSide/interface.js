@@ -21,6 +21,7 @@ try {
     let server = http.createServer(async function (req, res) {
 
         timeSinceLastCFGUpdate = await CLC.checkForConfigUpdate(timeSinceLastCFGUpdate);
+        let httpReturnCode = 200;
 
         let response = new BCC.retMSG(-1,"");
         try {
@@ -30,31 +31,26 @@ try {
             if (response.returnCode == -1) {
                 BCC.errorWithTimestamp("Resource not found!");
                 response = new RC.parseToRetMSG(RC.failCodes.ResourceNotFound);
-                response.returnCode = 404;
+                httpReturnCode = 404;
             }
             else {
-                if (response.returnCode >= 400 && response.returnCode <= 399) {
+                if (response.returnCode >= 400 && response.returnCode <= 499) {
                     BCC.errorWithTimestamp("(" + response.returnCode + ") Error msg: " + RC.parseCode(response.returnCode));
                     BCC.errorWithTimestamp("Parameters was: ");
                     for (let i = 0; i < Object.keys(queryUrl).length; i++)
                         BCC.errorWithTimestamp("     " + Object.keys(queryUrl)[i] + " : " + queryUrl[Object.keys(queryUrl)[i]]);
                     response = new RC.parseToRetMSG(response.returnCode);
-                    response.returnCode = 404;
-                }
-                else {
-                    if (response.returnCode >= 200 && response.returnCode <= 299) {
-                        response.returnCode = 200;
-                    }
+                    httpReturnCode = 404;
                 }
             }
 
         } catch (err) {
             BCC.errorWithTimestamp(err);
-            response = new BCC.retMSG(404, "An error occured on the server!");
+            response = new BCC.retMSG(499, "An error occured on the server!");
         }
 
-        res.writeHead(response.returnCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-        res.write(JSON.stringify(response.message));
+        res.writeHead(httpReturnCode, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+        res.write(JSON.stringify(response));
         res.end();
     });
 
