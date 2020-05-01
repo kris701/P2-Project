@@ -119,6 +119,28 @@ module.exports.BCC = class {
             "(ERR) " +
             message);
     }
+
+    static timeDiffToInterval(timestamp, senderdate, interval, checkDataOffset) {
+        let date = new Date(timestamp);
+        let CurrentDate = new Date(senderdate);
+        date.setDate(CurrentDate.getDate());
+        date.setMonth(CurrentDate.getMonth());
+
+        if (checkDataOffset != null) {
+            if (checkDataOffset) {
+                if (date < CurrentDate) {
+                    date.setDate(date.getDate() + 1);
+                }
+            }
+        }
+
+        let millisecondsLeft = (date.getTime() - CurrentDate.getTime());
+        let secondsLeft = Math.floor(millisecondsLeft / 1000);
+        let minutesLeft = Math.floor(secondsLeft / 60);
+        let intervalMinutesLeft = Math.floor(minutesLeft / interval);
+
+        return intervalMinutesLeft;
+    }
 }
 
 //#endregion
