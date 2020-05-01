@@ -95,7 +95,7 @@ async function getHistoricData(sensorID, date, sensorTypeName) {
     result = await QCC.getValueWithingTimestamps(result, sensorTypeName, sensorID, dateMax, dateMin);
 
     for (let i = 0; i < result.length; i++)
-        result[i].timeStamp = BCC.timeDiffToInterval(date, result[i].timeStamp, parseInt(cfg.LDC_interval, 10));
+        result[i].timeStamp = BCC.timeDiffToInterval(date, result[i].timeStamp, parseInt(cfg.LDC_interval, 10), true);
 
     result = stitchData(result);
 
