@@ -225,29 +225,19 @@ async function initialLoad() {
 }
 
 async function getSensorTypeInfo() {
-    //let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensortypes",
-    //    [
-    //        new BCC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new BCC.FetchArg("password", sessionStorage.getItem("password"))
-    //    ]);
     let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallsensortypes",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
     return sensorTypeInfo.message.data;
 }
 
 async function getThresholdInfo() {
-    //let sensorTypeInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallthresholdvalues",
-    //    [
-    //        new BCC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new BCC.FetchArg("password", sessionStorage.getItem("password"))
-    //    ]);
     let thresholdInfo = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallthresholdvalues",
         [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password")
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password"))
         ]);
 
     return thresholdInfo.message.data;
@@ -312,16 +302,10 @@ async function showAddNewSensorTypeMenu() {
 
 // Function called when client submits the new sensortype
 async function submitNewSensorType() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensortype", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("typeName", addNewSensorTypeInput.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addnewsensortype", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("typeName", addNewSensorTypeInput.value)
         ]);
     checkReturnCode(returnMessage, "New sensortype succesfully added!");
@@ -340,18 +324,10 @@ async function showAddExistingSensorTypeMenu() {
 
 // Function called when the client submits the existing sensortype add
 async function submitExistingSensorType() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addexistingsensortype", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("sensorType", addExistingSensorTypeSensorTypeSelect.value),
-    //        new UC.FetchArg("sensorID", addExistingSensorTypeSensorSelect.value),
-    //        new UC.FetchArg("threshold", addExistingSensorTypeThresholdInput.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/addexistingsensortype", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("sensorType", addExistingSensorTypeSensorTypeSelect.value),
             new UC.FetchArg("sensorID", addExistingSensorTypeSensorSelect.value),
             new UC.FetchArg("threshold", addExistingSensorTypeThresholdInput.value)
@@ -385,18 +361,10 @@ async function populateThresholdInfoBox() {
 
 // Function called when the client submits the sensortype update
 async function submitUpdateSensorType() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensortypethreshold", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("sensorID", updateSensorTypeSensorSelect.value),
-    //        new UC.FetchArg("sensorType", updateSensorTypeSensorTypeSelect.value),
-    //        new UC.FetchArg("threshold", updateSensorTypeThresholdInput.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/updatesensortypethreshold", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("sensorID", updateSensorTypeSensorSelect.value),
             new UC.FetchArg("sensorType", sensorTypeSelect.value),
             new UC.FetchArg("threshold", updateSensorTypeThresholdInput.value)
@@ -417,17 +385,10 @@ async function showRemoveSensorTypeReferenceMenu() {
 
 // Function called when the client submits the sensortype reference removal
 async function submitRemoveSensorTypeReference() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensortypereference", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("sensorType", sensorTypeSelect.value),
-    //        new UC.FetchArg("sensorID", removeSensorTypeReferenceSensorSelect.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensortypereference", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("sensorType", sensorTypeSelect.value),
             new UC.FetchArg("sensorID", removeSensorTypeReferenceSensorSelect.value)
         ]);
@@ -443,16 +404,10 @@ function showSensorTypeSettings() {
 
 // Function called when the client chooses to remove the chosen sensor
 async function removeSensorType() {
-    //let returnMessage = await UC.jsonFetch(
-    //    "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensortype", [
-    //        new UC.FetchArg("username", sessionStorage.getItem("username")),
-    //        new UC.FetchArg("password", sessionStorage.getItem("password")),
-    //        new UC.FetchArg("sensorType", sensorTypeSelect.value)
-    //    ]);
     let returnMessage = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/removesensortype", [
-            new UC.FetchArg("username", "Admin"),
-            new UC.FetchArg("password", "Password"),
+            new UC.FetchArg("username", sessionStorage.getItem("username")),
+            new UC.FetchArg("password", sessionStorage.getItem("password")),
             new UC.FetchArg("sensorType", sensorTypeSelect.value)
         ]);
     checkReturnCode(returnMessage, "Sensortype succesfully removed!");
