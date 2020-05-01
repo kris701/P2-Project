@@ -214,7 +214,7 @@ class QCC {
                 thresholdValue,
                 weekReach,
                 dateMin,
-                QCC.jsDayToMySQLDay(dateMin.getDay() - 1),
+                QCC.jsDayToMySQLDay(dateMin.getDay() + 1),
             ]);
         }
         else {
