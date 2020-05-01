@@ -214,14 +214,15 @@ class QCC {
                 thresholdValue,
                 weekReach,
                 dateMin,
-                QCC.jsDayToMySQLDay(dateMin.getDay() + 1),
+                QCC.jsDayToMySQLDay(dateMin.getDay() - 1),
             ]);
         }
         else {
             ret = await BCC.makeQuery(
-                "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? AND TIME_TO_SEC(TIME(timestamp)) >= ? AND sensorValue>=? AND timestamp >= ? AND timestamp <= ? AND WEEKDAY(timestamp) = ?", [
+                "SELECT * FROM SensorValue_" + sensorType + " WHERE sensorID=? AND TIME_TO_SEC(TIME(timestamp)) >= ? AND TIME_TO_SEC(TIME(timestamp)) <= ? AND sensorValue>=? AND timestamp >= ? AND timestamp <= ? AND WEEKDAY(timestamp) = ?", [
                 sensorID,
                 QCC.getSecondsOfDay(dateMin),
+                QCC.getSecondsOfDay(dateMax),
                 thresholdValue,
                 weekReach,
                 dateMin,
