@@ -76,7 +76,7 @@ async function CheckCredentials(username, password) {
         new UC.FetchArg("username", username),
         new UC.FetchArg("password", password)
     ]);
-    if (code == "Credentials correct!")
+    if (code.returnCode == 225)
         returnValue = true;
 
     return returnValue;
