@@ -118,6 +118,8 @@ async function roomChangeFunction() {
         hideElementById("sensorDataContainer", true, true);
         hideElementById("liveDataContainer", true, true);
         hideElementById("predictionContainer", true, true);
+        hideElementById("liveDataLabel", true, true);
+        hideElementById("predictionDataLabel", true, true);
 
         let roomData = await getSensorInfo();
         await loadPredictionShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
@@ -128,8 +130,8 @@ async function roomChangeFunction() {
         hideElementById("loadDiv", true);
         hideElementById("sensorDataContainer", false);
         hideElementById("warContain", false);
-        hideElementById("liveDataContainer", false, null, "grid");
         hideElementById("predictionContainer", false, null, "grid");
+        hideElementById("predictionDataLabel", false);
     }
 }
 
@@ -163,8 +165,12 @@ async function liveDataShow(roomID) {
     GRPH.clearData("#liveDataContainer");
     let xLength = GRPH.getHighestTimestampLiveData(liveData.data);
 
-    for (let i = 0; i < liveData.data.length; i++) {
-        GRPH.createLiveDataGraph(liveData, "livedata" + i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
+    if (xLength != 0) {
+        hideElementById("liveDataContainer", false, null, "grid");
+        hideElementById("liveDataLabel", false);
+        for (let i = 0; i < liveData.data.length; i++) {
+            GRPH.createLiveDataGraph(liveData, "livedata" + i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
+        }
     }
 }
 
