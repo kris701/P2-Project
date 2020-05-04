@@ -60,8 +60,6 @@ describe('updateWarning function', function () {
 
 describe('addSolution function', function () {
     GTC.shouldFailWithNoParameters(ACC.WASC.addSolution());
-    //GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(1, -99, ""), failCodes.PriorityOutsideRange);
-    //GTC.expectErrorCodeFromInput('Should fail if target priority is outside of range', ACC.WASC.addSolution(1, 99, ""), failCodes.PriorityOutsideRange);
     GTC.shouldReturnDatabaseErrorWithInput(ACC.WASC.addSolution(-99, 0, ""));
     GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution(0, [], ""), successCodes.AddSolution);
     GTC.shouldNotReturnCodeWithInput(ACC.WASC.addSolution(0, 0, []), successCodes.AddSolution);
