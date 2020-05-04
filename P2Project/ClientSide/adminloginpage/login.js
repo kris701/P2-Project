@@ -13,6 +13,7 @@ login_SubmitButton.onclick = login_SubmitButton_Click;
 let wrongCredentialsLabel = document.getElementById("wrongCredentialsLabel");
 
 document.addEventListener("beforeunload", document_beforeunload);
+window.addEventListener("pageshow", page_load);
 
 //#endregion
 
@@ -40,6 +41,10 @@ async function login_SubmitButton_Click() {
 
 async function document_beforeunload() {
     unloadPage();
+}
+
+function page_load() {
+    loadPage();
 }
 
 //#endregion
@@ -90,6 +95,12 @@ export function getLoggedIn() {
 
 function unloadPage() {
     sessionStorage.clear();
+}
+
+function loadPage() {
+    if (getLoggedIn()) {
+        window.location.href = "/adminpage/admin.html";
+    }
 }
 
 //#endregion
