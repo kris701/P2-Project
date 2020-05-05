@@ -185,4 +185,10 @@ describe('insertSensorValue function', function () {
     GTC.shouldNotReturnCodeWithInput(ACC.insertSensorValue(0, 0, []), successCodes.InsertSensorValue);
 });
 
+describe('getAllPriorities function', function () {
+    this.timeout(200000);
+
+    GTC.shouldReturnArray(ACC.WASC.getAllPriorities());
+});
+
 //#endregion

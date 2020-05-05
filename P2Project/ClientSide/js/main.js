@@ -114,6 +114,7 @@ async function roomChangeFunction() {
         GRPH.clearData("#predictionContainer");
         GRPH.clearData("#liveDataContainer");
 
+        hideElementById("noDataDiv", false);
         hideElementById("loadDiv", false);
         hideElementById("sensorDataContainer", true, true);
         hideElementById("liveDataContainer", true, true);
@@ -128,10 +129,7 @@ async function roomChangeFunction() {
         await warningsShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
 
         hideElementById("loadDiv", true);
-        hideElementById("sensorDataContainer", false);
         hideElementById("warContain", false);
-        hideElementById("predictionContainer", false, null, "grid");
-        hideElementById("predictionDataLabel", false);
     }
 }
 
@@ -143,13 +141,19 @@ async function loadPredictionShow(roomID, date) {
     let predictionData = await getPredictions(roomID, date);
     // Gets the length of the x axis
     let xLength = GRPH.getHighestTimestampPredictions(predictionData);
-    // Generate a graph of all the sensortypes, in one
-    GRPH.createTotalGraphOfPredictions(predictionData, "A", xLength, "#predictionContainer");
+    if (xLength != 0) {
+        hideElementById("predictionContainer", false, null, "grid");
+        hideElementById("predictionDataLabel", false);
+        hideElementById("noDataDiv", true);
 
-    // This for loop is where the createGraph function is called. i is passed along also so that 
-    // it is clear which iteration of graph is the current and the total number of graps also
-    for (let i = 0; i < predictionData.data.length; i++) {
-        GRPH.createPredictionsGraph(predictionData.data[i], i, xLength, predictionData.interval, "#predictionContainer");
+        // Generate a graph of all the sensortypes, in one
+        GRPH.createTotalGraphOfPredictions(predictionData, "A", xLength, "#predictionContainer");
+
+        // This for loop is where the createGraph function is called. i is passed along also so that 
+        // it is clear which iteration of graph is the current and the total number of graps also
+        for (let i = 0; i < predictionData.data.length; i++) {
+            GRPH.createPredictionsGraph(predictionData.data[i], i, xLength, predictionData.interval, "#predictionContainer");
+        }
     }
 }
 
@@ -168,6 +172,7 @@ async function liveDataShow(roomID) {
     if (xLength != 0) {
         hideElementById("liveDataContainer", false, null, "grid");
         hideElementById("liveDataLabel", false);
+        hideElementById("noDataDiv", true);
         for (let i = 0; i < liveData.data.length; i++) {
             GRPH.createLiveDataGraph(liveData, "livedata" + i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
         }
@@ -175,17 +180,24 @@ async function liveDataShow(roomID) {
 }
 
 function displayRoomData(currentRoomData) {
-    sensorData.innerHTML = "";
 
-    for (let i = 0; i < currentRoomData.sensors.length; i++) {
-        sensorData.innerHTML += "<br>Sensor ID: " + currentRoomData.sensors[i].sensorID + "<br>";
-        sensorData.innerHTML += "<br>Sensor measurements: <br>";
+    if (currentRoomData.sensors.length != 0) {
+        hideElementById("sensorDataContainer", false);
+        hideElementById("noDataDiv", true);
 
-        for (let j = 0; j < currentRoomData.sensors[i].types.length; j++) {
-            sensorData.innerHTML += "&emsp;" + currentRoomData.sensors[i].types[j] + "<br>";
+        sensorData.innerHTML = "";
+
+        for (let i = 0; i < currentRoomData.sensors.length; i++) {
+            sensorData.innerHTML += "<br>Sensor ID: " + currentRoomData.sensors[i].sensorID + "<br>";
+            sensorData.innerHTML += "<br>Sensor measurements: <br>";
+
+            for (let j = 0; j < currentRoomData.sensors[i].types.length; j++) {
+                sensorData.innerHTML += "&emsp;" + currentRoomData.sensors[i].types[j] + "<br>";
+            }
+
+            if (i + 1 != currentRoomData.sensors.length)
+                sensorData.innerHTML += "<br><hr>";
         }
-
-        sensorData.innerHTML += "<br><hr>";
     }
 }
 

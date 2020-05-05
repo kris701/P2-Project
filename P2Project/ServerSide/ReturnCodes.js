@@ -71,6 +71,31 @@ module.exports.parseCode = function(code)
         case module.exports.failCodes.EmptyString: return "Error: String is empty!";
         case module.exports.failCodes.WrongInputCredentials: return "Error: Wrong credentials!";
         case module.exports.failCodes.ResourceNotFound: return "Error: Resource not found!";
+
+        case module.exports.successCodes.AddWarning: return "Warning added succesfuly!";
+        case module.exports.successCodes.RemoveWarning: return "Warning removed succesfuly!";
+        case module.exports.successCodes.UpdateWarning: return "Warning updated succesfuly!";
+        case module.exports.successCodes.AddSolution: return "Solution added succesfuly!";
+        case module.exports.successCodes.RemoveSolution: return "Solution removed succesfuly!";
+        case module.exports.successCodes.UpdateSolution: return "Solution updated succesfuly!";
+        case module.exports.successCodes.AddExistingSolution: return "Existing solution added succesfuly!";
+        case module.exports.successCodes.RemoveSolutionRef: return "Solution reference removed succesfuly!";
+        case module.exports.successCodes.AddRoom: return "Room added succesfuly!";
+        case module.exports.successCodes.RemoveRoom: return "Room removed succesfuly!";
+        case module.exports.successCodes.UpdateRoom: return "Room updated succesfuly!";
+        case module.exports.successCodes.AddSensor: return "Sensor added succesfuly!";
+        case module.exports.successCodes.RemoveSensor: return "Sensor removed succesfuly!";
+        case module.exports.successCodes.AddExistingSensor: return "Existing sensor added succesfuly!";
+        case module.exports.successCodes.RemoveSensorRef: return "Sensor reference removed succesfuly!";
+        case module.exports.successCodes.AddSensorType: return "Sensor type added succesfuly!";
+        case module.exports.successCodes.AddExistingSensorType: return "Existing sensor type added succesfuly!";
+        case module.exports.successCodes.RemoveSensorTypeRef: return "Sensor type reference removed succesfuly!";
+        case module.exports.successCodes.RemoveSensorType: return "Sensor type removed succesfuly!";
+        case module.exports.successCodes.UpdateSensorTypeThreshold: return "Sensor type threshold updated succesfuly!";
+        case module.exports.successCodes.InsertSensorValue: return "Sensor value inserted succesfuly!";
+        case module.exports.successCodes.CredentialsCorrect: return "Credentials where correct!";
+        case module.exports.successCodes.UpdateSensor: return "Sensor updated sucesfuly!";
+
         default: return "Unknown code!";
     }
 }
