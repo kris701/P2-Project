@@ -2051,6 +2051,58 @@
           }
         }
       }
+    },
+    "/admin/getallpriorities": {
+      "get": {
+        "tags": [ "AdminLevel_GET" ],
+        "description": "Gets all the priorities from the database",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The username of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password of an admin",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of all priorities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_31"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2513,6 +2565,21 @@
           }
         }
       },
+      "inline_response_200_31": {
+        "type": "object",
+        "properties": {
+          "returnCode": {
+            "type": "number",
+            "example": 235
+          },
+          "message": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_31_message"
+            }
+          }
+        }
+      },
       "inline_response_200_sensors": {
         "type": "object",
         "properties": {
@@ -2843,6 +2910,23 @@
             "items": {
               "$ref": "#/components/schemas/inline_response_200_30_message_data"
             }
+          }
+        }
+      },
+      "inline_response_200_31_message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 0
+          },
+          "name": {
+            "type": "string",
+            "example": "None"
+          },
+          "time": {
+            "type": "number",
+            "example": 999
           }
         }
       }

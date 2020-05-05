@@ -213,6 +213,18 @@ module.exports.ACC = class {
 
             return new BCC.retMSG(RC.successCodes.GotPriorityName, returnItem);
         }
+
+        static async getAllPriorities() {
+            let returnItem = [];
+
+            let ret = await BCC.makeQuery("SELECT * FROM SolutionPriorities", []);
+            if (BCC.isErrorCode(ret))
+                return RC.parseToRetMSG(RC.failCodes.DatabaseError);
+
+            returnItem = await BCC.pushItem(ret.recordset, returnItem);
+
+            return new BCC.retMSG(RC.successCodes.GotAllPriorities, returnItem);
+        }
     }
 
     // Sensor Edit Class
