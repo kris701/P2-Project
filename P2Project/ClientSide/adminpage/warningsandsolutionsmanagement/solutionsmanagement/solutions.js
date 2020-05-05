@@ -260,6 +260,16 @@ async function getWarningInfo() {
     return warningInfo.message.data;
 }
 
+async function getPriorities() {
+    let priorityInfo = await UC.jsonFetch(
+        "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getallpriorities", [
+        new UC.FetchArg("username", sessionStorage.getItem("username")),
+        new UC.FetchArg("password", sessionStorage.getItem("password"))
+    ]);
+    
+    return priorityInfo.message;
+}
+
 async function getPriorityName(priority) {
     let priorityName = await UC.jsonFetch("https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/getpriorityname",
         [
@@ -281,6 +291,13 @@ function populateSelectWithWarnings(warningSelect, warningInfo) {
     UC.clearSelect(warningSelect);
     for (let i = 0; i < warningInfo.length; i++) {
         warningSelect.add(makeOptionFromParam("Warning " + warningInfo[i].warningID, warningInfo[i].warningID));
+    }
+}
+
+function populateSelectWithPriorities(prioritySelect, priorityInfo) {
+    UC.clearSelect(prioritySelect);
+    for (let i = 0; i < priorityInfo.length; i++) {
+        prioritySelect.add(makeOptionFromParam(priorityInfo[i].name, priorityInfo[i].id));
     }
 }
 
@@ -356,6 +373,9 @@ async function showAddNewSolutionMenu() {
 
     let warningInfo = await getWarningInfo();
     populateSelectWithWarnings(addNewSolutionWarningSelect, warningInfo);
+
+    let priorityInfo = await getPriorities();
+    populateSelectWithPriorities(addNewSolutionPrioritySelect, priorityInfo);
 }
 
 // Function called when client submits the new solution
@@ -403,6 +423,8 @@ async function showUpdateSolutionPriorityMenu() {
     setElementDisplay([mainMenu, solutionSettingMenu, solutionInfoBox], "none");
     setElementDisplay([updateSolutionPriorityMenu], "block");
 
+    let priorityInfo = await getPriorities();
+    populateSelectWithPriorities(updateSolutionPrioritySelect, priorityInfo);
     await populateSolutionPriorityInfoBox(solutionSelect, updateSolutionPriorityInfoBox);
 }
 
