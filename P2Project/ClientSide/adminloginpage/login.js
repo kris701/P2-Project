@@ -1,4 +1,5 @@
 ﻿import { UC } from '../js/utils.js';
+import { LC } from '../adminpage/LoginUtils.js'
 
 //#region eventSetup
 
@@ -56,49 +57,24 @@ function ClickLoginButton() {
 }
 
 async function login() {
-    if (getLoggedIn()) {
+    let credentials = await LC.checkLogin(input_Username.value, input_Password.value);
+    if (credentials) {
+        sessionStorage.setItem("username", input_Username.value);
+        sessionStorage.setItem("password", input_Password.value);
         let nextPage = "/adminpage/admin.html"
         window.location.href = nextPage;
     }
-    else {
-        let credentials = await CheckCredentials(input_Username.value, input_Password.value);
-        if (credentials) {
-            sessionStorage.setItem("LoggedIn", "True");
-            sessionStorage.setItem("username", input_Username.value);
-            sessionStorage.setItem("password", input_Password.value);
-            let nextPage = "/adminpage/admin.html"
-            window.location.href = nextPage;
-        }
-        else
-            await UC.unfade(wrongCredentialsLabel);
-    }
-}
-
-async function CheckCredentials(username, password) {
-    let returnValue = false;
-    let code = await UC.jsonFetch(
-        "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login", [
-        new UC.FetchArg("username", username),
-        new UC.FetchArg("password", password)
-    ]);
-    if (code.returnCode == 225)
-        returnValue = true;
-
-    return returnValue;
-}
-
-export function getLoggedIn() {
-    if (sessionStorage.getItem("LoggedIn") == "True")
-        return true;
-    return false;
+    else
+        await UC.unfade(wrongCredentialsLabel);
 }
 
 function unloadPage() {
     sessionStorage.clear();
 }
 
-function loadPage() {
-    if (getLoggedIn()) {
+async function loadPage() {
+    let credentials = await LC.getLoggedIn();
+    if (credentials) {
         window.location.href = "/adminpage/admin.html";
     }
 }

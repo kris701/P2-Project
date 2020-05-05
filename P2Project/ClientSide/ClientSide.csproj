@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="adminpage\GetLoggedIn.js" />
+    <Content Include="adminpage\LoginUtils.js" />
     <Content Include="adminpage\sensormanagement\roommanagement\room.css" />
     <Content Include="adminpage\sensormanagement\roommanagement\room.html" />
     <Content Include="adminpage\sensormanagement\roommanagement\room.js" />
