@@ -120,9 +120,9 @@ header input {
 
 .dataContainer {
     min-height: 100%;
-    overflow: auto;
-    padding-left: 80px;
-    padding-right: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1250px;
 }
 
 .dataContainer p {
@@ -136,6 +136,14 @@ header input {
     margin-left: auto;
     margin-right: auto;
     max-width: 1250px;
+}
+
+.noDataContainer {
+    text-align: center;
+    font-size: 50px;
+    display: block;
+    z-index: 100;
+    margin-top: 250px;
 }
 
 .masterContainer .container {
