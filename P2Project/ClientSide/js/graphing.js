@@ -168,11 +168,11 @@ function generateYValuesPredictions(predictionData, until) {
     let dataSet = [];
     let fromJ = 0;
     let found = false;
-    for (let i = 0; i < until; i++) {
-        for (let j = fromJ; j < predictionData.thresholdPasses.length; j++) {
-            if (predictionData.thresholdPasses[j].timeUntil == i) {
-                dataSet.push(predictionData.thresholdPasses[j].timesExceeded);
-                fromJ = j + 1;
+    for (let x = 0; x < until; x++) {
+        for (let i = fromJ; i < predictionData.thresholdPasses.length; i++) {
+            if (predictionData.thresholdPasses[i].timeUntil == x) {
+                dataSet.push(predictionData.thresholdPasses[i].timesExceeded);
+                fromJ = i + 1;
                 found = true;
                 break;
             }
@@ -207,10 +207,10 @@ function generateYValuesLiveData(data, until) {
     let dataSet = [];
     let fromJ = data.sensorLiveData.length - 1;
     let found = false;
-    for (let i = 0; i < until; i++) {
-        for (let j = fromJ; j >= 0; j--) {
-            if (data.sensorLiveData[j].timeStamp == i) {
-                dataSet.push(data.sensorLiveData[j].sensorValue);
+    for (let x = 0; x < until; x++) {
+        for (let i = fromJ; i >= 0; i--) {
+            if (data.sensorLiveData[i].timeStamp == x) {
+                dataSet.push(data.sensorLiveData[i].sensorValue);
                 fromJ -= 1;
                 found = true;
                 break;
