@@ -108,28 +108,45 @@ async function getLiveData(ID, date) {
 
 async function roomChangeFunction() {
     if (roomSelect.selectedIndex >= 0) {
+        hideElementById("noDataDiv", true, true);
+        hideElementById("sensorDataContainer", true, true);
+        hideElementById("liveDataContainer", true, true);
+        hideElementById("predictionContainer", true, true);
+        hideElementById("liveDataLabel", true, true);
+        hideElementById("predictionDataLabel", true, true);
+        hideElementById("warContain", true, true);
+        hideElementById("loadDiv", false);
+
         // Clears warning area
         WARN.clearWarningArea();
         // Clears graph area
         GRPH.clearData("#predictionContainer");
         GRPH.clearData("#liveDataContainer");
 
-        hideElementById("noDataDiv", false);
-        hideElementById("loadDiv", false);
-        hideElementById("sensorDataContainer", true, true);
-        hideElementById("liveDataContainer", true, true);
-        hideElementById("predictionContainer", true, true);
-        hideElementById("liveDataLabel", true, true);
-        hideElementById("predictionDataLabel", true, true);
-
         let roomData = await getSensorInfo();
-        await loadPredictionShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
-        displayRoomData(roomData[roomSelect.selectedIndex]);
-        await liveDataShow(roomData[roomSelect.selectedIndex].roomID);
-        await warningsShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
+        let fadeInPredictions = await loadPredictionShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
+        let fadeInRoomData = displayRoomData(roomData[roomSelect.selectedIndex]);
+        let fadeInLiveData = await liveDataShow(roomData[roomSelect.selectedIndex].roomID);
+        let fadeInWarnings = await warningsShow(roomData[roomSelect.selectedIndex].roomID, dateFromInput.value);
+
+        if (!fadeInPredictions && !fadeInRoomData && !fadeInLiveData && !fadeInWarnings)
+            hideElementById("noDataDiv", false);
+
+        if (fadeInPredictions) {
+            hideElementById("predictionContainer", false, null, "inline-block");
+            hideElementById("predictionDataLabel", false);
+        }
+        if (fadeInRoomData)
+            hideElementById("sensorDataContainer", false);
+        if (fadeInLiveData) {
+            hideElementById("liveDataContainer", false, null, "inline-block");
+            hideElementById("liveDataLabel", false);
+        }
+        if (fadeInWarnings) {
+            hideElementById("warContain", false, null, "grid");
+        }
 
         hideElementById("loadDiv", true);
-        hideElementById("warContain", false);
     }
 }
 
@@ -142,25 +159,27 @@ async function loadPredictionShow(roomID, date) {
     // Gets the length of the x axis
     let xLength = GRPH.getHighestTimestampPredictions(predictionData);
     if (xLength != 0) {
-        hideElementById("predictionContainer", false, null, "grid");
-        hideElementById("predictionDataLabel", false);
-        hideElementById("noDataDiv", true);
-
         // Generate a graph of all the sensortypes, in one
-        GRPH.createTotalGraphOfPredictions(predictionData, "A", xLength, "#predictionContainer");
+        GRPH.createTotalGraphOfPredictions(predictionData, 0, xLength, "#predictionContainer");
 
         // This for loop is where the createGraph function is called. i is passed along also so that 
         // it is clear which iteration of graph is the current and the total number of graps also
         for (let i = 0; i < predictionData.data.length; i++) {
-            GRPH.createPredictionsGraph(predictionData.data[i], i, xLength, predictionData.interval, "#predictionContainer");
+            GRPH.createPredictionsGraph(predictionData.data[i], 1 + i, xLength, predictionData.interval, "#predictionContainer");
         }
+        return true;
     }
+    return false;
 }
 
 async function warningsShow(roomID, date) {
     let warningData = await getWarningsAndSolution(roomID, date);
-    // Displays the warnings of the selected room
-    WARN.displayWarnings(warningData);
+    if (warningData.data.length > 1) {
+        // Displays the warnings of the selected room
+        WARN.displayWarnings(warningData);
+        return true;
+    }
+    return false;
 }
 
 async function liveDataShow(roomID) {
@@ -170,21 +189,17 @@ async function liveDataShow(roomID) {
     let xLength = GRPH.getHighestTimestampLiveData(liveData.data);
 
     if (xLength != 0) {
-        hideElementById("liveDataContainer", false, null, "grid");
-        hideElementById("liveDataLabel", false);
-        hideElementById("noDataDiv", true);
         for (let i = 0; i < liveData.data.length; i++) {
-            GRPH.createLiveDataGraph(liveData, "livedata" + i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
+            GRPH.createLiveDataGraph(liveData, i, xLength, liveData.data[i].sensorType, "#liveDataContainer");
         }
+        return true;
     }
+    return false;
 }
 
 function displayRoomData(currentRoomData) {
 
     if (currentRoomData.sensors.length != 0) {
-        hideElementById("sensorDataContainer", false);
-        hideElementById("noDataDiv", true);
-
         sensorData.innerHTML = "";
 
         for (let i = 0; i < currentRoomData.sensors.length; i++) {
@@ -198,7 +213,9 @@ function displayRoomData(currentRoomData) {
             if (i + 1 != currentRoomData.sensors.length)
                 sensorData.innerHTML += "<br><hr>";
         }
+        return true;
     }
+    return false;
 }
 
 function hideElementById(id, toHidden, instant, toStyle) {

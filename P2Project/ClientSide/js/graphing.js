@@ -14,35 +14,36 @@ export class GRPH {
 
     // Sensor data is an array
     static createPredictionsGraph(predictionData, graphNum, xLength, interval, section) {
-        createCanvas(graphNum, section);
+        createCanvas("graph" + graphNum, section);
 
         // Resets time and dataSet to be empty arrays
+        let newColorR = randomValue(0, 255);
+        let newColorG = randomValue(0, 255);
+        let newColorB = randomValue(0, 255);
         let xAxis = createXAxis(interval, xLength);
         let yAxis = [{
             label: predictionData.name,
-            backgroundColor: "rgba(255, 99, 132, 0.2",
-            borderColor: "rgb(255, 99, 132)",
+            backgroundColor: generate_rgba(newColorR, newColorG, newColorB, 0.2),
+            borderColor: generate_rgba(newColorR, newColorG, newColorB, 1),
             data: generateYValuesPredictions(predictionData, xLength)
         }];
         let ctx = document.getElementById("graph" + graphNum);
-        generateGraph(ctx, xAxis, yAxis);
+        generateGraph(ctx, xAxis, yAxis, null, "Time until", "Pass threshold again (%)");
 
     }
 
     // Generate a graph from all the prediction data
     static createTotalGraphOfPredictions(predictionData, graphNum, xLength, section) {
-        createCanvas(graphNum, section);
+        createCanvas("graph" + graphNum, section);
 
         let xAxis = createXAxis(predictionData.interval, xLength);
         let yAxis = populateYValuesPredictions(
             predictionData,
             xLength,
-            predictionData.interval,
-            "rgba(128, 99, 132, 0.2",
-            "rgb(128, 99, 132)");
+            predictionData.interval);
 
         let ctx = document.getElementById("graph" + graphNum);
-        generateGraph(ctx, xAxis, yAxis);
+        generateGraph(ctx, xAxis, yAxis, null, "Time until", "Pass threshold again (%)");
 
     }
 
@@ -72,19 +73,22 @@ export class GRPH {
     }
 
     static createLiveDataGraph(data, graphNum, xLength, sensorType, section) {
-        createCanvas(graphNum, section);
+        createCanvas("livegraph" + graphNum, section);
 
+        let newColorR = randomValue(0, 255);
+        let newColorG = randomValue(0, 255);
+        let newColorB = randomValue(0, 255);
         let xAxis = createBackwardsXAxis(data.interval, xLength);
         let yAxis = populateYValuesLiveData(
             data.data,
             xLength,
             data.interval,
-            "rgba(128, 99, 132, 0.2",
-            "rgb(128, 99, 132)",
-            sensorType);
+            sensorType,
+            generate_rgba(newColorR, newColorG, newColorB, 0.2),
+            generate_rgba(newColorR, newColorG, newColorB, 1));
 
-        let ctx = document.getElementById("graph" + graphNum);
-        generateGraph(ctx, xAxis, yAxis, { beginAtZero: true });
+        let ctx = document.getElementById("livegraph" + graphNum);
+        generateGraph(ctx, xAxis, yAxis, { beginAtZero: true }, "Time ago", "Sensor value");
     }
 }
 
@@ -95,14 +99,29 @@ function createCanvas(graphNum, section) {
     let canvas = document.createElement("CANVAS");
 
     graphContainer.setAttribute("class", "box");
-    canvas.setAttribute("id", "graph" + graphNum);
+    canvas.setAttribute("id", graphNum);
+
+    graphContainer.style.cursor = 'pointer';
+    graphContainer.onclick = resizeGraph;
 
     container.appendChild(graphContainer);
     graphContainer.appendChild(canvas);
 }
 
+function resizeGraph(element) {
+    let zoonIn = true;
+    if (element.currentTarget.style.width == "775px")
+        zoonIn = false;
+    for (let i = 0; i < element.currentTarget.parentElement.childElementCount; i++) {
+        element.currentTarget.parentElement.children[i].setAttribute("style", "");
+    }
+
+    if (zoonIn)
+        element.currentTarget.setAttribute("style", "height: 460px; width: 775px");
+}
+
 // Generates a graph object
-function generateGraph(container, xAxis, yAxis, altTicks) {
+function generateGraph(container, xAxis, yAxis, altTicks, xLabelText, yLabelText) {
 
     if (altTicks == null)
         altTicks = { beginAtZero: true, max: 100 };
@@ -120,11 +139,30 @@ function generateGraph(container, xAxis, yAxis, altTicks) {
         // Configuration options to start the Y values from 0 and up
         options: {
             maintainAspectRatio: false,
+            responsive: true,
             scales: {
                 yAxes: [{
                     display: true,
-                    ticks: altTicks
+                    ticks: altTicks,
+                    scaleLabel: {
+                        display: true,
+                        labelString: yLabelText,
+                        fontFamily: "Montserrat"
+                    },
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: xLabelText,
+                        fontFamily: "Montserrat"
+                    },
                 }]
+            },
+            legend: {
+                display: true,
+                labels: {
+                    fontFamily: "Montserrat"
+                }
             }
         }
     });
@@ -154,14 +192,18 @@ function createBackwardsXAxis(interval, until) {
 }
 
 // Makes all the Y values foreach of the datasets from predections
-function populateYValuesPredictions(predictionData, until, interval, backgroundColor, borderColor) {
+function populateYValuesPredictions(predictionData, until, interval) {
     let yValues = [];
 
     for (let i = 0; i < predictionData.data.length; i++) {
+
+        let newColorR = randomValue(0, 255);
+        let newColorG = randomValue(0, 255);
+        let newColorB = randomValue(0, 255);
         yValues.push({
             label: predictionData.data[i].name,
-            backgroundColor: backgroundColor,
-            borderColor: borderColor,
+            backgroundColor: generate_rgba(newColorR, newColorG, newColorB, 0.2),
+            borderColor: generate_rgba(newColorR, newColorG, newColorB, 1),
             data: generateYValuesPredictions(predictionData.data[i], until, interval)
         });
     }
@@ -190,7 +232,7 @@ function generateYValuesPredictions(predictionData, until) {
     return dataSet;
 }
 
-function populateYValuesLiveData(data, until, interval, backgroundColor, borderColor, sensorType) {
+function populateYValuesLiveData(data, until, interval, sensorType, backgroundColor, borderColor) {
     let yValues = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -227,4 +269,13 @@ function generateYValuesLiveData(data, until) {
         found = false;
     }
     return dataSet;
+}
+
+function generate_rgba(r, g, b, alpha) {
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+function randomValue(min, max) {
+    let o = Math.round, r = Math.random, s = 255;
+    return o(r() * s);
 }

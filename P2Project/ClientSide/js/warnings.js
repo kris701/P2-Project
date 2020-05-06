@@ -19,7 +19,6 @@ export class WARN {
 }
 
 function createNewWarning(priority, warningData, warningNum) {
-    let removeButton = document.createElement("input");
     let warning = document.createElement("div");
     let topParagraph = document.createElement("p");
     let bottomParagraph = document.createElement("p");
@@ -29,17 +28,15 @@ function createNewWarning(priority, warningData, warningNum) {
     warning.setAttribute("id", "priority" + priority);
     warning.setAttribute("id", "warningNum" + warningNum);
     warning.setAttribute("class", "warningBox");
-    removeButton.setAttribute("type", "submit");
-    removeButton.setAttribute("value", "X");
-    removeButton.setAttribute("id", warningNum);
     topParagraph.setAttribute("style", "text-transform: uppercase;font-weight: bold;");
 
     warningContainer.appendChild(warning);
-    warning.appendChild(removeButton);
     warning.appendChild(topParagraph);
     warning.appendChild(bottomParagraph);
 
-    removeButton.onclick = removeButton_Click;
+    warning.style.cursor = 'pointer';
+    warning.onclick = removeButton_Click;
+
     topParagraph.appendChild(message);
     bottomParagraph.appendChild(solutionMessage);
 
@@ -47,10 +44,10 @@ function createNewWarning(priority, warningData, warningNum) {
 }
 
 function fadeOutAndRemove(element) {
-    UC.fade(element);
+    UC.fade(element, 5);
 }
 
-function removeButton_Click(element) {
-    let toBeDeleted = document.getElementById("warningNum" + element.currentTarget.id);
+async function removeButton_Click(element) {
+    let toBeDeleted = document.getElementById(element.currentTarget.id);
     fadeOutAndRemove(toBeDeleted);
 }
