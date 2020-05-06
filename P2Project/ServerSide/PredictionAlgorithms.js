@@ -105,8 +105,8 @@ class IRVC {
         let dateMin = new Date(date);
         let dateMax = new Date(date);
         let weekOffset = new Date(date);
-        dateMax.setHours(dateMax.getUTCHours() + parseInt(cfg.PAC_hourReach, 10));
-        weekOffset.setDate(weekOffset.getUTCDate() - parseInt(cfg.PAC_weekOffset, 10) * 7);
+        dateMax.setHours(dateMax.getHours() + parseInt(cfg.PAC_hourReach, 10));
+        weekOffset.setDate(weekOffset.getDate() - parseInt(cfg.PAC_weekOffset, 10) * 7);
         result = await QCC.getPredictionSensorValues(sensorID, dateMin, dateMax, sensorType, thresholdValue, weekOffset);
 
         return result;
@@ -158,9 +158,15 @@ class IVC {
                 exist = true;
                 let otherSensorSetValue = false
                 for (let j = 0; j < insertArray[i].timesExceeded.length; j++) {
-                    if (timestamp.getDate() == insertArray[i].timesExceeded[j].date.getDate()) {
+                    if (Math.ceil(WC.getDaysSince(insertArray[i].timesExceeded[j].date, timestamp)) == 1) {
                         otherSensorSetValue = true;
                         break;
+                    }
+                    else {
+                        if (timestamp.getDate() == insertArray[i].timesExceeded[j].date.getDate()) {
+                            otherSensorSetValue = true;
+                            break;
+                        }
                     }
                 }
                 if (!otherSensorSetValue)

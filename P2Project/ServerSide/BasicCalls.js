@@ -134,10 +134,10 @@ module.exports.BCC = class {
             }
         }
 
-        let millisecondsLeft = (date.getTime() - CurrentDate.getTime());
-        let secondsLeft = Math.floor(millisecondsLeft / 1000);
-        let minutesLeft = Math.floor(secondsLeft / 60);
-        let intervalMinutesLeft = Math.floor(minutesLeft / interval);
+        let msDiff = (date.getTime() - CurrentDate.getTime());
+        let secondsLeft = Math.round(msDiff / 1000);
+        let minutesLeft = Math.round(secondsLeft / 60);
+        let intervalMinutesLeft = Math.round(minutesLeft / interval);
 
         return intervalMinutesLeft;
     }
