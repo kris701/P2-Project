@@ -111,9 +111,11 @@ async function roomChangeFunction() {
         hideElementById("noDataDiv", true, true);
         hideElementById("sensorDataContainer", true, true);
         hideElementById("liveDataContainer", true, true);
-        hideElementById("predictionContainer", true, true);
         hideElementById("liveDataLabel", true, true);
+        hideElementById("liveDataText", true, true);
         hideElementById("predictionDataLabel", true, true);
+        hideElementById("predictionDataText", true, true);
+        hideElementById("predictionContainer", true, true);
         hideElementById("warContain", true, true);
         hideElementById("loadDiv", false);
 
@@ -135,12 +137,16 @@ async function roomChangeFunction() {
         if (fadeInPredictions) {
             hideElementById("predictionContainer", false, null, "inline-block");
             hideElementById("predictionDataLabel", false);
+            hideElementById("predictionDataText", false);
         }
-        if (fadeInRoomData)
+        if (fadeInRoomData) {
             hideElementById("sensorDataContainer", false);
+            hideElementById("predictionDataText", false);
+        }
         if (fadeInLiveData) {
             hideElementById("liveDataContainer", false, null, "inline-block");
             hideElementById("liveDataLabel", false);
+            hideElementById("liveDataText", false);
         }
         if (fadeInWarnings) {
             hideElementById("warContain", false, null, "grid");
@@ -204,7 +210,7 @@ function displayRoomData(currentRoomData) {
 
         for (let i = 0; i < currentRoomData.sensors.length; i++) {
             sensorData.innerHTML += "<br>Sensor ID: " + currentRoomData.sensors[i].sensorID + "<br>";
-            sensorData.innerHTML += "<br>Sensor measurements: <br>";
+            sensorData.innerHTML += "<br>Sensor types: <br>";
 
             for (let j = 0; j < currentRoomData.sensors[i].types.length; j++) {
                 sensorData.innerHTML += "&emsp;" + currentRoomData.sensors[i].types[j] + "<br>";

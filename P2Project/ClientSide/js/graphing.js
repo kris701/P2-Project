@@ -242,7 +242,13 @@ function populateYValuesLiveData(data, until, interval, sensorType, backgroundCo
                     label: data[i].sensorType + ": Sensor " + data[i].liveDataArray[j].sensorID,
                     backgroundColor: backgroundColor,
                     borderColor: borderColor,
-                    data: generateYValuesLiveData(data[i].liveDataArray[j], until, interval)
+                    data: generateYValuesLiveData(data[i].liveDataArray[j], until)
+                });
+                yValues.push({
+                    label: data[i].sensorType + ": Sensor " + data[i].liveDataArray[j].sensorID + " Threshold",
+                    backgroundColor: "rgba(0,0,0,0)",
+                    borderColor: "rgba(0,0,0,1)",
+                    data: generateThresholdValues(data[i].liveDataArray[j].sensorThreshold, until)
                 });
             }
         }
@@ -267,6 +273,15 @@ function generateYValuesLiveData(data, until) {
         if (!found)
             dataSet.push(0);
         found = false;
+    }
+    return dataSet;
+}
+
+function generateThresholdValues(threshold, until) {
+    let dataSet = [];
+
+    for (let x = 0; x < until; x++) {
+        dataSet.push(threshold);
     }
     return dataSet;
 }

@@ -41,10 +41,20 @@
             <img src="images/loading.gif" />
         </div>
         <h1 id="liveDataLabel">Live Data</h1>
+        <p id="liveDataText">
+            Live data represents the newest values that the sensors have put into the database. <br />
+            Shown is the values of the individual sensors in this room, as well as their thresholds. <br />
+            You can also click on the graphs to zoom in on them, and make them easier to read.
+        </p>
         <div class="container" id="liveDataContainer">
 
         </div>
         <h1 id="predictionDataLabel">Prediction Data</h1>
+        <p id="predictionDataText">
+            The prediction graphs show the percentage chance that any of the sensors in this room exceeds their threshold again in the future. <br />
+            There are always one graph that have all the sensor types in them, as well as the individual ones. <br />
+            You can also click on the graphs to zoom in on them, and make them easier to read.
+        </p>
         <div class="container" id="predictionContainer">
 
         </div>
@@ -52,7 +62,10 @@
 
     <div class="dataContainer" id="sensorDataContainer">
         <h1>Room sensors</h1>
-        <p id="data"></p>
+        <p class="intoText">
+            Here you can see the sensors that are in this room, as well as what sensor types they have.
+        </p>
+        <p class="contentText" id="data"></p>
     </div>
 
     <div class="warningContainer" id="warContain">
