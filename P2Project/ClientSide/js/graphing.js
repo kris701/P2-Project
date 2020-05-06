@@ -134,15 +134,21 @@ function generateGraph(container, xAxis, yAxis, altTicks) {
 function createXAxis(interval, until) {
     let xAxis = [];
     for (let i = 0; i < until; i++) {
-        xAxis.push(i * interval + " min");
+        if (i * interval >= 60)
+            xAxis.push(Math.floor((i * interval) / 60) + "H " + ((i * interval) % 60) + "M");
+        else
+            xAxis.push(i * interval + " min");
     }
     return xAxis;
 }
 
 function createBackwardsXAxis(interval, until) {
     let xAxis = [];
-    for (let i = until; i >= 0; i--) {
-        xAxis.push(i * interval + " min ago");
+    for (let i = until - 1; i >= 0; i--) {
+        if (i * interval >= 60)
+            xAxis.push(Math.floor((i * interval) / 60) + "H " + ((i * interval) % 60) + "M ago");
+        else
+            xAxis.push(i * interval + " min ago");
     }
     return xAxis;
 }
