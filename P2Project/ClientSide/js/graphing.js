@@ -75,17 +75,11 @@ export class GRPH {
     static createLiveDataGraph(data, graphNum, xLength, sensorType, section) {
         createCanvas("livegraph" + graphNum, section);
 
-        let newColorR = randomValue(0, 255);
-        let newColorG = randomValue(0, 255);
-        let newColorB = randomValue(0, 255);
         let xAxis = createBackwardsXAxis(data.interval, xLength);
         let yAxis = populateYValuesLiveData(
             data.data,
             xLength,
-            data.interval,
-            sensorType,
-            generate_rgba(newColorR, newColorG, newColorB, 0.2),
-            generate_rgba(newColorR, newColorG, newColorB, 1));
+            sensorType);
 
         let ctx = document.getElementById("livegraph" + graphNum);
         generateGraph(ctx, xAxis, yAxis, { beginAtZero: true }, "Time ago", "Sensor value");
@@ -232,16 +226,20 @@ function generateYValuesPredictions(predictionData, until) {
     return dataSet;
 }
 
-function populateYValuesLiveData(data, until, interval, sensorType, backgroundColor, borderColor) {
+function populateYValuesLiveData(data, until, sensorType) {
     let yValues = [];
 
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].liveDataArray.length; j++) {
             if (data[i].sensorType == sensorType) {
+                let newColorR = randomValue(0, 255);
+                let newColorG = randomValue(0, 255);
+                let newColorB = randomValue(0, 255);
+
                 yValues.push({
                     label: data[i].sensorType + ": Sensor " + data[i].liveDataArray[j].sensorID,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
+                    backgroundColor: generate_rgba(newColorR, newColorG, newColorB, 0.2),
+                    borderColor: generate_rgba(newColorR, newColorG, newColorB, 1),
                     data: generateYValuesLiveData(data[i].liveDataArray[j], until)
                 });
                 yValues.push({
