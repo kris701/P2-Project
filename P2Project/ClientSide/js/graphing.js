@@ -257,13 +257,13 @@ function populateYValuesLiveData(data, until, sensorType) {
 
 function generateYValuesLiveData(data, until) {
     let dataSet = [];
-    let fromJ = data.sensorLiveData.length - 1;
+    let fromJ = 0;
     let found = false;
-    for (let x = 0; x < until; x++) {
-        for (let i = fromJ; i >= 0; i--) {
+    for (let x = until - 1; x >= 0; x--) {
+        for (let i = fromJ; i < data.sensorLiveData.length; i++) {
             if (data.sensorLiveData[i].timeStamp == x) {
                 dataSet.push(data.sensorLiveData[i].sensorValue);
-                fromJ -= 1;
+                fromJ += 1;
                 found = true;
                 break;
             }
