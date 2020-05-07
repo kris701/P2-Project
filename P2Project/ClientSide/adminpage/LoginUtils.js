@@ -16,9 +16,6 @@ async function CheckCredentials(username, password) {
     if (username == null || password == null)
         return false;
 
-    console.log(username);
-    console.log(password);
-
     let returnValue = false;
     let code = await UC.jsonFetch(
         "https://dat2c1-3.p2datsw.cs.aau.dk/node0/admin/login", [
