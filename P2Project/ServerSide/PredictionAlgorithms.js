@@ -245,12 +245,9 @@ class QCC {
 
     static jsDayToMySQLDay(jsDay) {
         if (jsDay == 0)
-            jsDay = 7;
+            jsDay = 6;
         else {
-            if (jsDay == 6)
-                jsDay = 7;
-            else
-                jsDay -= 1;
+            jsDay -= 1;
         }
         return jsDay;
     }
