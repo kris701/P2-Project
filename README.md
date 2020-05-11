@@ -1,4 +1,4 @@
-# P2-Project: Notification platform using airquality sensors and IoT
+# Notification platform using airquality sensors and IoT
  
 This is a university project made at Aalborg University students, studying computer science.
 This project is about, as the title suggests, giving the ability to study the IAQ (Indoor Air Quality) of a room to a normal user. 
