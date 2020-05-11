@@ -6,13 +6,13 @@ Currently (as of 11th of May 2020) there is a website hosted by Aalborg Universi
 https://dat2c1-3.p2datsw.cs.aau.dk/
 
 <p align="center">
- <img src ="https://cnk3zq.db.files.1drv.com/y4mb25D60C4orcfS1DCD6AFugHXW-ToKC3abP0eePWmEj2XCkdQIoU3lyhTdR8AaQ8-iAqotI4ve1IFVACMlvKC8AR-QCllYyoBdstpSTlDWC3ARNTqEG9fKOMtGBsWB2syfwVM36MPLUtOMjO362xJ0N8-zzmUDn1TNuzvImzp3obc4zD57GnLjB1e-BghOyXiHAbSkEcDTiqxHEb8wc2bPA?width=1367&height=200" />
- <img src ="https://o03fbw.db.files.1drv.com/y4mzm4w9yPpw0O4NBs6EQW9r84Ru-QwCKYaWmmcDqge4qvkhic9YoV2xp10G3yfw6-ho76CBvQAYP3plAV1zd6sMbhxocL58CNbdggRZ_ZrMS67lDREr3_TWZw1seoarQubcSII8SijNIPHNht3J9bAxKFHJdzgkvsh9TRWmG1HHv86YiaQxTIAQ2VfRYJbYrDjIbwnqBWNs1qWmeTueVhQaA?width=1367&height=200" />
+ <img src ="https://dyb9pg.db.files.1drv.com/y4m9QmEHEQ9qv0BFdJ1KXfGQmDiMYf3uutSzaIF9zSQWqzhdDXFLEE0HrX-CuM9QJhoSsJqlURq6VEwDGlYBptk07wMF_6MbulyPlcE1k6h6iZi1j43SWPp6QqmkC_BrNY44KOZQ4x9wmm2F00EDWddAB2MdaF1ToXtdkxi-e_gKx2JedBz22rVIWiUTqc3ySgVHEtGj5XZikGKqa5xsEqQ1A?psid=1?width=1367&height=200" />
+ <img src ="https://zh1lqq.db.files.1drv.com/y4mCgxQCysMuMax1i5AJAs9YkIqibJw_gH_THS_51hsW2OeHk-3uizUWqR_LZZfdSd-iAOIsBtd59AAZJGf33st2Zh-L4KPwD3ONNSXqkZH84QBS1E_Ha7uzLCNliYqONiaTwuxT7ImXjDrNDxRNwJNiuvSTjkHQbGswqHlvIl6XiAP5V1oJWsOZuA_XKljlLtdLUaXPAqaX5kJHJal01mnmg?psid=1?width=1367&height=200" />
 </p>
 
 <p align="center">
- <img src ="https://qpqknq.db.files.1drv.com/y4mC1MIpkP88WnRJirGMbZcEAcvkRXeBCwIca2aYgfn7mAkEC14Y56vi_NBJZ0e6AujtwJ3-gRBhclTnW9tqwPBMbbJvH90AYCW7ixJQyEStCeoy9Q93nj5Qm0MQOZwNJWJmIRc_x83PX0P3T-g1dkoSbF0tF5F9l60LHyERLO1yoZoq_ENGNhxG6eHG5XzCSZBAkSlpO5q36bRqPVbJccRmA?width=1367&height=200" />
- <img src ="https://rqnmpw.db.files.1drv.com/y4m5ZFVAqG6nAyQPf1nqzcSNoFtR6Jj8M3ZazMSC5MEMlB7jtPfvNCQnnGQSlBVDqTsp71JEXiZxFmjB9re9YKO6lnlvmG2RcC__TtumCYbRo1t7tNAj_RGyoRKWSE-2FUUc4fFLpQavmXtfXkqzQ6nodUgBjst4GAcJmjftYbI1egkotV7D6AjIIwGon0QlyDuu_TB4BVtxTFmzAIBS5ttnA?width=1367&height=200" />
+ <img src ="https://azlynw.db.files.1drv.com/y4mUaq2hhTUw79jG6ITKkieLJ607fESniV5WX3UXHfrOBZAaS3dgAHvAwvCoHt7ZwSfHDUSQowLwA8nq5775VZ_QO2AOJRgnhrIMmpwCB7YiXCTG5CxCUPekvLVW47oC3LoHTBsc3Q0LDLcEMMaCdM-zyonEsHj0Uui8pWOD5dCR0nNRGsu685b9jzc1IOywHP6AS_3SH5sJ-x68Kb9k6uTaw?psid=1?width=100&height=50&cropmode=none" />
+ <img src ="https://pskneg.db.files.1drv.com/y4mYWZyz_ycEeGNMi5zgSshdEVX1xN1WpTIpkCuLnv0XMGSOfB6mtGgI14ZvNrQCm6Hmnjy-bX843nC7SaFe-BfvrNpiOxL_zKxfFP-JW5MFhd5YW8Jwg89kSwg8ZxwGAseCUCBgmqdV70KcZe5cQtu71nW4PoG1q1fd_94ykHObHidAjrnLzM6Fe5Rbvy2Kbtzf5NuUDyPtQOD0d3uksDZ3A?psid=1?width=100&height=50&cropmode=none" />
 </p>
 
 The website is of intuitive design, and is hopefully easy to understand. 
