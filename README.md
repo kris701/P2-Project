@@ -15,4 +15,4 @@ https://dat2c1-3.p2datsw.cs.aau.dk/
  <img src="https://pskneg.db.files.1drv.com/y4mYWZyz_ycEeGNMi5zgSshdEVX1xN1WpTIpkCuLnv0XMGSOfB6mtGgI14ZvNrQCm6Hmnjy-bX843nC7SaFe-BfvrNpiOxL_zKxfFP-JW5MFhd5YW8Jwg89kSwg8ZxwGAseCUCBgmqdV70KcZe5cQtu71nW4PoG1q1fd_94ykHObHidAjrnLzM6Fe5Rbvy2Kbtzf5NuUDyPtQOD0d3uksDZ3A?psid=1" width="400" height="200" />
 </p>
 
-The website is of intuitive design, and is hopefully easy to understand. 
+The website is of intuitive design, and is hopefully easy to understand. The project is using Visual Studio as an IDE.
