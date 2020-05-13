@@ -43,7 +43,6 @@
     </Content>
     <Content Include="package.json" />
     <Content Include="PredictionAlgorithms.js" />
-    <Content Include="README.md" />
     <Content Include="ResourceCheck.js">
       <SubType>Code</SubType>
     </Content>
